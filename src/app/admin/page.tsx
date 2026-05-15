@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FolderOpen, Users, FileText, Image as ImageIcon, FileBarChart } from 'lucide-react';
+import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
 import { DashboardSummary } from '@/types';
 import api, { endpoints } from '@/lib/api';
@@ -100,18 +101,18 @@ export default function AdminDashboardPage() {
             <CardTitle>Actions Rapides</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <button className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-brand-500 hover:bg-brand-500/5 transition-all group">
+            <Link href="/admin/projects/new" className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-brand-500 hover:bg-brand-500/5 transition-all group">
               <span className="font-medium text-sm">Nouveau Projet</span>
               <FolderOpen className="h-4 w-4 text-muted-foreground group-hover:text-brand-500 transition-colors" />
-            </button>
-            <button className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-purple-500 hover:bg-purple-500/5 transition-all group">
+            </Link>
+            <Link href="/admin/blog/new" className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-purple-500 hover:bg-purple-500/5 transition-all group">
               <span className="font-medium text-sm">Rédiger un article</span>
               <FileText className="h-4 w-4 text-muted-foreground group-hover:text-purple-500 transition-colors" />
-            </button>
-            <button className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-amber-500 hover:bg-amber-500/5 transition-all group">
+            </Link>
+            <Link href="/admin/media" className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-amber-500 hover:bg-amber-500/5 transition-all group">
               <span className="font-medium text-sm">Ajouter un média</span>
               <ImageIcon className="h-4 w-4 text-muted-foreground group-hover:text-amber-500 transition-colors" />
-            </button>
+            </Link>
           </CardContent>
         </Card>
       </div>

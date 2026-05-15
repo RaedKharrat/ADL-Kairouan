@@ -32,6 +32,12 @@
     --radius: 0.75rem;
   }
 
+    --surface-primary: 0 0% 100%;
+    --surface-secondary: 210 40% 96.1%;
+    --surface-tertiary: 210 40% 98%;
+    --surface-dark: 222.2 84% 4.9%;
+  }
+
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
@@ -52,6 +58,11 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 243 75% 59%;
+    
+    --surface-primary: 222.2 84% 4.9%;
+    --surface-secondary: 217.2 32.6% 17.5%;
+    --surface-tertiary: 222.2 84% 7%;
+    --surface-dark: 222.2 84% 3%;
   }
 
   * {
@@ -136,11 +147,10 @@
 
 /* ─── Glassmorphism Enhancements ────────────────────────────────────────── */
 .glass-card {
-  @apply backdrop-blur-xl bg-white/70 dark:bg-black/40 border border-white/40 dark:border-white/10 shadow-card;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  @apply backdrop-blur-xl bg-white/70 dark:bg-black/40 border border-slate-200 dark:border-white/10 shadow-sm transition-all duration-300;
 }
 .glass-card:hover {
-  @apply border-brand-500/30 shadow-glow-sm;
+  @apply border-brand-500/30 shadow-lg dark:shadow-brand-500/5;
 }
 
   /* Container max widths */

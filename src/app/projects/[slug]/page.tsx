@@ -45,7 +45,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
       
       {/* Hero Header */}
       <div className="relative h-[70vh] min-h-[600px] w-full mt-0 overflow-hidden">
-        <div className="absolute inset-0 bg-surface-secondary">
+        <div className="absolute inset-0 bg-muted/50">
           {project.coverImage ? (
             <img src={getImageUrl(project.coverImage)} alt={project.title} className="w-full h-full object-cover scale-105 animate-slow-zoom" />
           ) : (
@@ -58,7 +58,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
         
         <div className="absolute bottom-0 left-0 w-full p-8 md:p-20">
           <div className="container-tight relative z-10 animate-fade-in-up">
-            <Link href="/projects" className="inline-flex items-center text-sm font-bold text-brand-400 hover:text-brand-300 transition-colors mb-8 group bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+            <Link href="/projects" className="inline-flex items-center text-sm font-bold text-brand-400 hover:text-brand-300 transition-colors mb-8 group bg-black/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
               <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
               Tous les projets
             </Link>
@@ -69,7 +69,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
                   {project.category.name}
                 </span>
               )}
-              <span className="flex items-center px-4 py-2 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-slate-300 text-xs font-bold uppercase tracking-widest">
+              <span className="flex items-center px-4 py-2 rounded-full bg-black/20 backdrop-blur-md border border-white/10 text-slate-200 text-xs font-bold uppercase tracking-widest">
                 <CheckCircle2 className="w-4 h-4 mr-2 text-brand-400" />
                 {project.status === 'PUBLISHED' ? 'En Cours / Terminé' : 'Brouillon'}
               </span>
@@ -139,7 +139,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
         <div className="space-y-8 animate-fade-in-up">
           
           {/* Quick Info Card */}
-          <div className="glass-card rounded-[40px] p-10 border-white/10 relative overflow-hidden group">
+          <div className="glass-card rounded-[40px] p-10 relative overflow-hidden group">
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-brand-500/10 blur-[80px] rounded-full group-hover:bg-brand-500/20 transition-colors" />
             
             <h3 className="font-display font-bold text-2xl mb-8 text-white relative z-10">Détails de l'Action</h3>
@@ -149,12 +149,12 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
                 <p className="text-xs uppercase font-bold tracking-widest text-brand-500/80">Statut</p>
                 <p className="font-bold text-lg text-white">Vérifié & Audité</p>
               </div>
-              <div className="h-px bg-white/5" />
+              <div className="h-px bg-border/50" />
               <div className="flex flex-col gap-1">
                 <p className="text-xs uppercase font-bold tracking-widest text-brand-500/80">Localisation</p>
                 <p className="font-bold text-lg text-white">Gouvernorat de Kairouan</p>
               </div>
-              <div className="h-px bg-white/5" />
+              <div className="h-px bg-border/50" />
               <div className="flex flex-col gap-1">
                 <p className="text-xs uppercase font-bold tracking-widest text-brand-500/80">Impact Social</p>
                 <p className="font-bold text-lg text-white">Direct & Mesurable</p>
@@ -170,7 +170,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <Button variant="outline" className="flex-1 rounded-2xl h-14 border-white/10 bg-white/5 hover:bg-white/10 text-white font-bold backdrop-blur-md">
+            <Button variant="outline" className="flex-1 rounded-2xl h-14 border-border bg-accent/50 hover:bg-accent text-foreground font-bold backdrop-blur-md">
               <Share2 className="w-5 h-5 mr-3" /> Partager
             </Button>
           </div>

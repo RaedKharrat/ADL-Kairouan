@@ -13,7 +13,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
   const { data: post, isLoading } = useQuery<BlogPost>({
     queryKey: ['blog-public', slug],
     queryFn: async () => {
-      const response = await api.get(`${endpoints.blog}/public/${slug}`);
+      const response = await api.get(`${endpoints.blog}/public/slug/${slug}`);
       return response.data.data;
     }
   });
@@ -41,14 +41,14 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
   }
 
   return (
-    <div className="pb-32 bg-surface">
+    <div className="pb-32 bg-background">
       
       {/* Header */}
-      <div className="pt-32 pb-20 bg-surface-secondary/50 border-b border-white/5 relative overflow-hidden">
+      <div className="pt-32 pb-20 bg-muted/30 border-b border-border relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[40vw] h-[40vw] rounded-full bg-brand-500/10 blur-[120px] pointer-events-none translate-x-1/2 -translate-y-1/2" />
         
         <div className="container-tight max-w-4xl relative z-10 animate-fade-in-up">
-          <Link href="/blog" className="inline-flex items-center text-sm font-bold text-brand-500 hover:text-brand-400 transition-colors mb-12 group bg-white/5 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+          <Link href="/blog" className="inline-flex items-center text-sm font-bold text-brand-500 hover:text-brand-400 transition-colors mb-12 group bg-accent/50 backdrop-blur-md px-4 py-2 rounded-full border border-border">
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             Retour aux actualités
           </Link>
@@ -68,13 +68,13 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center justify-between gap-8 pt-10 border-t border-white/10">
+          <div className="flex flex-wrap items-center justify-between gap-8 pt-10 border-t border-border">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-600 to-purple-600 flex items-center justify-center text-white font-bold text-xl shadow-glow-sm">
                 {post.author?.name?.charAt(0) || 'A'}
               </div>
               <div>
-                <p className="font-bold text-lg text-white">{post.author?.name || 'Équipe ADL Kairouan'}</p>
+                <p className="font-bold text-lg text-foreground">{post.author?.name || 'Équipe ADL Kairouan'}</p>
                 <p className="text-sm text-muted-foreground flex items-center gap-2">
                    <Calendar className="w-3.5 h-3.5" /> Publié le {formatDate(post.createdAt, 'dd MMMM yyyy')}
                 </p>

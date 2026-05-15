@@ -122,11 +122,18 @@ export default function ContactPage() {
               ))}
             </div>
 
-            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden group">
-              <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=2074&auto=format&fit=crop" alt="Kairouan" className="w-full h-full object-cover grayscale opacity-50 group-hover:scale-110 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-1000" />
-              <div className="absolute inset-0 bg-royal-600/10 mix-blend-multiply"></div>
-              <div className="absolute bottom-8 left-8 right-8">
-                <p className="text-white font-display font-bold text-xl uppercase tracking-tight italic">"Au service du développement régional."</p>
+            <div className="relative aspect-[4/3] rounded-[2rem] overflow-hidden group border border-slate-200 dark:border-white/10 shadow-xl shadow-royal-900/5">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m12!1m3!1d3243.601550186196!2d10.1012534!3d35.6724704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fdc5565c263411%3A0xfa4d9b15ce3d8121!2sADL+Tunisie!5e0!3m2!1sfr!2stn!4v1715814836542!5m2!1sfr!2stn" 
+                className="w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-1000" 
+                allowFullScreen={true} 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="absolute top-4 left-4 pointer-events-none">
+                <div className="bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/10">
+                  <p className="text-[10px] font-bold text-white uppercase tracking-widest">Siège ADL Kairouan</p>
+                </div>
               </div>
             </div>
           </div>

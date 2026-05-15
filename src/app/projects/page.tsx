@@ -58,7 +58,7 @@ export default function ProjectsPage() {
   return (
     <div className="pb-32 bg-background">
       {/* ─── HERO SECTION (ARCHITECTURAL) ─────────────────────────────── */}
-      <section className="relative w-full px-4 lg:px-8 pt-4 pb-12">
+      <section className="relative w-full px-4 lg:px-8 pt-4 pb-8">
         <div className="relative w-full min-h-[50vh] bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] lg:rounded-[4rem] flex flex-col items-center justify-center overflow-hidden border border-slate-200/50 dark:border-white/5">
           <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"></div>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_120px_rgba(30,58,138,0.08)] dark:shadow-[inset_0_0_150px_rgba(30,58,138,0.4)]"></div>
@@ -84,9 +84,9 @@ export default function ProjectsPage() {
         </div>
       </section>
 
-      <div className="container-tight px-6 mt-24">
+      <div className="container-tight px-6 mt-12">
         {/* Toolbar */}
-        <div className="flex flex-col lg:flex-row gap-8 items-center justify-between mb-24">
+        <div className="flex flex-col lg:flex-row gap-8 items-center justify-between mb-12">
           <div className="flex flex-wrap gap-3 justify-center">
             <button 
               onClick={() => setSelectedCategory('all')}
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
         {/* Projects Content */}
         <div className={cn(
           layout === 'grid' 
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20" 
+            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12" 
             : "flex flex-col"
         )}>
           {isLoading ? (
@@ -163,7 +163,7 @@ export default function ProjectsPage() {
 
         {/* Pagination */}
         {data && data.totalPages > 1 && (
-          <div className="mt-32 flex justify-center gap-6">
+          <div className="mt-20 flex justify-center gap-6">
             <button 
               className="h-14 px-12 rounded-full border border-slate-200 dark:border-white/10 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-950 dark:text-white hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 disabled:opacity-20 disabled:cursor-not-allowed shadow-sm"
               onClick={() => setPage(p => Math.max(1, p - 1))}
@@ -183,7 +183,7 @@ export default function ProjectsPage() {
       </div>
 
       {/* ─── INVERTED THEME TICKER BANNER (WITH SMOOTH FADE) ───────── */}
-      <section className="mt-48 w-full bg-slate-950 dark:bg-white py-8 lg:py-10 overflow-hidden relative border-y border-white/5 dark:border-slate-200 transition-colors duration-700">
+      <section className="mt-24 w-full bg-slate-950 dark:bg-white py-8 lg:py-10 overflow-hidden relative border-y border-white/5 dark:border-slate-200 transition-colors duration-700">
         {/* Left Side Smooth Fade */}
         <div className="absolute left-0 top-0 bottom-0 w-32 md:w-64 z-10 bg-gradient-to-r from-slate-950 dark:from-white to-transparent pointer-events-none" />
         
@@ -227,9 +227,9 @@ export default function ProjectsPage() {
       </section>
 
       {/* ─── MEDIATHEQUE SECTION ───────────────────────────────────── */}
-      <section className="mt-48 pt-32 border-t border-slate-100 dark:border-white/5">
+      <section className="mt-24 pt-20 border-t border-slate-100 dark:border-white/5">
         <div className="container-tight px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-10">
             <div className="max-w-3xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-6">Médiathèque</p>
               <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85]">Immersion <br /> Visuelle</h2>
@@ -322,36 +322,84 @@ export default function ProjectsPage() {
       {/* Video Modal */}
       {selectedVideo && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-10 animate-in fade-in duration-500">
-          <div className="absolute inset-0 bg-slate-950/95 backdrop-blur-xl" onClick={() => setSelectedVideo(null)} />
-          <div className="relative w-full max-w-6xl aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl border border-white/10">
+          <div className="absolute inset-0 bg-slate-950/98 backdrop-blur-3xl" onClick={() => setSelectedVideo(null)} />
+          
+          <div className="relative w-full max-w-7xl h-auto md:max-h-[85vh] bg-slate-900/50 rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden border border-white/10 shadow-[0_0_100px_rgba(30,58,138,0.3)] flex flex-col lg:flex-row">
+            
+            {/* Video Player Side */}
+            <div className="relative flex-1 aspect-video lg:aspect-auto bg-black overflow-hidden group/video">
+              <iframe 
+                src={(() => {
+                  if (!selectedVideo.url) return '';
+                  const url = selectedVideo.url;
+                  let videoId = '';
+                  
+                  if (url.includes('v=')) {
+                    videoId = url.split('v=')[1].split('&')[0];
+                  } else if (url.includes('youtu.be/')) {
+                    videoId = url.split('youtu.be/')[1].split('?')[0];
+                  } else if (url.includes('shorts/')) {
+                    videoId = url.split('shorts/')[1].split('?')[0];
+                  } else if (url.includes('embed/')) {
+                    videoId = url.split('embed/')[1].split('?')[0];
+                  }
+
+                  return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1&modestbranding=1&rel=0` : url;
+                })()}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Content Side */}
+            <div className="w-full lg:w-[400px] xl:w-[450px] bg-slate-900/40 backdrop-blur-2xl p-8 md:p-12 lg:p-14 flex flex-col border-t lg:border-t-0 lg:border-l border-white/5 overflow-y-auto">
+              <div className="flex-1">
+                <div className="flex items-center gap-4 mb-10">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-500">Médiathèque</span>
+                  <div className="w-12 h-[1px] bg-white/10" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400">{selectedVideo.duration || '00:00'}</span>
+                </div>
+
+                <h3 className="text-3xl md:text-4xl font-display font-bold text-white uppercase tracking-tighter leading-[0.9] mb-10">
+                  {selectedVideo.title}
+                </h3>
+
+                <div className="space-y-6">
+                  <p className="text-slate-400 text-sm md:text-base leading-relaxed font-light">
+                    {selectedVideo.description || "Ce reportage illustre l'impact direct de nos initiatives locales à Kairouan, capturant les moments clés de notre engagement communautaire et les résultats concrets de nos projets de développement."}
+                  </p>
+                  
+                  <div className="pt-8 space-y-4">
+                    <div className="flex items-center gap-4 py-3 border-y border-white/5">
+                      <div className="w-2 h-2 rounded-full bg-royal-600 shadow-[0_0_10px_rgba(30,58,138,0.8)]" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">Contenu Officiel ADL</span>
+                    </div>
+                    <div className="flex items-center gap-4 py-3 border-b border-white/5">
+                      <div className="w-2 h-2 rounded-full bg-slate-500" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-300">Archive Institutionnelle</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-12 lg:mt-20">
+                <button 
+                  onClick={() => setSelectedVideo(null)}
+                  className="w-full h-14 rounded-full bg-white text-slate-950 font-bold text-[10px] uppercase tracking-[0.3em] hover:bg-royal-500 hover:text-white transition-all duration-500"
+                >
+                  Fermer la vue
+                </button>
+              </div>
+            </div>
+
+            {/* Mobile Close Button */}
             <button 
               onClick={() => setSelectedVideo(null)}
-              className="absolute top-6 right-6 z-10 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all"
+              className="absolute top-6 right-6 z-50 w-12 h-12 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white transition-all hover:bg-white hover:text-black lg:hidden"
             >
               <X className="w-6 h-6" />
             </button>
-            <iframe 
-              src={(() => {
-                if (!selectedVideo.url) return '';
-                const url = selectedVideo.url;
-                let videoId = '';
-                
-                if (url.includes('v=')) {
-                  videoId = url.split('v=')[1].split('&')[0];
-                } else if (url.includes('youtu.be/')) {
-                  videoId = url.split('youtu.be/')[1].split('?')[0];
-                } else if (url.includes('shorts/')) {
-                  videoId = url.split('shorts/')[1].split('?')[0];
-                } else if (url.includes('embed/')) {
-                  videoId = url.split('embed/')[1].split('?')[0];
-                }
-
-                return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url;
-              })()}
-              className="w-full h-full border-0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
           </div>
         </div>
       )}
