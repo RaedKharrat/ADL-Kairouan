@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useQuery } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
-import { HeroSlide, Statistic, Project, FAQ, Partner, Testimonial } from '@/types';
+import { HeroSlide, Statistic, Project, BlogPost, FAQ, Partner, Testimonial } from '@/types';
 import { getImageUrl, cn } from '@/lib/utils';
 import { ProjectCard, ProjectSkeleton } from '@/components/layout/ProjectCard';
 import React, { useRef, useState, useEffect } from 'react';
@@ -78,6 +78,7 @@ export default function Home() {
   const { data: hero } = useQuery<HeroSlide>({ queryKey: ['hero-active'], queryFn: async () => (await api.get(endpoints.hero.active)).data.data });
   const { data: stats } = useQuery<Statistic[]>({ queryKey: ['stats-active'], queryFn: async () => (await api.get(endpoints.statistics.active)).data.data });
   const { data: featuredProjects, isLoading: projectsLoading } = useQuery<Project[]>({ queryKey: ['projects-public-featured'], queryFn: async () => (await api.get(`${endpoints.projects}/public`)).data.data.items });
+  const { data: recentBlogs, isLoading: blogsLoading } = useQuery<BlogPost[]>({ queryKey: ['blog-recent-home'], queryFn: async () => (await api.get(`${endpoints.blog}?status=PUBLISHED&limit=5&sortBy=publishedAt&sortOrder=desc`)).data.data.items });
   const { data: faqs } = useQuery<FAQ[]>({ queryKey: ['faqs-public'], queryFn: async () => (await api.get(`${endpoints.faq}/public`)).data.data });
   const { data: partners } = useQuery<Partner[]>({ queryKey: ['partners-public'], queryFn: async () => (await api.get(`${endpoints.partners}/public`)).data.data });
   const { data: testimonials } = useQuery<Testimonial[]>({ queryKey: ['testimonials-public'], queryFn: async () => (await api.get(`${endpoints.testimonials}/public`)).data.data });
@@ -128,6 +129,22 @@ export default function Home() {
       { y: 30, opacity: 0 },
       { y: 0, opacity: 1, duration: 1, scrollTrigger: { trigger: '.partners-section', start: 'top 80%' } }
     );
+
+    // Actuality Section
+    gsap.fromTo('.actuality-header',
+      { y: 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, scrollTrigger: { trigger: '.actuality-section', start: 'top 80%' } }
+    );
+    const blogCards = gsap.utils.toArray('.blog-card-home');
+    blogCards.forEach((card: any, i) => {
+      gsap.fromTo(card,
+        { y: 60, opacity: 0 },
+        {
+          y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: i * 0.08,
+          scrollTrigger: { trigger: '.actuality-grid', start: 'top 85%' }
+        }
+      );
+    });
 
     // Projects Section
     gsap.fromTo('.projects-header',
@@ -352,6 +369,124 @@ export default function Home() {
             {/* Architectural Gradient Overlays */}
             <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
             <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
+          </div>
+        </div>
+      </section>
+
+      {/* ─── ACTUALITY SECTION ────────────────────────────────────────────── */}
+      <section className="actuality-section py-32 relative bg-background overflow-hidden">
+        <div className="container-tight relative z-10 px-6">
+          <div className="actuality-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
+            <div className="max-w-3xl">
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-6">Vie Associative</p>
+              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85] mb-8">Actualités <br /> &amp; Nouvelles</h2>
+              <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed font-light max-w-xl">
+                Restez informé des dernières nouvelles, événements et publications de l'ADL Kairouan.
+              </p>
+            </div>
+            <Link href="/blog" className="h-12 px-10 rounded-full border border-slate-950 dark:border-white text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 shrink-0">
+              Voir toutes les actualités
+            </Link>
+          </div>
+
+          <div className="relative group/actuality">
+            {/* Nav arrows */}
+            <div className="absolute top-1/2 -translate-y-1/2 -left-4 lg:-left-12 z-30 opacity-0 group-hover/actuality:opacity-100 transition-all duration-500 hidden md:block">
+              <button
+                onClick={() => { document.getElementById('actuality-grid')?.scrollBy({ left: -440, behavior: 'smooth' }); }}
+                className="w-14 h-14 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-950 dark:text-white hover:bg-royal-600 hover:text-white transition-all shadow-xl"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            </div>
+            <div className="absolute top-1/2 -translate-y-1/2 -right-4 lg:-right-12 z-30 opacity-0 group-hover/actuality:opacity-100 transition-all duration-500 hidden md:block">
+              <button
+                onClick={() => { document.getElementById('actuality-grid')?.scrollBy({ left: 440, behavior: 'smooth' }); }}
+                className="w-14 h-14 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-950 dark:text-white hover:bg-royal-600 hover:text-white transition-all shadow-xl"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div id="actuality-grid" className="actuality-grid flex overflow-x-auto gap-8 pb-20 px-1 snap-x snap-mandatory hide-scrollbar scroll-smooth">
+              {blogsLoading ? (
+                Array.from({ length: 4 }).map((_, i) => (
+                  <div key={i} className="blog-card-home shrink-0 w-[85vw] md:w-[400px] snap-center animate-pulse">
+                    <div className="h-[260px] bg-slate-100 dark:bg-slate-900 rounded-[2rem] mb-5" />
+                    <div className="h-4 bg-slate-100 dark:bg-slate-900 rounded w-3/4 mb-3" />
+                    <div className="h-3 bg-slate-100 dark:bg-slate-900 rounded w-1/2" />
+                  </div>
+                ))
+              ) : recentBlogs && recentBlogs.length > 0 ? (
+                recentBlogs.map((post) => (
+                  <Link
+                    key={post.id}
+                    href={`/blog/${post.slug}`}
+                    className="blog-card-home group shrink-0 w-[85vw] md:w-[400px] snap-center flex flex-col cursor-pointer"
+                  >
+                    {/* Image */}
+                    <div className="relative w-full h-[260px] rounded-[2rem] overflow-hidden mb-6 bg-slate-100 dark:bg-slate-900">
+                      {post.coverImage ? (
+                        <img
+                          src={post.coverImage.startsWith('http') ? post.coverImage : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${post.coverImage}`}
+                          alt={post.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-royal-900/20 via-slate-100 to-slate-200 dark:from-royal-900/40 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center">
+                          <BookOpen className="w-12 h-12 text-slate-300 dark:text-slate-700" />
+                        </div>
+                      )}
+                      {/* Category badge */}
+                      {post.category && (
+                        <div className="absolute top-4 left-4">
+                          <span className="px-3 py-1 text-[9px] font-bold uppercase tracking-[0.2em] bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm text-royal-600 rounded-full border border-royal-100 dark:border-white/10">
+                            {post.category.name}
+                          </span>
+                        </div>
+                      )}
+                      {/* Reading time */}
+                      {post.readingTime && (
+                        <div className="absolute bottom-4 right-4">
+                          <span className="px-3 py-1 text-[9px] font-bold uppercase tracking-[0.2em] bg-slate-950/70 backdrop-blur-sm text-white rounded-full">
+                            {post.readingTime} min
+                          </span>
+                        </div>
+                      )}
+                      {/* Overlay on hover */}
+                      <div className="absolute inset-0 bg-royal-600/0 group-hover:bg-royal-600/10 transition-colors duration-500" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 flex flex-col">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400 mb-3">
+                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}
+                      </p>
+                      <h3 className="text-xl md:text-2xl font-display font-bold text-slate-950 dark:text-white leading-tight mb-3 uppercase tracking-tight group-hover:text-royal-600 transition-colors duration-300 line-clamp-2">
+                        {post.title}
+                      </h3>
+                      {post.excerpt && (
+                        <p className="text-sm text-slate-500 dark:text-slate-400 font-light leading-relaxed line-clamp-2 mb-6">
+                          {post.excerpt}
+                        </p>
+                      )}
+                      <div className="mt-auto flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-royal-600 group-hover:gap-4 transition-all duration-300">
+                        Lire l'article <ArrowRight className="w-3 h-3" />
+                      </div>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="w-full py-20 text-center text-muted-foreground bg-secondary/30 rounded-[3rem] border-dashed border-2 border-border flex flex-col items-center justify-center min-w-full">
+                  <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                  <p className="font-medium uppercase tracking-[0.2em] text-[10px]">Aucune actualité disponible</p>
+                </div>
+              )}
+            </div>
+
+            {/* Gradient fades */}
+            <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none opacity-0 group-hover/actuality:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none opacity-0 group-hover/actuality:opacity-100 transition-opacity duration-700" />
           </div>
         </div>
       </section>
