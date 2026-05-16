@@ -36,23 +36,49 @@ export default function ReportsPage() {
   });
 
   const handleDownload = async (report: Report) => {
+    // Increment the download counter in the background
     downloadMutation.mutate(report.id);
+
+    const rawUrl = getImageUrl(report.fileUrl);
+    const fileName = `${report.title}.${(report.fileType || 'pdf').toLowerCase()}`;
+
     try {
-      const response = await fetch(getImageUrl(report.fileUrl));
+      // ── Cloudinary URLs: use fl_attachment flag to force browser download ──
+      if (rawUrl.includes('cloudinary.com') || rawUrl.includes('res.cloudinary')) {
+        // Insert fl_attachment into the Cloudinary transformation URL
+        // e.g. https://res.cloudinary.com/.../upload/v123/file.pdf
+        //   → https://res.cloudinary.com/.../upload/fl_attachment/v123/file.pdf
+        let downloadUrl = rawUrl;
+        if (rawUrl.includes('/upload/')) {
+          downloadUrl = rawUrl.replace('/upload/', '/upload/fl_attachment/');
+        }
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = fileName;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        return;
+      }
+
+      // ── Local / API-served files: fetch as blob ──────────────────────────
+      const response = await fetch(rawUrl);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const blobUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = url;
-      const extension = report.fileType?.toLowerCase() || 'pdf';
-      link.download = `${report.title}.${extension}`;
+      link.href = blobUrl;
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
-      console.error('Download failed:', error);
-      // Fallback to direct link if fetch fails
-      window.open(getImageUrl(report.fileUrl), '_blank');
+      console.error('Download failed, falling back to new tab:', error);
+      // Last resort fallback — open in new tab so user can save manually
+      window.open(rawUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
