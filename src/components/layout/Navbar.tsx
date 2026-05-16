@@ -127,19 +127,19 @@ export function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="mt-4 w-full bg-white/95 dark:bg-slate-950/95 backdrop-blur-2xl border border-slate-100 dark:border-white/10 p-10 rounded-[3rem] flex flex-col gap-8 lg:hidden animate-in fade-in slide-in-from-top-6 duration-700 shadow-2xl">
+          <div className="mt-4 w-full bg-slate-950/95 dark:bg-white/95 backdrop-blur-2xl border border-white/10 dark:border-slate-100 p-10 rounded-[3rem] flex flex-col gap-8 lg:hidden animate-in fade-in slide-in-from-top-6 duration-700 shadow-2xl">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-xs font-bold uppercase tracking-[0.4em] text-slate-500 hover:text-royal-600 transition-all hover:translate-x-2"
+                className="text-xs font-bold uppercase tracking-[0.4em] text-white/60 dark:text-slate-500 hover:text-royal-400 dark:hover:text-royal-600 transition-all hover:translate-x-2"
               >
                 {item.name}
               </Link>
             ))}
-            <div className="h-px bg-slate-100 dark:bg-white/5 my-2" />
-            <Button asChild className="w-full h-16 rounded-full bg-slate-950 dark:bg-white dark:text-slate-950 font-display font-bold uppercase tracking-widest text-[10px] shadow-xl">
+            <div className="h-px bg-white/5 dark:bg-slate-100 my-2" />
+            <Button asChild className="w-full h-16 rounded-full bg-white dark:bg-slate-950 text-slate-950 dark:text-white font-display font-bold uppercase tracking-widest text-[10px] shadow-xl">
               <Link href="/contact" onClick={() => setIsOpen(false)}>Faire une demande</Link>
             </Button>
           </div>
