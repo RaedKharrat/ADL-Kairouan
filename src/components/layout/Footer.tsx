@@ -23,7 +23,7 @@ export function Footer() {
   ].filter(link => link.href);
 
   return (
-    <footer className="bg-black text-white pt-24 pb-12 font-sans selection:bg-white selection:text-black">
+    <footer className="bg-white dark:bg-white text-slate-950 pt-24 pb-12 font-sans selection:bg-brand-600 selection:text-white border-t border-slate-100 dark:border-white/10">
       <div className="container-tight">
         
         {/* ─── TOP SECTION: STATEMENT & LINKS ───────────────────────────── */}
@@ -31,12 +31,12 @@ export function Footer() {
           
           {/* Statement */}
           <div className="lg:col-span-5 space-y-8">
-            <h2 className="text-5xl md:text-6xl font-display font-bold leading-[0.9] tracking-tighter uppercase max-w-sm">
+            <h2 className="text-5xl md:text-6xl font-display font-bold leading-[0.9] tracking-tighter uppercase max-w-sm text-slate-950">
               {settings?.siteName?.split(' ').join(' \n') || 'SO KAIROUAN \n CAN INNOVATE'}
             </h2>
             <div className="flex gap-4">
               {socialLinks.map((social, i) => (
-                <a key={i} href={social.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                <a key={i} href={social.href} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full border border-slate-200 dark:border-white/20 flex items-center justify-center text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all">
                   <social.icon className="w-4 h-4" />
                 </a>
               ))}
@@ -46,68 +46,68 @@ export function Footer() {
           {/* Links Grid */}
           <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
             <div className="space-y-6">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">Institution</h3>
-              <ul className="space-y-3 text-[13px] font-medium">
-                <li><Link href="/about" className="hover:opacity-50 transition-opacity">À Propos</Link></li>
-                <li><Link href="/governance" className="hover:opacity-50 transition-opacity">Gouvernance</Link></li>
-                <li><Link href="/partners" className="hover:opacity-50 transition-opacity">Partenaires</Link></li>
-                <li><Link href="/careers" className="hover:opacity-50 transition-opacity">Carrières</Link></li>
+              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Institution</h3>
+              <ul className="space-y-3 text-[13px] font-medium text-slate-600">
+                <li><Link href="/about" className="hover:text-brand-600 transition-colors">À Propos</Link></li>
+                <li><Link href="/governance" className="hover:text-brand-600 transition-colors">Gouvernance</Link></li>
+                <li><Link href="/partners" className="hover:text-brand-600 transition-colors">Partenaires</Link></li>
+                <li><Link href="/careers" className="hover:text-brand-600 transition-colors">Carrières</Link></li>
               </ul>
             </div>
 
             <div className="space-y-6">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">Projets</h3>
-              <ul className="space-y-3 text-[13px] font-medium">
-                <li><Link href="/projects/social" className="hover:opacity-50 transition-opacity">Social</Link></li>
-                <li><Link href="/projects/eco" className="hover:opacity-50 transition-opacity">Écologie</Link></li>
-                <li><Link href="/projects/tech" className="hover:opacity-50 transition-opacity">Technologie</Link></li>
-                <li><Link href="/reports" className="hover:opacity-50 transition-opacity">Rapports</Link></li>
+              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Projets</h3>
+              <ul className="space-y-3 text-[13px] font-medium text-slate-600">
+                <li><Link href="/projects" className="hover:text-brand-600 transition-colors">Tous les Projets</Link></li>
+                <li><Link href="/projects/social" className="hover:text-brand-600 transition-colors">Impact Social</Link></li>
+                <li><Link href="/projects/tech" className="hover:text-brand-600 transition-colors">Innovation</Link></li>
+                <li><Link href="/reports" className="hover:text-brand-600 transition-colors">Rapports</Link></li>
               </ul>
             </div>
 
             <div className="space-y-6">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">Communauté</h3>
-              <ul className="space-y-3 text-[13px] font-medium">
-                <li><Link href="/blog" className="hover:opacity-50 transition-opacity">Actualités</Link></li>
-                <li><Link href="/events" className="hover:opacity-50 transition-opacity">Événements</Link></li>
-                <li><Link href="/faq" className="hover:opacity-50 transition-opacity">FAQ</Link></li>
-                <li><Link href="/support" className="hover:opacity-50 transition-opacity">Support</Link></li>
+              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Communauté</h3>
+              <ul className="space-y-3 text-[13px] font-medium text-slate-600">
+                <li><Link href="/blog" className="hover:text-brand-600 transition-colors">Actualités</Link></li>
+                <li><Link href="/events" className="hover:text-brand-600 transition-colors">Événements</Link></li>
+                <li><Link href="/faq" className="hover:text-brand-600 transition-colors">FAQ</Link></li>
+                <li><Link href="/support" className="hover:text-brand-600 transition-colors">Support</Link></li>
               </ul>
             </div>
 
             <div className="space-y-6">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">Contact</h3>
-              <ul className="space-y-3 text-[13px] font-medium">
-                <li><a href={`mailto:${settings?.contactEmail || 'contact@adl-kairouan.tn'}`} className="hover:opacity-50 transition-opacity">Email</a></li>
-                <li><a href={`tel:${settings?.contactPhone?.replace(/\s+/g, '') || '+21655566536'}`} className="hover:opacity-50 transition-opacity">Téléphone</a></li>
-                <li><Link href="/location" className="hover:opacity-50 transition-opacity">Bureaux</Link></li>
-                <li><Link href="/press" className="hover:opacity-50 transition-opacity">Presse</Link></li>
+              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Contact</h3>
+              <ul className="space-y-3 text-[13px] font-medium text-slate-600">
+                <li><a href={`mailto:${settings?.contactEmail || 'contact@adl-kairouan.tn'}`} className="hover:text-brand-600 transition-colors">Email</a></li>
+                <li><a href={`tel:${settings?.contactPhone?.replace(/\s+/g, '') || '+21655566536'}`} className="hover:text-brand-600 transition-colors">Téléphone</a></li>
+                <li><Link href="/location" className="hover:text-brand-600 transition-colors">Bureaux</Link></li>
+                <li><Link href="/press" className="hover:text-brand-600 transition-colors">Presse</Link></li>
               </ul>
             </div>
           </div>
         </div>
 
         {/* ─── ACTION BAR ───────────────────────────────────────────────── */}
-        <div className="pt-8 mb-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="pt-8 mb-12 border-t border-slate-100 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center">
-              <div className="w-4 h-4 rounded-full bg-white animate-pulse" />
+            <div className="w-8 h-8 rounded-full border border-slate-950 flex items-center justify-center">
+              <div className="w-4 h-4 rounded-full bg-slate-950 animate-pulse" />
             </div>
-            <span className="text-lg font-bold tracking-tighter uppercase">{settings?.siteName || 'ADL Kairouan'}</span>
+            <span className="text-lg font-bold tracking-tighter uppercase text-slate-950">{settings?.siteName || 'ADL Kairouan'}</span>
           </div>
 
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/contact" className="h-10 px-6 rounded-full border border-white text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-white hover:text-black transition-all">
+            <Link href="/contact" className="h-10 px-6 rounded-full border border-slate-200 text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-slate-950 hover:text-white transition-all">
               S'engager avec nous
             </Link>
-            <Link href="/projects" className="h-10 px-6 rounded-full border border-white text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-white hover:text-black transition-all">
+            <Link href="/projects" className="h-10 px-6 rounded-full border border-slate-200 text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-slate-950 hover:text-white transition-all">
               Voir les projets
             </Link>
             <a 
               href="https://www.google.com/maps/place/ADL+Tunisie/@35.6724704,10.1034421,17z" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="h-10 px-6 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-white/90 transition-all shadow-glow-sm"
+              className="h-10 px-6 rounded-full bg-slate-950 text-white text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-slate-800 transition-all shadow-xl"
             >
               Localisation du Siège
             </a>
@@ -115,15 +115,15 @@ export function Footer() {
         </div>
 
         {/* ─── SUB-FOOTER ────────────────────────────────────────────────── */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] text-white/40 uppercase tracking-widest">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] text-slate-400 uppercase tracking-widest">
           <div className="flex items-center gap-8">
-            <button className="flex items-center gap-2 hover:text-white transition-colors">
+            <button className="flex items-center gap-2 hover:text-slate-950 transition-colors">
               <Globe2 className="w-3 h-3" />
               Français
             </button>
-            <Link href="/terms" className="hover:text-white transition-colors">Conditions d'utilisation</Link>
-            <Link href="/privacy" className="hover:text-white transition-colors">Confidentialité</Link>
-            <Link href="/cookies" className="hover:text-white transition-colors">Cookies</Link>
+            <Link href="/terms" className="hover:text-slate-950 transition-colors">Conditions d'utilisation</Link>
+            <Link href="/privacy" className="hover:text-slate-950 transition-colors">Confidentialité</Link>
+            <Link href="/cookies" className="hover:text-slate-950 transition-colors">Cookies</Link>
           </div>
           <p>© {new Date().getFullYear()} {settings?.siteName || 'ADL Kairouan'}. Tous droits réservés.</p>
         </div>

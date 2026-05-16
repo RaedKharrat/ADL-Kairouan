@@ -133,9 +133,9 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
       />
 
       {/* ─── CINEMATIC HEADER ─────────────────────────────────────────── */}
-      <section className="relative w-full pt-40 pb-20 px-4 lg:px-8 overflow-hidden">
+      <section className="relative w-full pt-32 pb-12 px-4 lg:px-8 overflow-hidden bg-slate-950 dark:bg-white transition-colors duration-500">
         {/* Background mesh grid */}
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(#ffffff10_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-20"></div>
         
         <div className="container max-w-[1400px] mx-auto relative z-10">
           <motion.div
@@ -143,7 +143,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Link href="/blog" className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-600 hover:text-brand-500 transition-all mb-12 group">
+            <Link href="/blog" className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-brand-500 dark:text-brand-600 hover:opacity-70 transition-all mb-12 group">
               <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               Journal de Bord
             </Link>
@@ -160,7 +160,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
               </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-slate-950 dark:text-white leading-[0.9] tracking-tighter mb-12">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white dark:text-slate-950 leading-[0.9] tracking-tighter mb-12">
               {post.title}
             </h1>
 
@@ -176,7 +176,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
                   )}
                 </div>
                 <div>
-                  <p className="font-bold text-lg text-slate-900 dark:text-white">{post.author?.name || 'Rédaction ADL'}</p>
+                  <p className="font-bold text-lg text-white dark:text-slate-900">{post.author?.name || 'Rédaction ADL'}</p>
                   <p className="text-xs font-medium text-slate-400 uppercase tracking-widest">{formatDate(post.createdAt, 'dd MMMM yyyy')}</p>
                 </div>
               </div>
@@ -195,7 +195,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
       </section>
 
       {/* ─── MAIN CONTENT AREA ─────────────────────────────────────────── */}
-      <section className="container max-w-[1400px] mx-auto px-4 lg:px-8 pb-32">
+      <section className="container max-w-[1400px] mx-auto px-4 lg:px-8 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           
           {/* ARTICLE CONTENT */}
@@ -435,7 +435,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
 
         {/* PHOTO GALLERY */}
         {post.gallery && post.gallery.length > 0 && (
-          <div className="mt-32">
+          <div className="mt-20">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-10">
               <div className="max-w-2xl">
                 <p className="text-xs font-bold uppercase tracking-[0.4em] text-brand-600 mb-6">Immersion</p>
