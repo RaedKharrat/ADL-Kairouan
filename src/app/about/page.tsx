@@ -17,26 +17,51 @@ export default function AboutPage() {
     <div className="pb-32 bg-background">
       {/* ─── HERO SECTION (ARCHITECTURAL) ─────────────────────────────── */}
       <section className="relative w-full px-4 lg:px-8 pt-4 pb-12">
-        <div className="relative w-full min-h-[60vh] bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] lg:rounded-[4rem] flex flex-col items-center justify-center overflow-hidden border border-slate-200/50 dark:border-white/5">
-          {/* 3D Dot Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"></div>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_120px_rgba(30,58,138,0.08)] dark:shadow-[inset_0_0_150px_rgba(30,58,138,0.4)]"></div>
+        <div className="relative w-full min-h-[60vh] lg:min-h-[70vh] bg-slate-950 dark:bg-white rounded-[3rem] lg:rounded-[4rem] flex flex-col items-center justify-center overflow-hidden border border-white/10 dark:border-slate-200 shadow-xl shadow-royal-900/5">
           
-          <div className="container-tight relative z-10 text-center px-6">
-            <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-8 animate-fade-in">Identité & Vision</p>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[1.1] mb-12 animate-fade-in-up">
-              Notre Engagement <br /> Pour Kairouan
+          {/* Layer 1: Subtle Mesh Gradients (Professional depth) */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-royal-600/10 dark:bg-royal-600/5 rounded-full blur-[120px]"></div>
+            <div className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-[120px]"></div>
+          </div>
+
+          {/* Layer 2: Primary Architectural DOTS Pattern (Inverted) */}
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_2px,transparent_2px)] dark:bg-[radial-gradient(#e5e7eb_2px,transparent_2px)] [background-size:32px_32px] opacity-20 dark:opacity-60"></div>
+          
+          <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10 text-center flex flex-col items-center">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-royal-600/5 border border-royal-600/10 mb-10 animate-fade-in">
+              <div className="w-2 h-2 rounded-full bg-royal-600 animate-pulse"></div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600">Identité & Vision</span>
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-display font-bold uppercase tracking-tight text-white dark:text-slate-950 leading-[1.1] mb-8 animate-fade-in-up">
+              Notre Engagement <br /> <span className="text-royal-600">Pour Kairouan</span>
             </h1>
-            <p className="text-sm md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in">
-              L'Agence de Développement Local (ADL) est le moteur de l'innovation sociale et de la bonne gouvernance au cœur de la région.
+            
+            <p className="text-base md:text-lg text-slate-300 dark:text-slate-500 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in px-4">
+              L'Agence de Développement Local (ADL) est le moteur de l'innovation sociale et de la bonne gouvernance au cœur de la région de Kairouan.
             </p>
+
+            {/* Social Proof / Friendly Factor */}
+            <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-900 overflow-hidden shadow-lg">
+                    <img src={`https://i.pravatar.cc/100?img=${i + 15}`} alt="Expert" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                <span className="text-white dark:text-slate-950">+50 Experts</span> à votre service
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ─── STORY SECTION (ASYMMETRICAL) ────────────────────────────── */}
       <section className="py-32 relative overflow-hidden">
-        <div className="container-tight px-6">
+        <div className="max-w-[1400px] px-6 lg:px-12 mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
             <div className="max-w-3xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400 mb-6">Notre Histoire</p>
@@ -54,13 +79,25 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden bg-slate-100 dark:bg-slate-900 group">
-              <img 
-                src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop" 
-                alt="Building the Future" 
-                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100" 
-              />
-              <div className="absolute inset-0 bg-royal-600/10 mix-blend-multiply"></div>
+            <div className="relative group lg:pr-10 lg:pb-10">
+              {/* Background Glows (Always visible) */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-royal-600/10 dark:bg-royal-600/20 blur-[100px] rounded-full"></div>
+              
+              {/* Architectural Frame Shape - Rotated behind the image */}
+              <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800/50 rounded-[4rem] rotate-6 border border-slate-200 dark:border-white/10 transition-transform duration-1000 group-hover:rotate-[8deg] group-hover:scale-[1.02]"></div>
+              
+              {/* Accent Shape */}
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-royal-600/20 rounded-3xl -rotate-12 blur-sm transition-all duration-1000 group-hover:rotate-0 group-hover:scale-110"></div>
+
+              {/* Main Image Container */}
+              <div className="relative z-10 aspect-[4/5] rounded-[3rem] overflow-hidden bg-slate-100 dark:bg-slate-900 shadow-2xl border border-slate-200/50 dark:border-white/5">
+                <img 
+                  src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop" 
+                  alt="Building the Future" 
+                  className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100" 
+                />
+                <div className="absolute inset-0 bg-royal-600/10 mix-blend-multiply"></div>
+              </div>
             </div>
             <div className="space-y-12">
               <div className="space-y-6">
@@ -89,8 +126,27 @@ export default function AboutPage() {
       </section>
 
       {/* ─── TEAM SECTION (MINIMALIST) ────────────────────────────────── */}
-      <section className="py-32 bg-slate-50 dark:bg-slate-900/50">
-        <div className="container-tight px-6">
+      <section className="py-32 relative overflow-hidden bg-slate-50 dark:bg-slate-900/50">
+        {/* Custom Code-Generated Texture: Tiger + Dots */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.08] text-slate-950 dark:text-white">
+          <svg width="100%" height="100%" className="absolute inset-0">
+            <filter id="tigerFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.015 0.08" numOctaves="2" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="30" />
+            </filter>
+            <pattern id="tigerPattern" x="0" y="0" width="300" height="200" patternUnits="userSpaceOnUse">
+              <rect width="300" height="200" fill="transparent" />
+              {/* Organic Wavy Lines */}
+              <path d="M-50 40 L350 40 M-50 100 L350 100 M-50 160 L350 160" 
+                    stroke="currentColor" strokeWidth="12" strokeLinecap="round" filter="url(#tigerFilter)" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#tigerPattern)" />
+          </svg>
+          {/* Dots Overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(currentColor_1.5px,transparent_1.5px)] [background-size:40px_40px] opacity-30"></div>
+        </div>
+
+        <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
           <div className="mb-24">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400 mb-6">Direction</p>
             <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85]">L'Équipe <br /> Exécutive</h2>
@@ -115,7 +171,7 @@ export default function AboutPage() {
 
       {/* ─── PARTNERS SECTION (MODERN ARCHITECTURAL) ────────────────────── */}
       <section className="py-32 relative overflow-hidden bg-background">
-        <div className="container-tight px-6 relative z-10">
+        <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
             <div className="max-w-3xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400 mb-6">Écosystème</p>

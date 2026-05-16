@@ -1,6 +1,6 @@
 'use client';
 
-import { Plus, Search, Trash2, Image as ImageIcon, File, FileText, LayoutGrid, List, Copy, Check } from 'lucide-react';
+import { Plus, Search, Trash2, Image as ImageIcon, File, FileText, LayoutGrid, List, Copy, Check, Eye, X, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +15,6 @@ import { toast } from 'sonner';
 interface MediaFile {
   id: string;
   filename: string;
-  originalName: string;
   mimeType: string;
   size: number;
   url: string;
@@ -27,6 +26,7 @@ export default function AdminMediaPage() {
   const [view, setView] = React.useState<'grid' | 'list'>('grid');
   const [search, setSearch] = React.useState('');
   const [copiedId, setCopiedId] = React.useState<string | null>(null);
+  const [previewFile, setPreviewFile] = React.useState<MediaFile | null>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const { data: media, isLoading } = useQuery<MediaFile[]>({
@@ -78,6 +78,27 @@ export default function AdminMediaPage() {
     }
   };
 
+  const handlePreview = (file: MediaFile) => {
+    if (file.mimeType?.startsWith('image/')) {
+      setPreviewFile(file);
+    } else {
+      handleDownload(file);
+    }
+  };
+
+  const handleDownload = (file: MediaFile) => {
+    const rawUrl = getImageUrl(file.url);
+    const fileName = file.filename;
+    const proxyUrl = `/api/download?url=${encodeURIComponent(rawUrl)}&filename=${encodeURIComponent(fileName)}`;
+    
+    const link = document.createElement('a');
+    link.href = proxyUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const copyToClipboard = (url: string, id: string) => {
     const fullUrl = getImageUrl(url);
     navigator.clipboard.writeText(fullUrl);
@@ -88,7 +109,6 @@ export default function AdminMediaPage() {
 
   const mediaList = Array.isArray(media) ? media : ((media as any)?.items || []);
   const filteredMedia = mediaList.filter((m: MediaFile) => 
-    m.originalName?.toLowerCase().includes(search.toLowerCase()) ||
     m.filename?.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -153,7 +173,7 @@ export default function AdminMediaPage() {
             return (
               <div key={file.id} className="group glass-card rounded-xl border-border/50 overflow-hidden hover:border-brand-500/30 transition-all relative aspect-square">
                 {isImage ? (
-                  <img src={getImageUrl(file.url)} alt={file.originalName} className="w-full h-full object-cover" />
+                  <img src={getImageUrl(file.url)} alt={file.filename} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center p-4 text-slate-500 dark:text-slate-400">
                     <FileText className="w-10 h-10 mb-2" />
@@ -161,10 +181,18 @@ export default function AdminMediaPage() {
                   </div>
                 )}
                 
-                {/* Overlay Actions */}
+                 {/* Overlay Actions */}
                 <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  {isImage && (
+                    <Button size="icon" variant="ghost" className="h-8 w-8 bg-white/10 hover:bg-brand-500 text-white" onClick={() => handlePreview(file)}>
+                      <Eye className="w-4 h-4" />
+                    </Button>
+                  )}
                   <Button size="icon" variant="ghost" className="h-8 w-8 bg-white/10 hover:bg-brand-500 text-white" onClick={() => copyToClipboard(file.url, file.id)}>
                     {copiedId === file.id ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                  </Button>
+                  <Button size="icon" variant="ghost" className="h-8 w-8 bg-white/10 hover:bg-brand-500 text-white" onClick={() => handleDownload(file)}>
+                    <Download className="w-4 h-4" />
                   </Button>
                   <Button size="icon" variant="ghost" className="h-8 w-8 bg-white/10 hover:bg-destructive text-white" onClick={() => handleDelete(file.id)}>
                     <Trash2 className="w-4 h-4" />
@@ -173,7 +201,7 @@ export default function AdminMediaPage() {
                 
                 {/* Label */}
                 <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black to-transparent">
-                  <p className="text-[10px] text-white truncate">{file.originalName}</p>
+                  <p className="text-[10px] text-white truncate">{file.filename}</p>
                 </div>
               </div>
             );
@@ -196,15 +224,23 @@ export default function AdminMediaPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       {file.mimeType.startsWith('image/') ? <ImageIcon className="w-4 h-4 text-brand-500" /> : <File className="w-4 h-4 text-slate-400" />}
-                      <span className="font-medium text-white truncate max-w-xs">{file.originalName}</span>
+                      <span className="font-medium text-white truncate max-w-xs">{file.filename}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{formatBytes(file.size)}</td>
                   <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{formatDate(file.createdAt, 'dd MMM yyyy')}</td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
+                      {file.mimeType.startsWith('image/') && (
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400" onClick={() => handlePreview(file)}>
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                      )}
                       <Button variant="ghost" size="sm" className="h-8 text-xs hover:text-brand-400" onClick={() => copyToClipboard(file.url, file.id)}>
                         {copiedId === file.id ? 'Copié !' : 'Copier URL'}
+                      </Button>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400" onClick={() => handleDownload(file)}>
+                        <Download className="w-4 h-4" />
                       </Button>
                       <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive" onClick={() => handleDelete(file.id)}>
                         <Trash2 className="w-4 h-4" />
@@ -215,6 +251,35 @@ export default function AdminMediaPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+
+      {/* Preview Modal */}
+      {previewFile && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-200"
+          onClick={() => setPreviewFile(null)}
+        >
+          <div className="relative max-w-5xl w-full max-h-full flex items-center justify-center">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="absolute -top-12 right-0 text-white hover:bg-white/10 rounded-full"
+              onClick={() => setPreviewFile(null)}
+            >
+              <X className="w-6 h-6" />
+            </Button>
+            <img 
+              src={getImageUrl(previewFile.url)} 
+              alt={previewFile.filename} 
+              className="max-w-full max-h-[80vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <div className="absolute -bottom-12 left-0 right-0 text-center text-white">
+              <p className="text-sm font-medium">{previewFile.filename}</p>
+              <p className="text-xs text-slate-400 mt-1">{formatBytes(previewFile.size)} • {previewFile.mimeType}</p>
+            </div>
+          </div>
         </div>
       )}
     </div>

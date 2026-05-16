@@ -316,7 +316,7 @@ export default function Home() {
 
       {/* ─── ACTUALITY SECTION ────────────────────────────────────────────── */}
       <section className="actuality-section py-32 relative bg-background overflow-hidden">
-        <div className="container-tight relative z-10 px-6">
+        <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
           <div className="actuality-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
             <div className="max-w-3xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-6">Vie Associative</p>
@@ -437,7 +437,7 @@ export default function Home() {
         {/* Signature Dot Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-40"></div>
         
-        <div className="container-tight relative z-10 px-6">
+        <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
           <div className="projects-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
             <div className="max-w-3xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-6">Impact Local</p>
@@ -543,7 +543,7 @@ export default function Home() {
 
       {/* ─── PARTNERS SECTION (MODERN ARCHITECTURAL) ────────────────────── */}
       <section className="partners-section py-24 md:py-32 relative overflow-hidden bg-background">
-        <div className="container-tight px-6 relative z-10">
+        <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
           <div className="partners-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
             <div className="max-w-3xl">
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400 mb-6">Écosystème</p>

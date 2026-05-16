@@ -79,19 +79,44 @@ export default function ContactPage() {
     <div className="pb-32 bg-background">
       {/* ─── HERO SECTION (ARCHITECTURAL) ─────────────────────────────── */}
       <section className="relative w-full px-4 lg:px-8 pt-4 pb-12">
-        <div className="relative w-full min-h-[50vh] bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] lg:rounded-[4rem] flex flex-col items-center justify-center overflow-hidden border border-slate-200/50 dark:border-white/5">
-          {/* 3D Dot Background */}
-          <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"></div>
-          <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_120px_rgba(30,58,138,0.08)] dark:shadow-[inset_0_0_150px_rgba(30,58,138,0.4)]"></div>
+        <div className="relative w-full min-h-[60vh] lg:min-h-[70vh] bg-slate-950 dark:bg-white rounded-[3rem] lg:rounded-[4rem] flex flex-col items-center justify-center overflow-hidden border border-white/10 dark:border-slate-200 shadow-xl shadow-royal-900/5">
           
-          <div className="container-tight relative z-10 text-center px-6">
-            <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-8">Contact & Dialogue</p>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[1.1] mb-12">
-              Collaborons <br /> Ensemble
+          {/* Layer 1: Subtle Mesh Gradients */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-royal-600/10 dark:bg-royal-600/5 rounded-full blur-[120px]"></div>
+            <div className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-blue-400/10 dark:bg-blue-400/5 rounded-full blur-[120px]"></div>
+          </div>
+
+          {/* Layer 2: Primary Architectural DOTS Pattern */}
+          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_2px,transparent_2px)] dark:bg-[radial-gradient(#e5e7eb_2px,transparent_2px)] [background-size:32px_32px] opacity-20 dark:opacity-60"></div>
+          
+          <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10 text-center flex flex-col items-center">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-royal-600/5 border border-royal-600/10 mb-10 animate-fade-in">
+              <div className="w-2 h-2 rounded-full bg-royal-600 animate-pulse"></div>
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600">Contact & Dialogue</span>
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-display font-bold uppercase tracking-tight text-white dark:text-slate-950 leading-[1.1] mb-8 animate-fade-in-up">
+              Collaborons <br /> <span className="text-royal-600">Ensemble</span>
             </h1>
-            <p className="text-sm md:text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-light">
+            
+            <p className="text-base md:text-lg text-slate-300 dark:text-slate-500 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in px-4">
               Vous avez un projet ou une question ? Notre équipe est à votre disposition pour construire l'avenir de Kairouan.
             </p>
+
+            {/* Social Proof */}
+            <div className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              <div className="flex -space-x-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="w-10 h-10 rounded-full border-2 border-white dark:border-slate-900 overflow-hidden shadow-lg">
+                    <img src={`https://i.pravatar.cc/100?img=${i + 50}`} alt="Expert" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">
+                <span className="text-white dark:text-slate-950">Disponibilité 24/7</span> pour nos partenaires
+              </p>
+            </div>
           </div>
         </div>
       </section>

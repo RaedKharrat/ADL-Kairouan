@@ -71,6 +71,9 @@ export interface ProjectCategory {
   slug: string;
   description?: string | null;
   order: number;
+  _count?: {
+    projects: number;
+  };
 }
 
 export interface Project {
@@ -82,6 +85,7 @@ export interface Project {
   coverImage?: string | null;
   gallery: string[];
   pdfFiles: string[];
+  videoUrl?: string | null;
   tags: string[];
   featured: boolean;
   status: PublishStatus;
@@ -113,12 +117,18 @@ export interface BlogCategory {
   name: string;
   slug: string;
   description?: string | null;
+  _count?: {
+    posts: number;
+  };
 }
 
 export interface BlogTag {
   id: string;
   name: string;
   slug: string;
+  _count?: {
+    posts: number;
+  };
 }
 
 export interface BlogAuthor {
@@ -152,8 +162,24 @@ export interface BlogPost {
   seoKeywords: string[];
   ogImage?: string | null;
   views: number;
+  likes: number;
+  comments?: BlogComment[];
+  _count?: {
+    comments: number;
+  };
   createdAt: string;
   updatedAt: string;
+}
+
+export interface BlogComment {
+  id: string;
+  name: string;
+  email?: string | null;
+  content: string;
+  isAdmin: boolean;
+  isPublic: boolean;
+  blogPostId: string;
+  createdAt: string;
 }
 
 // ─── Media ────────────────────────────────────────────────────────────────────
@@ -161,6 +187,9 @@ export interface MediaCategory {
   id: string;
   name: string;
   slug: string;
+  _count?: {
+    media: number;
+  };
 }
 
 export interface MediaItem {
@@ -202,6 +231,9 @@ export interface ReportCategory {
   id: string;
   name: string;
   slug: string;
+  _count?: {
+    reports: number;
+  };
 }
 
 export interface Report {
@@ -226,6 +258,9 @@ export interface FaqCategory {
   id: string;
   name: string;
   slug: string;
+  _count?: {
+    faqs: number;
+  };
 }
 
 export interface FAQ {

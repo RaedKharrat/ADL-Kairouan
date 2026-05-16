@@ -13,8 +13,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
 import { ImageUpload } from '@/components/ui/image-upload';
+import { MultiImageUpload } from '@/components/ui/multi-image-upload';
+import { GenericFileUpload } from '@/components/ui/generic-file-upload';
+import { MultiFileUpload } from '@/components/ui/multi-file-upload';
 import { ProjectCategory } from '@/types';
 import { toast } from 'sonner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const projectSchema = z.object({
   title: z.string().min(3, 'Le titre doit faire au moins 3 caractères'),
@@ -23,6 +27,9 @@ const projectSchema = z.object({
   categoryId: z.string().optional().or(z.literal('')),
   status: z.enum(['DRAFT', 'PUBLISHED', 'SCHEDULED', 'ARCHIVED']),
   coverImage: z.string().optional(),
+  videoUrl: z.string().optional(),
+  gallery: z.array(z.string()).optional(),
+  pdfFiles: z.array(z.string()).optional(),
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
@@ -47,7 +54,10 @@ export default function AdminProjectNewPage() {
       content: '',
       categoryId: '',
       status: 'DRAFT',
-      coverImage: ''
+      coverImage: '',
+      videoUrl: '',
+      gallery: [],
+      pdfFiles: []
     }
   });
 
@@ -58,8 +68,6 @@ export default function AdminProjectNewPage() {
         ...data,
         categoryId: data.categoryId || undefined,
         tags: [],
-        gallery: [],
-        pdfFiles: [],
         seoKeywords: []
       };
       return api.post(endpoints.projects, payload);
@@ -162,16 +170,23 @@ export default function AdminProjectNewPage() {
             <h2 className="text-lg font-bold mb-6">Organisation</h2>
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-300">Catégorie <span className="text-red-500">*</span></label>
-                <select 
-                  {...register('categoryId')}
-                  className={`flex h-12 w-full rounded-xl border border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-500 ${errors.categoryId ? 'border-red-500' : ''}`}
-                >
-                  <option value="" className="bg-surface">Sélectionner une catégorie</option>
-                  {categories?.map(c => (
-                    <option key={c.id} value={c.id} className="bg-surface">{c.name}</option>
-                  ))}
-                </select>
+                <label className="text-sm font-medium text-slate-900 dark:text-slate-300">Catégorie <span className="text-red-500">*</span></label>
+                <Controller
+                  control={control}
+                  name="categoryId"
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className={`bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12 rounded-xl focus:ring-brand-500 ${errors.categoryId ? 'border-red-500' : ''}`}>
+                        <SelectValue placeholder="Sélectionner une catégorie" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white dark:bg-[#1a2333] border-slate-200 dark:border-white/10 rounded-xl">
+                        {categories?.map(c => (
+                          <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
                 {errors.categoryId && <p className="text-xs text-red-500">{errors.categoryId.message}</p>}
               </div>
             </div>
@@ -187,6 +202,61 @@ export default function AdminProjectNewPage() {
                   value={field.value} 
                   onChange={field.onChange} 
                   onRemove={() => field.onChange('')} 
+                />
+              )}
+            />
+          </div>
+
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
+            <h2 className="text-lg font-bold mb-6">Galerie (Max 5 images)</h2>
+            <Controller
+              control={control}
+              name="gallery"
+              render={({ field }) => (
+                <MultiImageUpload 
+                  value={field.value || []} 
+                  onChange={field.onChange} 
+                  maxFiles={5}
+                />
+              )}
+            />
+          </div>
+
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
+            <h2 className="text-lg font-bold mb-6">Vidéo du projet</h2>
+            <p className="text-xs text-slate-400 mb-4">Téléchargez une vidéo (MP4, WebM) ou renseignez l'URL d'une vidéo.</p>
+            <Controller
+              control={control}
+              name="videoUrl"
+              render={({ field }) => (
+                <div className="space-y-4">
+                  <Input 
+                    {...field}
+                    value={field.value || ''}
+                    placeholder="https://youtube.com/... ou uploader ci-dessous" 
+                    className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10"
+                  />
+                  <GenericFileUpload 
+                    value={field.value && !field.value.includes('youtube.com') ? field.value : ''} 
+                    onChange={field.onChange} 
+                    onRemove={() => field.onChange('')} 
+                    accept="video/*"
+                  />
+                </div>
+              )}
+            />
+          </div>
+
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
+            <h2 className="text-lg font-bold mb-6">Fichiers PDF (Dossiers Techniques)</h2>
+            <Controller
+              control={control}
+              name="pdfFiles"
+              render={({ field }) => (
+                <MultiFileUpload 
+                  value={field.value || []} 
+                  onChange={field.onChange} 
+                  accept="application/pdf"
                 />
               )}
             />

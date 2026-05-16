@@ -63,6 +63,7 @@ export default function AdminVideosPage() {
   // Modal State
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingVideo, setEditingVideo] = React.useState<Video | null>(null);
+  const [previewVideo, setPreviewVideo] = React.useState<Video | null>(null);
 
   const { register, handleSubmit, control, reset, formState: { errors } } = useForm<VideoFormValues>({
     resolver: zodResolver(videoSchema),
@@ -208,7 +209,12 @@ export default function AdminVideosPage() {
                 
                 <div className="flex items-center justify-between pt-4 border-t border-slate-200/50 dark:border-white/5">
                   <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-white hover:bg-slate-100 dark:hover:bg-white/10">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+                      onClick={() => setPreviewVideo(video)}
+                    >
                       <Eye className="w-4 h-4" />
                     </Button>
                     <Button 
@@ -363,6 +369,97 @@ export default function AdminVideosPage() {
                 {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                 Enregistrer
               </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Video Preview Modal */}
+      {previewVideo && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-5xl bg-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 flex flex-col md:flex-row h-auto max-h-[90vh]">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setPreviewVideo(null)}
+              className="absolute top-6 right-6 z-10 text-white/50 hover:text-white hover:bg-white/10 rounded-full"
+            >
+              <X className="w-6 h-6" />
+            </Button>
+
+            {/* Player Side */}
+            <div className="flex-1 bg-black flex items-center justify-center min-h-[300px] md:min-h-[500px]">
+              {previewVideo.youtubeId ? (
+                <iframe 
+                  src={`https://www.youtube.com/embed/${previewVideo.youtubeId}?autoplay=1`}
+                  className="w-full h-full aspect-video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : previewVideo.url ? (
+                <video 
+                  src={previewVideo.url} 
+                  controls 
+                  autoPlay 
+                  className="w-full h-full max-h-[70vh]"
+                />
+              ) : (
+                <div className="text-white/20 flex flex-col items-center">
+                  <MonitorPlay className="w-20 h-20 mb-4 opacity-10" />
+                  <p>Aucune source vidéo valide</p>
+                </div>
+              )}
+            </div>
+
+            {/* Details Side */}
+            <div className="w-full md:w-[350px] p-8 md:p-12 bg-slate-900 border-l border-white/5 flex flex-col gap-8 overflow-y-auto">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-brand-500 mb-4">Aperçu Vidéo</p>
+                <h2 className="text-3xl font-display font-bold text-white leading-tight">{previewVideo.title}</h2>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                    <Calendar className="w-4 h-4 text-slate-400" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Date d'ajout</p>
+                    <p className="text-sm text-slate-300 font-medium">{formatDate(previewVideo.createdAt, 'dd MMMM yyyy')}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                    <Tag className="w-4 h-4 text-brand-400" />
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Catégorie</p>
+                    <p className="text-sm text-brand-400 font-bold uppercase tracking-wider">{(previewVideo as any).category?.name || 'Général'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {previewVideo.description && (
+                <div className="pt-8 border-t border-white/5">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Description</p>
+                  <p className="text-sm text-slate-400 leading-relaxed font-light italic">
+                    "{previewVideo.description}"
+                  </p>
+                </div>
+              )}
+
+              <div className="mt-auto pt-8">
+                <Button 
+                  onClick={() => {
+                    openModal(previewVideo);
+                    setPreviewVideo(null);
+                  }}
+                  className="w-full bg-white text-black hover:bg-slate-200 rounded-2xl h-14 font-bold uppercase tracking-widest text-[10px]"
+                >
+                  <Edit className="w-4 h-4 mr-2" /> Modifier les détails
+                </Button>
+              </div>
             </div>
           </div>
         </div>

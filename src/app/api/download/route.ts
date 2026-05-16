@@ -16,9 +16,28 @@ export async function GET(request: NextRequest) {
     }
 
     const blob = await response.blob();
+    const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
+    
+    // Ensure filename has correct extension if missing
+    let finalFilename = filename;
+    if (!finalFilename.includes('.')) {
+      const extensionMap: Record<string, string> = {
+        'application/pdf': '.pdf',
+        'image/jpeg': '.jpg',
+        'image/png': '.png',
+        'image/webp': '.webp',
+        'application/msword': '.doc',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+        'application/vnd.ms-excel': '.xls',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+      };
+      const ext = extensionMap[contentType];
+      if (ext) finalFilename += ext;
+    }
+
     const headers = new Headers();
-    headers.set('Content-Disposition', `attachment; filename="${filename}"`);
-    headers.set('Content-Type', response.headers.get('Content-Type') || 'application/pdf');
+    headers.set('Content-Disposition', `attachment; filename="${finalFilename}"`);
+    headers.set('Content-Type', contentType);
 
     return new NextResponse(blob, {
       status: 200,

@@ -14,6 +14,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const categorySchema = z.object({
   name: z.string().min(2, 'Le nom doit faire au moins 2 caractères'),
@@ -187,19 +188,20 @@ export default function AdminTaxonomiesPage() {
           </div>
 
           {activeTab === 'categories' && (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400">Type:</span>
-              <select 
-                value={categoryType}
-                onChange={(e) => setCategoryType(e.target.value as any)}
-                className="bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
-              >
-                <option value="projects">Projets</option>
-                <option value="blog">Actualités</option>
-                <option value="media">Médiathèque</option>
-                <option value="reports">Rapports</option>
-                <option value="faq">FAQ</option>
-              </select>
+            <div className="flex items-center gap-4">
+              <span className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Type de contenu</span>
+              <Select value={categoryType} onValueChange={(v: any) => setCategoryType(v)}>
+                <SelectTrigger className="w-40 bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-10 rounded-xl focus:ring-brand-500">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-[#1a2333] border-slate-200 dark:border-white/10 rounded-xl">
+                  <SelectItem value="projects">Projets</SelectItem>
+                  <SelectItem value="blog">Actualités</SelectItem>
+                  <SelectItem value="media">Médiathèque</SelectItem>
+                  <SelectItem value="reports">Rapports</SelectItem>
+                  <SelectItem value="faq">FAQ</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           )}
         </div>
@@ -238,7 +240,7 @@ export default function AdminTaxonomiesPage() {
                         <div className="w-8 h-8 rounded-lg bg-surface-secondary flex items-center justify-center text-slate-400 group-hover:text-brand-400 group-hover:bg-brand-500/10 transition-all">
                           {activeTab === 'categories' ? <Hash className="w-4 h-4" /> : <Tag className="w-4 h-4" />}
                         </div>
-                        <span className="font-bold text-white">{item.name}</span>
+                        <span className="font-bold text-slate-900 dark:text-white">{item.name}</span>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono text-xs">
@@ -246,7 +248,18 @@ export default function AdminTaxonomiesPage() {
                     </td>
                     <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       <span className="px-2 py-0.5 rounded-full bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px]">
-                        0 éléments
+                        {(() => {
+                          const count = (item as any)._count;
+                          if (activeTab === 'tags') return `${count?.posts || 0} articles`;
+                          switch (categoryType) {
+                            case 'projects': return `${count?.projects || 0} projets`;
+                            case 'blog': return `${count?.posts || 0} articles`;
+                            case 'media': return `${count?.media || 0} médias`;
+                            case 'reports': return `${count?.reports || 0} rapports`;
+                            case 'faq': return `${count?.faqs || 0} questions`;
+                            default: return '0 éléments';
+                          }
+                        })()}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
@@ -295,7 +308,7 @@ export default function AdminTaxonomiesPage() {
               {activeTab === 'categories' ? (
                 <form id="taxonomy-form" onSubmit={categoryForm.handleSubmit(onCategorySubmit)} className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Nom <span className="text-red-500">*</span></label>
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Nom <span className="text-red-500">*</span></label>
                     <Input 
                       {...categoryForm.register('name')}
                       placeholder="Ex: Infrastructure" 
@@ -304,7 +317,7 @@ export default function AdminTaxonomiesPage() {
                     {categoryForm.formState.errors.name && <p className="text-xs text-red-500">{categoryForm.formState.errors.name.message}</p>}
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Slug <span className="text-red-500">*</span></label>
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Slug <span className="text-red-500">*</span></label>
                     <Input 
                       {...categoryForm.register('slug')}
                       placeholder="Ex: infrastructure" 
@@ -312,7 +325,7 @@ export default function AdminTaxonomiesPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Description</label>
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Description</label>
                     <Input 
                       {...categoryForm.register('description')}
                       placeholder="Description optionnelle..." 
@@ -323,7 +336,7 @@ export default function AdminTaxonomiesPage() {
               ) : (
                 <form id="taxonomy-form" onSubmit={tagForm.handleSubmit(onTagSubmit)} className="space-y-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Nom <span className="text-red-500">*</span></label>
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Nom <span className="text-red-500">*</span></label>
                     <Input 
                       {...tagForm.register('name')}
                       placeholder="Ex: Innovation" 
@@ -332,7 +345,7 @@ export default function AdminTaxonomiesPage() {
                     {tagForm.formState.errors.name && <p className="text-xs text-red-500">{tagForm.formState.errors.name.message}</p>}
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Slug <span className="text-red-500">*</span></label>
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Slug <span className="text-red-500">*</span></label>
                     <Input 
                       {...tagForm.register('slug')}
                       placeholder="Ex: innovation" 

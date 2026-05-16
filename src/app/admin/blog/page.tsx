@@ -1,29 +1,45 @@
 'use client';
 
-import { Plus, Search, Filter, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Search, Filter, Edit, Trash2, Eye, Download, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
 import { BlogPost, PaginatedData } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
-import { formatDate } from '@/lib/utils';
+import { getImageUrl, formatDate } from '@/lib/utils';
 import React from 'react';
 import { toast } from 'sonner';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { BlogCategory } from '@/types';
 
 export default function AdminBlogPage() {
   const queryClient = useQueryClient();
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState('');
+  const [status, setStatus] = React.useState<string>('ALL');
+  const [categoryId, setCategoryId] = React.useState<string>('ALL');
+  const [showFilters, setShowFilters] = React.useState(false);
   const limit = 10;
 
-  const { data, isLoading } = useQuery<PaginatedData<BlogPost>>({
-    queryKey: ['admin-blog', page, search],
+  const { data: categories } = useQuery<BlogCategory[]>({
+    queryKey: ['blog-categories'],
     queryFn: async () => {
-      const response = await api.get(endpoints.blog, {
-        params: { page, limit, search }
-      });
+      const response = await api.get(endpoints.categories.blog);
+      return response.data.data;
+    }
+  });
+
+  const { data, isLoading } = useQuery<PaginatedData<BlogPost>>({
+    queryKey: ['admin-blog', page, search, status, categoryId],
+    queryFn: async () => {
+      const params: any = { page, limit, search };
+      if (status !== 'ALL') params.status = status;
+      if (categoryId !== 'ALL') params.categoryId = categoryId;
+      
+      const response = await api.get(endpoints.blog, { params });
       return response.data.data;
     }
   });
@@ -75,10 +91,67 @@ export default function AdminBlogPage() {
               }}
             />
           </div>
-          <Button variant="outline" className="bg-transparent border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5">
-            <Filter className="w-4 h-4 mr-2" /> Filtres
-          </Button>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={() => setShowFilters(!showFilters)}
+              className={cn(
+                "bg-transparent border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5",
+                showFilters && "bg-brand-500/10 border-brand-500/50 text-brand-500"
+              )}
+            >
+              <Filter className="w-4 h-4 mr-2" /> Filtres
+            </Button>
+          </div>
         </div>
+
+        {showFilters && (
+          <div className="p-4 border-b border-slate-200/50 dark:border-white/5 bg-slate-50/30 dark:bg-black/10 grid grid-cols-1 sm:grid-cols-3 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Statut</label>
+              <Select value={status} onValueChange={(v) => { setStatus(v); setPage(1); }}>
+                <SelectTrigger className="bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 h-10 rounded-xl">
+                  <SelectValue placeholder="Tous les statuts" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-[#1a2333] border-slate-200 dark:border-white/10 rounded-xl">
+                  <SelectItem value="ALL">Tous les statuts</SelectItem>
+                  <SelectItem value="PUBLISHED">Publié</SelectItem>
+                  <SelectItem value="DRAFT">Brouillon</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Catégorie</label>
+              <Select value={categoryId} onValueChange={(v) => { setCategoryId(v); setPage(1); }}>
+                <SelectTrigger className="bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 h-10 rounded-xl">
+                  <SelectValue placeholder="Toutes les catégories" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-[#1a2333] border-slate-200 dark:border-white/10 rounded-xl">
+                  <SelectItem value="ALL">Toutes les catégories</SelectItem>
+                  {categories?.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-end">
+              <Button 
+                variant="ghost" 
+                className="w-full h-10 rounded-xl text-slate-500 hover:text-brand-500 hover:bg-brand-500/10 transition-colors border border-slate-200 dark:border-white/10"
+                onClick={() => {
+                  setSearch('');
+                  setStatus('ALL');
+                  setCategoryId('ALL');
+                  setPage(1);
+                }}
+              >
+                Réinitialiser
+              </Button>
+            </div>
+          </div>
+        )}
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
@@ -142,6 +215,13 @@ export default function AdminBlogPage() {
                             <Eye className="w-4 h-4" />
                           </Link>
                         </Button>
+                        {post.pdfFiles && post.pdfFiles.length > 0 && (
+                          <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-500 hover:bg-brand-500/10">
+                            <a href={`/api/download?url=${encodeURIComponent(getImageUrl(post.pdfFiles[0]))}&filename=${encodeURIComponent(`${post.slug}-document.pdf`)}`}>
+                              <Download className="w-4 h-4" />
+                            </a>
+                          </Button>
+                        )}
                         <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10">
                           <Link href={`/admin/blog/${post.id}`}>
                             <Edit className="w-4 h-4" />

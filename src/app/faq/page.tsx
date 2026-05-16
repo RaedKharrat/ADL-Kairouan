@@ -38,7 +38,7 @@ export default function FAQPage() {
           <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_60%,transparent_100%)]"></div>
           <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_120px_rgba(30,58,138,0.08)] dark:shadow-[inset_0_0_150px_rgba(30,58,138,0.4)]"></div>
           
-          <div className="container-tight relative z-10 text-center px-6">
+          <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10 text-center">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-8">Support & Aide</p>
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[1.1] mb-12">
               Questions <br /> Fréquentes
@@ -56,7 +56,7 @@ export default function FAQPage() {
         </div>
       </section>
 
-      <div className="container-tight px-6 mt-20">
+      <div className="max-w-[1400px] px-6 lg:px-12 mx-auto mt-20">
         {/* FAQ List (Modern Line-Based) */}
         <div className="max-w-4xl mx-auto space-y-0">
           {isLoading ? (

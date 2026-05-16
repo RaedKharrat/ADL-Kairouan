@@ -161,7 +161,7 @@ export default function AdminFaqPage() {
               <div key={faq.id} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 hover:border-brand-500/30 transition-all group relative">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1">
-                    <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
                       <span className="text-brand-500 font-display">Q.</span> {faq.question}
                     </h3>
                     <p className="text-slate-400 leading-relaxed pl-6 border-l border-slate-200 dark:border-white/10">

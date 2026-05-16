@@ -1,6 +1,6 @@
 'use client';
 
-import { Plus, Search, Filter, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Search, Filter, Edit, Trash2, Eye, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
@@ -11,20 +11,49 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getImageUrl, formatDate } from '@/lib/utils';
 import React from 'react';
 import { toast } from 'sonner';
+import { Archive } from 'lucide-react';
+import { ProjectCategory } from '@/types';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function AdminProjectsPage() {
   const queryClient = useQueryClient();
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState('');
+  const [status, setStatus] = React.useState<string>('ALL');
+  const [categoryId, setCategoryId] = React.useState<string>('ALL');
+  const [showFilters, setShowFilters] = React.useState(false);
   const limit = 10;
 
   const { data, isLoading } = useQuery<PaginatedData<Project>>({
-    queryKey: ['admin-projects', page, search],
+    queryKey: ['admin-projects', page, search, status, categoryId],
     queryFn: async () => {
-      const response = await api.get(endpoints.projects, {
-        params: { page, limit, search }
-      });
+      const params: any = { page, limit, search };
+      if (status !== 'ALL') params.status = status;
+      if (categoryId !== 'ALL') params.categoryId = categoryId;
+      
+      const response = await api.get(endpoints.projects, { params });
       return response.data.data;
+    }
+  });
+
+  const { data: categories } = useQuery<ProjectCategory[]>({
+    queryKey: ['project-categories'],
+    queryFn: async () => {
+      const response = await api.get(endpoints.categories.projects);
+      return response.data.data;
+    }
+  });
+
+  const archiveMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await api.patch(`${endpoints.projects}/${id}/archive`);
+    },
+    onSuccess: () => {
+      toast.success('Projet archivé avec succès');
+      queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
+    },
+    onError: () => {
+      toast.error("Erreur lors de l'archivage du projet");
     }
   });
 
@@ -40,6 +69,12 @@ export default function AdminProjectsPage() {
       toast.error('Erreur lors de la suppression du projet');
     }
   });
+
+  const handleArchive = (id: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir archiver ce projet ?')) {
+      archiveMutation.mutate(id);
+    }
+  };
 
   const handleDelete = (id: string) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
@@ -75,10 +110,63 @@ export default function AdminProjectsPage() {
               }}
             />
           </div>
-          <Button variant="outline" className="bg-transparent border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5">
-            <Filter className="w-4 h-4 mr-2" /> Filtres
+          <Button 
+            variant={showFilters ? "default" : "outline"} 
+            className={showFilters ? "bg-brand-600 hover:bg-brand-500 shadow-glow-sm" : "bg-transparent border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5"}
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <Filter className="w-4 h-4 mr-2" /> {showFilters ? 'Masquer Filtres' : 'Filtres'}
           </Button>
         </div>
+
+        {showFilters && (
+          <div className="p-4 border-b border-slate-200/50 dark:border-white/5 bg-slate-50/30 dark:bg-black/10 grid grid-cols-1 sm:grid-cols-3 gap-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Statut</label>
+              <Select value={status} onValueChange={(v) => { setStatus(v); setPage(1); }}>
+                <SelectTrigger className="bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 h-10 rounded-xl">
+                  <SelectValue placeholder="Tous les statuts" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-[#1a2333] border-slate-200 dark:border-white/10 rounded-xl">
+                  <SelectItem value="ALL">Tous les statuts</SelectItem>
+                  <SelectItem value="PUBLISHED">Publié</SelectItem>
+                  <SelectItem value="DRAFT">Brouillon</SelectItem>
+                  <SelectItem value="ARCHIVED">Archivé</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Catégorie</label>
+              <Select value={categoryId} onValueChange={(v) => { setCategoryId(v); setPage(1); }}>
+                <SelectTrigger className="bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 h-10 rounded-xl">
+                  <SelectValue placeholder="Toutes les catégories" />
+                </SelectTrigger>
+                <SelectContent className="bg-white dark:bg-[#1a2333] border-slate-200 dark:border-white/10 rounded-xl">
+                  <SelectItem value="ALL">Toutes les catégories</SelectItem>
+                  {categories?.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-end">
+              <Button 
+                variant="ghost" 
+                className="w-full h-10 rounded-xl text-slate-500 hover:text-brand-500 hover:bg-brand-500/10 transition-colors border border-slate-200 dark:border-white/10"
+                onClick={() => {
+                  setSearch('');
+                  setStatus('ALL');
+                  setCategoryId('ALL');
+                  setPage(1);
+                }}
+              >
+                Réinitialiser
+              </Button>
+            </div>
+          </div>
+        )}
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
@@ -137,9 +225,11 @@ export default function AdminProjectsPage() {
                       <span className={`px-2.5 py-1 text-xs font-medium rounded-full border ${
                         project.status === 'PUBLISHED' 
                           ? 'bg-green-500/10 text-green-500 border-green-500/20' 
+                          : project.status === 'ARCHIVED'
+                          ? 'bg-slate-500/10 text-slate-500 border-slate-500/20'
                           : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                       }`}>
-                        {project.status === 'PUBLISHED' ? 'Publié' : 'Brouillon'}
+                        {project.status === 'PUBLISHED' ? 'Publié' : project.status === 'ARCHIVED' ? 'Archivé' : 'Brouillon'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
@@ -152,11 +242,30 @@ export default function AdminProjectsPage() {
                             <Eye className="w-4 h-4" />
                           </Link>
                         </Button>
+                        {project.pdfFiles && project.pdfFiles.length > 0 && (
+                          <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-500 hover:bg-brand-500/10">
+                            <a href={`/api/download?url=${encodeURIComponent(getImageUrl(project.pdfFiles[0]))}&filename=${encodeURIComponent(`${project.slug}-document.pdf`)}`}>
+                              <Download className="w-4 h-4" />
+                            </a>
+                          </Button>
+                        )}
                         <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10">
                           <Link href={`/admin/projects/${project.id}`}>
                             <Edit className="w-4 h-4" />
                           </Link>
                         </Button>
+                        {project.status !== 'ARCHIVED' && (
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-slate-200 hover:bg-slate-500/10"
+                            onClick={() => handleArchive(project.id)}
+                            disabled={archiveMutation.isPending}
+                            title="Archiver"
+                          >
+                            <Archive className="w-4 h-4" />
+                          </Button>
+                        )}
                         <Button 
                           variant="ghost" 
                           size="icon" 
