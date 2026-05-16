@@ -193,9 +193,9 @@ export default function AboutPage() {
               {partners && partners.length > 0 ? (
                 [...partners, ...partners].map((partner, i) => (
                   <div key={i} className="inline-block">
-                    <div className="flex items-center gap-6 opacity-40 hover:opacity-100 transition-all duration-700 grayscale hover:grayscale-0 hover:scale-110">
+                    <div className="flex items-center gap-6 opacity-100 transition-all duration-700 hover:scale-110">
                       {partner.logo ? (
-                        <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-10 md:h-12 w-auto object-contain" />
+                        <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-12 md:h-20 w-auto object-contain" />
                       ) : (
                         <span className="text-xl font-display font-bold uppercase tracking-widest text-slate-300 dark:text-slate-700">{partner.name}</span>
                       )}
