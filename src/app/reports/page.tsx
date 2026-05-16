@@ -45,12 +45,12 @@ export default function ReportsPage() {
     try {
       // ── Cloudinary URLs: use fl_attachment flag to force browser download ──
       if (rawUrl.includes('cloudinary.com') || rawUrl.includes('res.cloudinary')) {
-        // Insert fl_attachment into the Cloudinary transformation URL
+        // Insert fl_attachment:{filename} into the Cloudinary transformation URL
         // e.g. https://res.cloudinary.com/.../upload/v123/file.pdf
-        //   → https://res.cloudinary.com/.../upload/fl_attachment/v123/file.pdf
+        //   → https://res.cloudinary.com/.../upload/fl_attachment:MonRapport.pdf/v123/file.pdf
         let downloadUrl = rawUrl;
         if (rawUrl.includes('/upload/')) {
-          downloadUrl = rawUrl.replace('/upload/', '/upload/fl_attachment/');
+          downloadUrl = rawUrl.replace('/upload/', `/upload/fl_attachment:${encodeURIComponent(fileName)}/`);
         }
         const link = document.createElement('a');
         link.href = downloadUrl;
