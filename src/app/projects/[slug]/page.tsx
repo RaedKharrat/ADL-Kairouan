@@ -143,7 +143,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
       </section>
 
       {/* ─── MAIN CONTENT AREA ─────────────────────────────────────────── */}
-      <section className="container max-w-[1400px] mx-auto px-4 lg:px-8 pb-20">
+      <section className="container max-w-[1400px] mx-auto px-4 lg:px-8 pb-20 mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           
           {/* PROJECT CONTENT */}
