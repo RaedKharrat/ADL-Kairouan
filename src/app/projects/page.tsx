@@ -60,7 +60,7 @@ export default function ProjectsPage() {
 
   const { data: videoItems } = useQuery<PaginatedData<Video>>({
     queryKey: ['videos-mediatheque'],
-    queryFn: async () => (await api.get(`${endpoints.videos}/public?limit=3`)).data.data
+    queryFn: async () => (await api.get(`${endpoints.videos}/public?limit=12`)).data.data
   });
 
   return (
@@ -313,38 +313,72 @@ export default function ProjectsPage() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {videoItems?.items?.map((video) => (
-              <div 
-                key={video.id} 
-                className="group cursor-pointer"
-                onClick={() => setSelectedVideo(video)}
+          <div className="relative group/videos">
+            {/* Navigation Arrows for Horizontal Scroll */}
+            <div className="absolute top-[40%] -translate-y-1/2 -left-4 lg:-left-12 z-30 opacity-0 group-hover/videos:opacity-100 transition-all duration-500 hidden md:block">
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('videos-scroll-grid');
+                  el?.scrollBy({ left: -450, behavior: 'smooth' });
+                }}
+                className="w-14 h-14 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-950 dark:text-white hover:bg-royal-600 hover:text-white transition-all shadow-xl"
               >
-                <div className="relative aspect-video rounded-[3rem] overflow-hidden mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200/50 dark:border-white/5 shadow-sm group-hover:shadow-2xl group-hover:shadow-royal-900/10 transition-all duration-700">
-                  <img 
-                    src={video.thumbnail || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop"} 
-                    alt={video.title} 
-                    className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-[1.5s] group-hover:scale-105" 
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-royal-600 group-hover:border-royal-600 transition-all duration-700 shadow-2xl">
-                      <PlayCircle className="w-10 h-10 text-white fill-current" />
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="absolute top-[40%] -translate-y-1/2 -right-4 lg:-right-12 z-30 opacity-0 group-hover/videos:opacity-100 transition-all duration-500 hidden md:block">
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('videos-scroll-grid');
+                  el?.scrollBy({ left: 450, behavior: 'smooth' });
+                }}
+                className="w-14 h-14 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-950 dark:text-white hover:bg-royal-600 hover:text-white transition-all shadow-xl"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div 
+              id="videos-scroll-grid" 
+              className="flex overflow-x-auto gap-8 md:gap-12 pb-12 snap-x snap-mandatory hide-scrollbar scroll-smooth px-1"
+            >
+              {videoItems?.items?.map((video) => (
+                <div 
+                  key={video.id} 
+                  className="group cursor-pointer shrink-0 w-[85vw] md:w-[450px] snap-center"
+                  onClick={() => setSelectedVideo(video)}
+                >
+                  <div className="relative aspect-video rounded-[3rem] overflow-hidden mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200/50 dark:border-white/5 shadow-sm group-hover:shadow-2xl group-hover:shadow-royal-900/10 transition-all duration-700">
+                    <img 
+                      src={video.thumbnail || "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2070&auto=format&fit=crop"} 
+                      alt={video.title} 
+                      className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-[1.5s] group-hover:scale-105" 
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-xl border border-white/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-royal-600 group-hover:border-royal-600 transition-all duration-700 shadow-2xl">
+                        <PlayCircle className="w-10 h-10 text-white fill-current" />
+                      </div>
+                    </div>
+                    <div className="absolute inset-0 bg-royal-600/5 mix-blend-multiply group-hover:bg-transparent transition-all duration-700" />
+                  </div>
+                  <div className="px-2">
+                    <h4 className="text-2xl font-display font-bold uppercase tracking-tight text-slate-950 dark:text-white group-hover:text-royal-600 transition-colors mb-2 leading-none">{video.title}</h4>
+                    <div className="flex items-center gap-4">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                        {video.duration && video.duration !== '00:00' ? video.duration : 'Reportage'}
+                      </span>
+                      <span className="w-8 h-[1px] bg-slate-100 dark:bg-white/5" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-royal-600">Vidéo Officielle</span>
                     </div>
                   </div>
-                  <div className="absolute inset-0 bg-royal-600/5 mix-blend-multiply group-hover:bg-transparent transition-all duration-700" />
                 </div>
-                <div className="px-2">
-                  <h4 className="text-2xl font-display font-bold uppercase tracking-tight text-slate-950 dark:text-white group-hover:text-royal-600 transition-colors mb-2 leading-none">{video.title}</h4>
-                  <div className="flex items-center gap-4">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                      {video.duration && video.duration !== '00:00' ? video.duration : 'Reportage'}
-                    </span>
-                    <span className="w-8 h-[1px] bg-slate-100 dark:bg-white/5" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-royal-600">Vidéo Officielle</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Architectural Fade Indicators */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none opacity-0 group-hover/videos:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none opacity-0 group-hover/videos:opacity-100 transition-opacity duration-700" />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
