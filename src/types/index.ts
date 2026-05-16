@@ -141,6 +141,7 @@ export interface BlogPost {
   publishedAt?: string | null;
   scheduledAt?: string | null;
   readingTime?: number | null;
+  videoUrl?: string | null;
   authorId?: string | null;
   author?: BlogAuthor | null;
   categoryId?: string | null;

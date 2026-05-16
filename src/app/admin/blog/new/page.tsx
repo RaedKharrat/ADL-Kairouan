@@ -78,12 +78,11 @@ export default function AdminBlogNewPage() {
     }
   });
 
-  const onSubmit = (data: BlogFormValues, publish: boolean = false) => {
+  const onSubmit = (data: BlogFormValues) => {
     // Sanitize categoryId: convert empty string to null to avoid foreign key errors
     const sanitizedData = {
       ...data,
       categoryId: data.categoryId === '' ? null : data.categoryId,
-      status: publish ? 'PUBLISHED' : 'DRAFT'
     };
     createMutation.mutate(sanitizedData as BlogFormValues);
   };
@@ -105,19 +104,21 @@ export default function AdminBlogNewPage() {
         <div className="flex items-center gap-4">
           <Button 
             variant="outline" 
+            type="button"
             className="bg-transparent border-white/10 hover:bg-white/5 h-12 px-6 rounded-xl"
-            onClick={handleSubmit((data) => onSubmit(data, false))}
+            onClick={handleSubmit(onSubmit)}
             disabled={createMutation.isPending}
           >
-            Enregistrer Brouillon
+            Enregistrer
           </Button>
           <Button 
+            type="submit"
             className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm h-12 px-8 rounded-xl font-bold"
-            onClick={handleSubmit((data) => onSubmit(data, true))}
+            onClick={handleSubmit(onSubmit)}
             disabled={createMutation.isPending}
           >
             {createMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} 
-            Publier Maintenant
+            Créer l'article
           </Button>
         </div>
       </div>
@@ -167,21 +168,34 @@ export default function AdminBlogNewPage() {
                 </div>
                 <div className="space-y-3">
                   <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Statut initial</label>
-                  <div className="flex p-1 bg-white/5 rounded-xl border border-white/5 h-14">
-                    {['DRAFT', 'PUBLISHED'].map((s) => (
-                      <button
-                        key={s}
-                        type="button"
-                        onClick={() => onSubmit(watch(), s === 'PUBLISHED')}
-                        className={cn(
-                          "flex-1 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
-                          watch('status') === s ? "bg-white text-slate-950 shadow-lg" : "text-slate-500 hover:text-white"
-                        )}
-                      >
-                        {s === 'DRAFT' ? 'Brouillon' : 'Public'}
-                      </button>
-                    ))}
-                  </div>
+                  <Controller
+                    control={control}
+                    name="status"
+                    render={({ field }) => (
+                      <div className="flex p-1 bg-white/5 rounded-xl border border-white/5 h-14">
+                        <button
+                          type="button"
+                          onClick={() => field.onChange('DRAFT')}
+                          className={cn(
+                            "flex-1 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                            field.value === 'DRAFT' ? "bg-white text-slate-950 shadow-lg" : "text-slate-500 hover:text-white"
+                          )}
+                        >
+                          Brouillon
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => field.onChange('PUBLISHED')}
+                          className={cn(
+                            "flex-1 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                            field.value === 'PUBLISHED' ? "bg-white text-slate-950 shadow-lg" : "text-slate-500 hover:text-white"
+                          )}
+                        >
+                          Public
+                        </button>
+                      </div>
+                    )}
+                  />
                 </div>
               </div>
               

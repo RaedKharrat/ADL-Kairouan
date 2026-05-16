@@ -13,9 +13,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
 import { ImageUpload } from '@/components/ui/image-upload';
+import { MultiImageUpload } from '@/components/ui/multi-image-upload';
+import { MultiFileUpload } from '@/components/ui/multi-file-upload';
 import { BlogPost } from '@/types';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 const blogSchema = z.object({
   title: z.string().min(3, 'Le titre doit faire au moins 3 caractères'),
@@ -23,6 +26,10 @@ const blogSchema = z.object({
   content: z.string().optional(),
   status: z.enum(['DRAFT', 'PUBLISHED', 'SCHEDULED', 'ARCHIVED']),
   coverImage: z.string().optional(),
+  gallery: z.array(z.string()).optional(),
+  pdfFiles: z.array(z.string()).optional(),
+  videoUrl: z.string().optional(),
+  categoryId: z.string().optional(),
 });
 
 type BlogFormValues = z.infer<typeof blogSchema>;
@@ -48,7 +55,11 @@ export default function AdminBlogEditPage() {
       excerpt: '',
       content: '',
       status: 'DRAFT',
-      coverImage: ''
+      coverImage: '',
+      gallery: [],
+      pdfFiles: [],
+      videoUrl: '',
+      categoryId: ''
     }
   });
 
@@ -59,7 +70,11 @@ export default function AdminBlogEditPage() {
         excerpt: post.excerpt || '',
         content: post.content || '',
         status: post.status,
-        coverImage: post.coverImage || ''
+        coverImage: post.coverImage || '',
+        gallery: post.gallery || [],
+        pdfFiles: post.pdfFiles || [],
+        videoUrl: post.videoUrl || '',
+        categoryId: post.categoryId || ''
       });
     }
   }, [post, reset]);
@@ -79,12 +94,12 @@ export default function AdminBlogEditPage() {
     }
   });
 
-  const onSubmit = (data: BlogFormValues, publish?: boolean) => {
-    const finalData = { ...data };
-    if (publish !== undefined) {
-      finalData.status = publish ? 'PUBLISHED' : 'DRAFT';
-    }
-    updateMutation.mutate(finalData);
+  const onSubmit = (data: BlogFormValues) => {
+    const sanitizedData = {
+      ...data,
+      categoryId: data.categoryId === '' ? null : data.categoryId,
+    };
+    updateMutation.mutate(sanitizedData as BlogFormValues);
   };
 
   if (isLoading) {
@@ -116,21 +131,43 @@ export default function AdminBlogEditPage() {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <div className="flex p-1 bg-white/5 rounded-xl border border-white/5 h-12 mr-4">
+            <Controller
+              control={control}
+              name="status"
+              render={({ field }) => (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => field.onChange('DRAFT')}
+                    className={cn(
+                      "px-6 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                      field.value === 'DRAFT' ? "bg-white text-slate-950 shadow-md" : "text-slate-500 hover:text-white"
+                    )}
+                  >
+                    Brouillon
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => field.onChange('PUBLISHED')}
+                    className={cn(
+                      "px-6 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
+                      field.value === 'PUBLISHED' ? "bg-white text-slate-950 shadow-md" : "text-slate-500 hover:text-white"
+                    )}
+                  >
+                    Public
+                  </button>
+                </>
+              )}
+            />
+          </div>
           <Button 
-            variant="outline" 
-            className="bg-transparent border-white/10 hover:bg-white/5 disabled:opacity-50"
-            onClick={handleSubmit((data) => onSubmit(data, false))}
-            disabled={updateMutation.isPending}
-          >
-            Passer en brouillon
-          </Button>
-          <Button 
-            className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm disabled:opacity-50"
-            onClick={handleSubmit((data) => onSubmit(data, true))}
+            className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm h-12 px-8 rounded-xl font-bold"
+            onClick={handleSubmit(onSubmit)}
             disabled={updateMutation.isPending}
           >
             {updateMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} 
-            Publier / Enregistrer
+            Enregistrer les modifications
           </Button>
         </div>
       </div>
@@ -179,18 +216,62 @@ export default function AdminBlogEditPage() {
         {/* Sidebar Settings */}
         <div className="space-y-6">
           <div className="glass-card rounded-2xl p-6 border-white/5">
-            <h2 className="text-lg font-bold mb-6">Image Principale</h2>
-            <Controller
-              control={control}
-              name="coverImage"
-              render={({ field }) => (
-                <ImageUpload 
-                  value={field.value} 
-                  onChange={field.onChange} 
-                  onRemove={() => field.onChange('')} 
+            <h2 className="text-lg font-bold mb-6">Média & Documents</h2>
+            <div className="space-y-8">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-300">Image de Couverture</label>
+                <Controller
+                  control={control}
+                  name="coverImage"
+                  render={({ field }) => (
+                    <ImageUpload 
+                      value={field.value} 
+                      onChange={field.onChange} 
+                      onRemove={() => field.onChange('')} 
+                    />
+                  )}
                 />
-              )}
-            />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-300">Galerie Photos</label>
+                <Controller
+                  control={control}
+                  name="gallery"
+                  render={({ field }) => (
+                    <MultiImageUpload 
+                      value={field.value || []} 
+                      onChange={field.onChange} 
+                      maxFiles={5}
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-300">Documents PDF</label>
+                <Controller
+                  control={control}
+                  name="pdfFiles"
+                  render={({ field }) => (
+                    <MultiFileUpload 
+                      value={field.value || []} 
+                      onChange={field.onChange}
+                      accept=".pdf"
+                    />
+                  )}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-300">Lien Vidéo (YouTube/Vimeo)</label>
+                <Input 
+                  {...register('videoUrl')}
+                  placeholder="https://..." 
+                  className="bg-white/5 border-white/10 h-12 focus-visible:ring-brand-500" 
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

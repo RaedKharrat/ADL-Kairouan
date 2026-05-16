@@ -91,3 +91,17 @@ export function debounce<T extends (...args: unknown[]) => void>(fn: T, delay = 
     timer = setTimeout(() => fn(...args), delay);
   };
 }
+
+// ─── Video helpers ────────────────────────────────────────────────────────────
+export function getYoutubeId(url?: string | null) {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
+export function getVimeoId(url?: string | null) {
+  if (!url) return null;
+  const match = url.match(/vimeo\.com\/(\d+)/);
+  return match ? match[1] : null;
+}
