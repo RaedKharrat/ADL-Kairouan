@@ -144,16 +144,16 @@ export default function AdminTaxonomiesPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Taxonomies</h1>
-          <p className="text-muted-foreground mt-1">Gérez les catégories et étiquettes pour classer vos contenus.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez les catégories et étiquettes pour classer vos contenus.</p>
         </div>
         <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
           <Plus className="w-4 h-4 mr-2" /> Nouvelle {activeTab === 'categories' ? 'Catégorie' : 'Étiquette'}
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 overflow-hidden">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
         {/* Tabs */}
-        <div className="flex border-b border-white/5 bg-black/20">
+        <div className="flex border-b border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-black/40">
           <button 
             onClick={() => { setActiveTab('categories'); setSearchTerm(''); }}
             className={cn(
@@ -175,12 +175,12 @@ export default function AdminTaxonomiesPage() {
         </div>
 
         {/* Search & Filter */}
-        <div className="p-4 bg-black/10 flex flex-col sm:flex-row justify-between gap-4">
+        <div className="p-4 bg-slate-50/50 dark:bg-black/20 flex flex-col sm:flex-row justify-between gap-4">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input 
               placeholder={`Rechercher une ${activeTab === 'categories' ? 'catégorie' : 'étiquette'}...`} 
-              className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -188,11 +188,11 @@ export default function AdminTaxonomiesPage() {
 
           {activeTab === 'categories' && (
             <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">Type:</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Type:</span>
               <select 
                 value={categoryType}
                 onChange={(e) => setCategoryType(e.target.value as any)}
-                className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
+                className="bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-brand-500"
               >
                 <option value="projects">Projets</option>
                 <option value="blog">Actualités</option>
@@ -206,7 +206,7 @@ export default function AdminTaxonomiesPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-black/20 text-muted-foreground border-b border-white/5">
+            <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
                 <th className="px-6 py-4 font-medium">Nom</th>
                 <th className="px-6 py-4 font-medium">Slug</th>
@@ -214,7 +214,7 @@ export default function AdminTaxonomiesPage() {
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
@@ -226,13 +226,13 @@ export default function AdminTaxonomiesPage() {
                 ))
               ) : filteredItems?.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground italic">
+                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400 italic">
                     Aucun élément trouvé.
                   </td>
                 </tr>
               ) : (
                 filteredItems?.map((item) => (
-                  <tr key={item.id} className="hover:bg-white/5 transition-colors group">
+                  <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-lg bg-surface-secondary flex items-center justify-center text-slate-400 group-hover:text-brand-400 group-hover:bg-brand-500/10 transition-all">
@@ -241,11 +241,11 @@ export default function AdminTaxonomiesPage() {
                         <span className="font-bold text-white">{item.name}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground font-mono text-xs">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono text-xs">
                       /{item.slug}
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
-                      <span className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px]">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                      <span className="px-2 py-0.5 rounded-full bg-slate-100/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px]">
                         0 éléments
                       </span>
                     </td>
@@ -254,7 +254,7 @@ export default function AdminTaxonomiesPage() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-brand-400 hover:bg-brand-400/10"
+                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
                           onClick={() => openModal(item)}
                         >
                           <Edit className="w-4 h-4" />
@@ -262,7 +262,7 @@ export default function AdminTaxonomiesPage() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                           onClick={() => handleDelete(item.id)}
                           disabled={deleteCategoryMutation.isPending || deleteTagMutation.isPending}
                         >
@@ -281,12 +281,12 @@ export default function AdminTaxonomiesPage() {
       {/* Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-white/10 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
+          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
               <h2 className="text-lg font-bold">
                 {editingItem ? 'Modifier' : 'Ajouter'} {activeTab === 'categories' ? 'une Catégorie' : 'une Étiquette'}
               </h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-white/5">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -299,7 +299,7 @@ export default function AdminTaxonomiesPage() {
                     <Input 
                       {...categoryForm.register('name')}
                       placeholder="Ex: Infrastructure" 
-                      className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${categoryForm.formState.errors.name ? 'border-red-500' : ''}`}
+                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${categoryForm.formState.errors.name ? 'border-red-500' : ''}`}
                     />
                     {categoryForm.formState.errors.name && <p className="text-xs text-red-500">{categoryForm.formState.errors.name.message}</p>}
                   </div>
@@ -308,7 +308,7 @@ export default function AdminTaxonomiesPage() {
                     <Input 
                       {...categoryForm.register('slug')}
                       placeholder="Ex: infrastructure" 
-                      className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${categoryForm.formState.errors.slug ? 'border-red-500' : ''}`}
+                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${categoryForm.formState.errors.slug ? 'border-red-500' : ''}`}
                     />
                   </div>
                   <div className="space-y-2">
@@ -316,7 +316,7 @@ export default function AdminTaxonomiesPage() {
                     <Input 
                       {...categoryForm.register('description')}
                       placeholder="Description optionnelle..." 
-                      className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                     />
                   </div>
                 </form>
@@ -327,7 +327,7 @@ export default function AdminTaxonomiesPage() {
                     <Input 
                       {...tagForm.register('name')}
                       placeholder="Ex: Innovation" 
-                      className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${tagForm.formState.errors.name ? 'border-red-500' : ''}`}
+                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${tagForm.formState.errors.name ? 'border-red-500' : ''}`}
                     />
                     {tagForm.formState.errors.name && <p className="text-xs text-red-500">{tagForm.formState.errors.name.message}</p>}
                   </div>
@@ -336,15 +336,15 @@ export default function AdminTaxonomiesPage() {
                     <Input 
                       {...tagForm.register('slug')}
                       placeholder="Ex: innovation" 
-                      className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${tagForm.formState.errors.slug ? 'border-red-500' : ''}`}
+                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${tagForm.formState.errors.slug ? 'border-red-500' : ''}`}
                     />
                   </div>
                 </form>
               )}
             </div>
             
-            <div className="p-4 border-t border-white/5 flex justify-end gap-3 bg-black/20">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-white/10">Annuler</Button>
+            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
+              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
               <Button 
                 type="submit" 
                 form="taxonomy-form" 

@@ -148,20 +148,20 @@ export default function AdminTestimonialsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Témoignages</h1>
-          <p className="text-muted-foreground mt-1">Gérez les retours d'expérience et témoignages de satisfaction.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez les retours d'expérience et témoignages de satisfaction.</p>
         </div>
         <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
           <Plus className="w-4 h-4 mr-2" /> Nouveau Témoignage
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 overflow-hidden">
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-black/10">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input 
               placeholder="Rechercher par nom, organisation..." 
-              className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -171,7 +171,7 @@ export default function AdminTestimonialsPage() {
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="p-6 rounded-2xl border border-white/5 bg-white/5 space-y-4">
+              <div key={i} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 space-y-4">
                 <div className="flex items-center gap-4">
                   <Skeleton className="w-12 h-12 rounded-full" />
                   <div className="space-y-2">
@@ -183,13 +183,13 @@ export default function AdminTestimonialsPage() {
               </div>
             ))
           ) : filtered?.length === 0 ? (
-            <div className="col-span-full py-20 text-center text-muted-foreground">
+            <div className="col-span-full py-20 text-center text-slate-500 dark:text-slate-400">
               <Star className="w-12 h-12 mx-auto mb-4 opacity-20" />
               <p>Aucun témoignage trouvé.</p>
             </div>
           ) : (
             filtered?.map((t) => (
-              <div key={t.id} className="p-6 rounded-2xl border border-white/5 bg-white/5 hover:border-brand-500/30 transition-all group flex flex-col justify-between">
+              <div key={t.id} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 hover:border-brand-500/30 transition-all group flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
@@ -215,7 +215,7 @@ export default function AdminTestimonialsPage() {
                     "{t.content}"
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                <div className="mt-6 pt-4 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     {t.featured && (
                       <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded bg-brand-500/10 text-brand-500 border border-brand-500/20">
@@ -232,7 +232,7 @@ export default function AdminTestimonialsPage() {
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-8 w-8 text-muted-foreground hover:text-brand-400 hover:bg-brand-400/10"
+                      className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
                       onClick={() => openModal(t)}
                     >
                       <Edit className="w-4 h-4" />
@@ -240,7 +240,7 @@ export default function AdminTestimonialsPage() {
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                      className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                       onClick={() => handleDelete(t.id)}
                       disabled={deleteMutation.isPending}
                     >
@@ -257,10 +257,10 @@ export default function AdminTestimonialsPage() {
       {/* Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
+          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
               <h2 className="text-lg font-bold">{editingTestimonial ? 'Modifier' : 'Ajouter'} un Témoignage</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-white/5">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -291,7 +291,7 @@ export default function AdminTestimonialsPage() {
                       <Input 
                         {...register('name')}
                         placeholder="Ex: Jean Dupont" 
-                        className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.name ? 'border-red-500' : ''}`}
+                        className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.name ? 'border-red-500' : ''}`}
                       />
                       {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
                     </div>
@@ -302,7 +302,7 @@ export default function AdminTestimonialsPage() {
                         <Input 
                           {...register('role')}
                           placeholder="Ex: Citoyen" 
-                          className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                          className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                         />
                       </div>
                       <div className="space-y-2">
@@ -310,7 +310,7 @@ export default function AdminTestimonialsPage() {
                         <Input 
                           {...register('organization')}
                           placeholder="Ex: Association X" 
-                          className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                          className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                         />
                       </div>
                     </div>
@@ -323,7 +323,7 @@ export default function AdminTestimonialsPage() {
                     {...register('content')}
                     placeholder="Saisir le retour d'expérience..." 
                     rows={4}
-                    className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.content ? 'border-red-500' : ''}`}
+                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.content ? 'border-red-500' : ''}`}
                   />
                   {errors.content && <p className="text-xs text-red-500">{errors.content.message}</p>}
                 </div>
@@ -333,7 +333,7 @@ export default function AdminTestimonialsPage() {
                     <label className="text-sm font-medium text-slate-300">Note (1-5 étoiles)</label>
                     <select 
                       {...register('rating', { valueAsNumber: true })}
-                      className="flex h-10 w-full rounded-md border border-white/5 bg-black/20 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                      className="flex h-10 w-full rounded-md border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-black/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     >
                       {[1, 2, 3, 4, 5].map(n => (
                         <option key={n} value={n} className="bg-surface-dark">{n} étoiles</option>
@@ -347,7 +347,7 @@ export default function AdminTestimonialsPage() {
                         type="checkbox" 
                         id="featured" 
                         {...register('featured')}
-                        className="rounded border-white/10 bg-black/20 text-brand-500 focus:ring-brand-500"
+                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500"
                       />
                       <label htmlFor="featured" className="text-sm font-medium text-slate-300">Mis en avant</label>
                     </div>
@@ -356,7 +356,7 @@ export default function AdminTestimonialsPage() {
                         type="checkbox" 
                         id="isActive" 
                         {...register('isActive')}
-                        className="rounded border-white/10 bg-black/20 text-brand-500 focus:ring-brand-500"
+                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500"
                       />
                       <label htmlFor="isActive" className="text-sm font-medium text-slate-300">Actif</label>
                     </div>
@@ -366,8 +366,8 @@ export default function AdminTestimonialsPage() {
               </form>
             </div>
             
-            <div className="p-4 border-t border-white/5 flex justify-end gap-3 bg-black/20">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-white/10">Annuler</Button>
+            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
+              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
               <Button type="submit" form="testimonial-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                 Enregistrer

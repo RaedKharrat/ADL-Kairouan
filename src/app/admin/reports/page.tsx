@@ -143,20 +143,20 @@ export default function AdminReportsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Rapports & Documents</h1>
-          <p className="text-muted-foreground mt-1">Gérez la bibliothèque de documents officiels et rapports d'activité.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez la bibliothèque de documents officiels et rapports d'activité.</p>
         </div>
         <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
           <Plus className="w-4 h-4 mr-2" /> Nouveau Document
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 overflow-hidden">
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-black/10">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input 
               placeholder="Rechercher par titre ou type..." 
-              className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -168,7 +168,7 @@ export default function AdminReportsPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-black/20 text-muted-foreground border-b border-white/5">
+            <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
                 <th className="px-6 py-4 font-medium">Document</th>
                 <th className="px-6 py-4 font-medium">Type / Taille</th>
@@ -177,7 +177,7 @@ export default function AdminReportsPage() {
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
@@ -195,40 +195,40 @@ export default function AdminReportsPage() {
                 ))
               ) : (data?.items?.length ?? 0) === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     Aucun document trouvé.
                   </td>
                 </tr>
               ) : (
                 data?.items?.map((report) => (
-                  <tr key={report.id} className="hover:bg-white/5 transition-colors group">
+                  <tr key={report.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/10 shrink-0">
                           <FileText className="w-5 h-5" />
                         </div>
-                        <div className="font-medium text-white group-hover:text-brand-400 transition-colors line-clamp-1">
+                        <div className="font-medium text-slate-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors line-clamp-1">
                           {report.title}
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       <div className="flex flex-col">
                         <span className="uppercase text-[10px] font-bold text-brand-500">{report.fileType || 'PDF'}</span>
                         <span className="text-xs">{formatBytes(report.fileSize || 0)}</span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       <div className="flex items-center gap-1">
                         <Download className="w-3.5 h-3.5" /> {report.downloads || 0}
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       {formatDate(report.createdAt, 'dd MMM yyyy')}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-muted-foreground hover:text-white hover:bg-white/10">
+                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-white hover:bg-slate-100 dark:hover:bg-white/10">
                           <a href={getImageUrl(report.fileUrl)} target="_blank" rel="noopener noreferrer">
                             <Eye className="w-4 h-4" />
                           </a>
@@ -236,7 +236,7 @@ export default function AdminReportsPage() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-brand-400 hover:bg-brand-400/10"
+                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
                           onClick={() => openModal(report)}
                         >
                           <Edit className="w-4 h-4" />
@@ -244,7 +244,7 @@ export default function AdminReportsPage() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                           onClick={() => handleDelete(report.id)}
                           disabled={deleteMutation.isPending}
                         >
@@ -260,7 +260,7 @@ export default function AdminReportsPage() {
         </div>
         
         {data && data.totalPages > 1 && (
-          <div className="p-4 border-t border-white/5 flex items-center justify-between text-sm text-muted-foreground bg-black/10">
+          <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 bg-slate-50/50 dark:bg-black/20">
             <span>
               Page {page} sur {data.totalPages}
             </span>
@@ -268,14 +268,14 @@ export default function AdminReportsPage() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-8 bg-transparent border-white/10 disabled:opacity-30"
+                className="h-8 bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30"
                 onClick={() => setPage(prev => Math.max(1, prev - 1))}
                 disabled={page === 1}
               >Précédent</Button>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-8 bg-transparent border-white/10 disabled:opacity-30"
+                className="h-8 bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30"
                 onClick={() => setPage(prev => Math.min(data.totalPages, prev + 1))}
                 disabled={page === data.totalPages}
               >Suivant</Button>
@@ -287,10 +287,10 @@ export default function AdminReportsPage() {
       {/* Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
+          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
               <h2 className="text-lg font-bold">{editingReport ? 'Modifier' : 'Ajouter'} un Document</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-white/5">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -303,7 +303,7 @@ export default function AdminReportsPage() {
                   <Input 
                     {...register('title')}
                     placeholder="Ex: Rapport Annuel 2023" 
-                    className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`}
+                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`}
                   />
                   {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
                 </div>
@@ -314,7 +314,7 @@ export default function AdminReportsPage() {
                     {...register('description')}
                     placeholder="Saisir une courte description..." 
                     rows={3}
-                    className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                    className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                   />
                 </div>
 
@@ -345,7 +345,7 @@ export default function AdminReportsPage() {
                     <Input 
                       {...register('fileType')}
                       placeholder="Ex: PDF, DOC" 
-                      className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                     />
                   </div>
                   
@@ -355,7 +355,7 @@ export default function AdminReportsPage() {
                         type="checkbox" 
                         id="published" 
                         {...register('published')}
-                        className="rounded border-white/10 bg-black/20 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
+                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
                       />
                       <label htmlFor="published" className="text-sm font-medium text-slate-300">
                         Visible sur le site
@@ -367,8 +367,8 @@ export default function AdminReportsPage() {
               </form>
             </div>
             
-            <div className="p-4 border-t border-white/5 flex justify-end gap-3 bg-black/20">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-white/10">Annuler</Button>
+            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
+              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
               <Button type="submit" form="report-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                 Enregistrer

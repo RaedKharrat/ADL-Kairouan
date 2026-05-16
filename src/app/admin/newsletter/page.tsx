@@ -72,20 +72,20 @@ export default function AdminNewsletterPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Newsletter</h1>
-          <p className="text-muted-foreground mt-1">Gérez la liste de diffusion et les abonnés.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez la liste de diffusion et les abonnés.</p>
         </div>
-        <Button onClick={exportCsv} variant="outline" className="bg-white/5 border-white/10 hover:bg-white/10">
+        <Button onClick={exportCsv} variant="outline" className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10">
           <Download className="w-4 h-4 mr-2" /> Exporter en CSV
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 overflow-hidden">
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-black/10">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input 
               placeholder="Rechercher un abonné..." 
-              className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
             />
@@ -94,7 +94,7 @@ export default function AdminNewsletterPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-black/20 text-muted-foreground border-b border-white/5">
+            <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
                 <th className="px-6 py-4 font-medium">Abonné</th>
                 <th className="px-6 py-4 font-medium">Date d'inscription</th>
@@ -102,7 +102,7 @@ export default function AdminNewsletterPage() {
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5">
               {isLoading ? (
                 Array.from({ length: 6 }).map((_, i) => (
                   <tr key={i}>
@@ -122,13 +122,13 @@ export default function AdminNewsletterPage() {
                 ))
               ) : (data?.items?.length ?? 0) === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground">
+                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     Aucun abonné trouvé.
                   </td>
                 </tr>
               ) : (
                 data?.items?.map((sub) => (
-                  <tr key={sub.id} className="hover:bg-white/5 transition-colors group">
+                  <tr key={sub.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/20">
@@ -136,11 +136,11 @@ export default function AdminNewsletterPage() {
                         </div>
                         <div>
                           <div className="font-medium text-white">{sub.email}</div>
-                          {sub.name && <div className="text-xs text-muted-foreground">{sub.name}</div>}
+                          {sub.name && <div className="text-xs text-slate-500 dark:text-slate-400">{sub.name}</div>}
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       {formatDate(sub.createdAt, 'dd MMMM yyyy')}
                     </td>
                     <td className="px-6 py-4">
@@ -158,7 +158,7 @@ export default function AdminNewsletterPage() {
                       <Button 
                         variant="ghost" 
                         size="icon" 
-                        className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10 opacity-0 group-hover:opacity-100 transition-opacity"
                         onClick={() => handleDelete(sub.id)}
                         disabled={deleteMutation.isPending}
                       >
@@ -173,7 +173,7 @@ export default function AdminNewsletterPage() {
         </div>
 
         {data && data.totalPages > 1 && (
-          <div className="p-4 border-t border-white/5 flex items-center justify-between text-sm text-muted-foreground bg-black/10">
+          <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 bg-slate-50/50 dark:bg-black/20">
             <span>
               Page {page} sur {data.totalPages} ({data.total} abonnés au total)
             </span>
@@ -181,14 +181,14 @@ export default function AdminNewsletterPage() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-8 bg-transparent border-white/10 disabled:opacity-30"
+                className="h-8 bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30"
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
               >Précédent</Button>
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-8 bg-transparent border-white/10 disabled:opacity-30"
+                className="h-8 bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30"
                 onClick={() => setPage(p => Math.min(data.totalPages, p + 1))}
                 disabled={page === data.totalPages}
               >Suivant</Button>

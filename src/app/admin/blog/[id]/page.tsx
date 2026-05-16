@@ -120,18 +120,18 @@ export default function AdminBlogEditPage() {
     <form className="space-y-8 max-w-5xl mx-auto" onSubmit={(e) => e.preventDefault()}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-white/5">
+          <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-slate-50 dark:hover:bg-white/5">
             <Link href="/admin/blog">
               <ArrowLeft className="w-5 h-5" />
             </Link>
           </Button>
           <div>
             <h1 className="text-3xl font-display font-bold">Éditer l'Article</h1>
-            <p className="text-muted-foreground mt-1">Modifiez les informations de l'actualité.</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-1">Modifiez les informations de l'actualité.</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex p-1 bg-white/5 rounded-xl border border-white/5 h-12 mr-4">
+          <div className="flex p-1 bg-slate-100/50 dark:bg-white/5 rounded-xl border border-slate-200/50 dark:border-white/5 h-12 mr-4">
             <Controller
               control={control}
               name="status"
@@ -142,7 +142,7 @@ export default function AdminBlogEditPage() {
                     onClick={() => field.onChange('DRAFT')}
                     className={cn(
                       "px-6 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
-                      field.value === 'DRAFT' ? "bg-white text-slate-950 shadow-md" : "text-slate-500 hover:text-white"
+                      field.value === 'DRAFT' ? "bg-white text-slate-950 shadow-md" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                     )}
                   >
                     Brouillon
@@ -152,7 +152,7 @@ export default function AdminBlogEditPage() {
                     onClick={() => field.onChange('PUBLISHED')}
                     className={cn(
                       "px-6 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
-                      field.value === 'PUBLISHED' ? "bg-white text-slate-950 shadow-md" : "text-slate-500 hover:text-white"
+                      field.value === 'PUBLISHED' ? "bg-white text-slate-950 shadow-md" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                     )}
                   >
                     Public
@@ -176,7 +176,7 @@ export default function AdminBlogEditPage() {
         
         {/* Main Content Form */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="glass-card rounded-2xl p-6 border-white/5">
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
             <h2 className="text-lg font-bold mb-6">Contenu de l'article</h2>
             
             <div className="space-y-6">
@@ -185,7 +185,7 @@ export default function AdminBlogEditPage() {
                 <Input 
                   {...register('title')}
                   placeholder="Saisir le titre..." 
-                  className={`bg-white/5 border-white/10 h-12 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`} 
+                  className={`bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`} 
                 />
                 {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
               </div>
@@ -196,7 +196,7 @@ export default function AdminBlogEditPage() {
                   {...register('excerpt')}
                   rows={3}
                   placeholder="Un court résumé..."
-                  className="bg-white/5 border-white/10"
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10"
                 />
               </div>
 
@@ -206,7 +206,7 @@ export default function AdminBlogEditPage() {
                   {...register('content')}
                   rows={20}
                   placeholder="<h2>Sous-titre</h2><p>Contenu principal...</p>"
-                  className="bg-white/5 border-white/10 font-mono text-sm leading-relaxed"
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 font-mono text-sm leading-relaxed"
                 />
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function AdminBlogEditPage() {
 
         {/* Sidebar Settings */}
         <div className="space-y-6">
-          <div className="glass-card rounded-2xl p-6 border-white/5">
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
             <h2 className="text-lg font-bold mb-6">Média & Documents</h2>
             <div className="space-y-8">
               <div className="space-y-2">
@@ -268,7 +268,7 @@ export default function AdminBlogEditPage() {
                 <Input 
                   {...register('videoUrl')}
                   placeholder="https://..." 
-                  className="bg-white/5 border-white/10 h-12 focus-visible:ring-brand-500" 
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12 focus-visible:ring-brand-500" 
                 />
               </div>
             </div>

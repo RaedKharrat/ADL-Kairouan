@@ -62,7 +62,7 @@ export default function AdminDashboardPage() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl"></div>
           <h2 className="text-xl font-display font-bold text-slate-900 dark:text-white mb-6">Activité Récente</h2>
           <div className="flex flex-col items-center justify-center py-16 text-slate-400">
-            <div className="w-20 h-20 rounded-full bg-slate-50 dark:bg-black/20 flex items-center justify-center mb-6 ring-1 ring-slate-200 dark:ring-white/5">
+            <div className="w-20 h-20 rounded-full bg-slate-50 dark:bg-slate-100/50 dark:bg-black/40 flex items-center justify-center mb-6 ring-1 ring-slate-200 dark:ring-white/5">
               <FileBarChart className="h-8 w-8 opacity-40" />
             </div>
             <p className="text-sm font-medium">Le module d'analyse détaillée est en cours d'intégration.</p>

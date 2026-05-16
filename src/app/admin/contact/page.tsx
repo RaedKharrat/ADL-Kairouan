@@ -68,25 +68,25 @@ export default function AdminContactPage() {
     <div className="space-y-8 h-[calc(100vh-12rem)]">
       <div>
         <h1 className="text-3xl font-display font-bold">Boîte de Réception</h1>
-        <p className="text-muted-foreground mt-1">Gérez les messages reçus via le formulaire de contact.</p>
+        <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez les messages reçus via le formulaire de contact.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full overflow-hidden">
         {/* List of Messages */}
-        <div className="lg:col-span-5 glass-card rounded-2xl border-white/5 overflow-hidden flex flex-col">
-          <div className="p-4 border-b border-white/5 bg-black/10">
+        <div className="lg:col-span-5 bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden flex flex-col">
+          <div className="p-4 border-b border-slate-200/50 dark:border-white/5 bg-slate-50/50 dark:bg-black/20">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
               <Input 
                 placeholder="Rechercher un message..." 
-                className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+                className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
               />
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto scrollbar-thin divide-y divide-white/5">
+          <div className="flex-1 overflow-y-auto scrollbar-thin divide-y divide-slate-200/50 dark:divide-white/5">
             {isLoading ? (
               Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="p-4 space-y-2">
@@ -99,7 +99,7 @@ export default function AdminContactPage() {
                 </div>
               ))
             ) : (data?.items?.length ?? 0) === 0 ? (
-              <div className="p-12 text-center text-muted-foreground">
+              <div className="p-12 text-center text-slate-500 dark:text-slate-400">
                 Aucun message trouvé.
               </div>
             ) : (
@@ -107,13 +107,13 @@ export default function AdminContactPage() {
                 <div 
                   key={msg.id} 
                   onClick={() => handleSelectMessage(msg)}
-                  className={`p-4 cursor-pointer transition-colors hover:bg-white/5 relative ${
+                  className={`p-4 cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-white/5 relative ${
                     selectedMessage?.id === msg.id ? 'bg-brand-500/10 border-l-2 border-brand-500' : ''
-                  } ${!msg.isRead ? 'font-bold bg-white/5' : ''}`}
+                  } ${!msg.isRead ? 'font-bold bg-slate-100/50 dark:bg-white/5' : ''}`}
                 >
                   <div className="flex justify-between items-start mb-1">
                     <span className="text-sm text-white truncate max-w-[70%]">{msg.name}</span>
-                    <span className="text-[10px] text-muted-foreground">{formatDateRelative(msg.createdAt)}</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">{formatDateRelative(msg.createdAt)}</span>
                   </div>
                   <div className="text-xs text-brand-400 mb-1 truncate">{msg.subject || 'Sans objet'}</div>
                   <p className="text-xs text-slate-400 line-clamp-1">{msg.message}</p>
@@ -126,14 +126,14 @@ export default function AdminContactPage() {
           </div>
 
           {data && data.totalPages > 1 && (
-            <div className="p-3 border-t border-white/5 flex items-center justify-between bg-black/10">
+            <div className="p-3 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-between bg-slate-50/50 dark:bg-black/20">
               <Button 
                 variant="ghost" 
                 size="sm" 
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page === 1}
               >Précédent</Button>
-              <span className="text-xs text-muted-foreground">Page {page}/{data.totalPages}</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">Page {page}/{data.totalPages}</span>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -145,24 +145,24 @@ export default function AdminContactPage() {
         </div>
 
         {/* Message Content */}
-        <div className="lg:col-span-7 glass-card rounded-2xl border-white/5 overflow-hidden flex flex-col">
+        <div className="lg:col-span-7 bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden flex flex-col">
           {selectedMessage ? (
             <>
-              <div className="p-6 border-b border-white/5 bg-black/10 flex justify-between items-center">
+              <div className="p-6 border-b border-slate-200/50 dark:border-white/5 bg-slate-50/50 dark:bg-black/20 flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-bold text-white">{selectedMessage.subject || 'Sans objet'}</h2>
-                  <p className="text-sm text-muted-foreground flex items-center gap-2 mt-1">
+                  <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2 mt-1">
                     <Calendar className="w-3 h-3" /> Reçu le {new Date(selectedMessage.createdAt).toLocaleString()}
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-white hover:bg-white/10">
+                  <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-500 dark:text-slate-400 hover:text-white hover:bg-slate-100 dark:hover:bg-white/10">
                     <Archive className="w-4 h-4" />
                   </Button>
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    className="h-9 w-9 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                     onClick={() => handleDelete(selectedMessage.id)}
                   >
                     <Trash2 className="w-4 h-4" />
@@ -170,13 +170,13 @@ export default function AdminContactPage() {
                 </div>
               </div>
               <div className="p-6 flex-1 overflow-y-auto scrollbar-thin space-y-8">
-                <div className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl bg-white/5 border border-white/5">
+                <div className="flex flex-col sm:flex-row gap-6 p-4 rounded-xl bg-slate-100/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/5">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/20">
                       <User className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Expéditeur</p>
+                      <p className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Expéditeur</p>
                       <p className="text-sm font-medium text-white">{selectedMessage.name}</p>
                     </div>
                   </div>
@@ -185,7 +185,7 @@ export default function AdminContactPage() {
                       <Mail className="w-5 h-5" />
                     </div>
                     <div>
-                      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Email</p>
+                      <p className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Email</p>
                       <a href={`mailto:${selectedMessage.email}`} className="text-sm font-medium text-white hover:text-brand-400 transition-colors underline decoration-white/10 underline-offset-4">{selectedMessage.email}</a>
                     </div>
                   </div>
@@ -195,7 +195,7 @@ export default function AdminContactPage() {
                         <Phone className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Téléphone</p>
+                        <p className="text-[10px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Téléphone</p>
                         <p className="text-sm font-medium text-white">{selectedMessage.phone}</p>
                       </div>
                     </div>
@@ -206,19 +206,19 @@ export default function AdminContactPage() {
                   <h3 className="text-sm font-bold uppercase tracking-widest text-brand-500 flex items-center gap-2">
                     <MessageSquare className="w-4 h-4" /> Message
                   </h3>
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/5 text-slate-300 leading-relaxed whitespace-pre-wrap">
+                  <div className="p-6 rounded-2xl bg-slate-100/50 dark:bg-white/5 border border-slate-200/50 dark:border-white/5 text-slate-300 leading-relaxed whitespace-pre-wrap">
                     {selectedMessage.message}
                   </div>
                 </div>
               </div>
-              <div className="p-4 border-t border-white/5 bg-black/10">
+              <div className="p-4 border-t border-slate-200/50 dark:border-white/5 bg-slate-50/50 dark:bg-black/20">
                 <Button className="w-full bg-brand-600 hover:bg-brand-500 shadow-glow-sm" asChild>
                   <a href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject}`}>Répondre par Email</a>
                 </Button>
               </div>
             </>
           ) : (
-            <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground p-12 text-center">
+            <div className="flex-1 flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 p-12 text-center">
               <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-6">
                 <Mail className="w-10 h-10 opacity-20" />
               </div>

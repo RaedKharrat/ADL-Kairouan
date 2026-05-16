@@ -52,7 +52,7 @@ export default function AdminProjectsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Gestion des Projets</h1>
-          <p className="text-muted-foreground mt-1">Gérez l'ensemble des projets régionaux.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez l'ensemble des projets régionaux.</p>
         </div>
         <Button asChild className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
           <Link href="/admin/projects/new">
@@ -61,13 +61,13 @@ export default function AdminProjectsPage() {
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 overflow-hidden">
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-black/10">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input 
               placeholder="Rechercher par titre..." 
-              className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -75,14 +75,14 @@ export default function AdminProjectsPage() {
               }}
             />
           </div>
-          <Button variant="outline" className="bg-transparent border-white/10 hover:bg-white/5">
+          <Button variant="outline" className="bg-transparent border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5">
             <Filter className="w-4 h-4 mr-2" /> Filtres
           </Button>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-black/20 text-muted-foreground border-b border-white/5">
+            <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
                 <th className="px-6 py-4 font-medium">Titre du Projet</th>
                 <th className="px-6 py-4 font-medium">Catégorie</th>
@@ -91,7 +91,7 @@ export default function AdminProjectsPage() {
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
@@ -109,13 +109,13 @@ export default function AdminProjectsPage() {
                 ))
               ) : (data?.items?.length ?? 0) === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-muted-foreground">
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     Aucun projet trouvé.
                   </td>
                 </tr>
               ) : (
                 data?.items?.map((project) => (
-                  <tr key={project.id} className="hover:bg-white/5 transition-colors group">
+                  <tr key={project.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-surface-secondary overflow-hidden shrink-0">
@@ -125,12 +125,12 @@ export default function AdminProjectsPage() {
                             className="w-full h-full object-cover" 
                           />
                         </div>
-                        <div className="font-medium text-white group-hover:text-brand-400 transition-colors line-clamp-1">
+                        <div className="font-medium text-slate-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors line-clamp-1">
                           {project.title}
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       {project.category?.name || <span className="italic opacity-50">Sans catégorie</span>}
                     </td>
                     <td className="px-6 py-4">
@@ -142,17 +142,17 @@ export default function AdminProjectsPage() {
                         {project.status === 'PUBLISHED' ? 'Publié' : 'Brouillon'}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       {formatDate(project.createdAt, 'dd MMM yyyy')}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-muted-foreground hover:text-white hover:bg-white/10">
+                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-white hover:bg-slate-100 dark:hover:bg-white/10">
                           <Link href={`/projects/${project.slug}`} target="_blank">
                             <Eye className="w-4 h-4" />
                           </Link>
                         </Button>
-                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-muted-foreground hover:text-brand-400 hover:bg-brand-400/10">
+                        <Button variant="ghost" size="icon" asChild className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10">
                           <Link href={`/admin/projects/${project.id}`}>
                             <Edit className="w-4 h-4" />
                           </Link>
@@ -160,7 +160,7 @@ export default function AdminProjectsPage() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                           onClick={() => handleDelete(project.id)}
                           disabled={deleteMutation.isPending}
                         >
@@ -176,7 +176,7 @@ export default function AdminProjectsPage() {
         </div>
         
         {data && data.totalPages > 1 && (
-          <div className="p-4 border-t border-white/5 flex items-center justify-between text-sm text-muted-foreground bg-black/10">
+          <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 bg-slate-50/50 dark:bg-black/20">
             <span>
               Affichage de {((page - 1) * limit) + 1} à {Math.min(page * limit, data.total)} sur {data.total} projets
             </span>
@@ -184,7 +184,7 @@ export default function AdminProjectsPage() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-8 bg-transparent border-white/10 disabled:opacity-30"
+                className="h-8 bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30"
                 onClick={() => setPage(prev => Math.max(1, prev - 1))}
                 disabled={page === 1}
               >
@@ -193,7 +193,7 @@ export default function AdminProjectsPage() {
               <Button 
                 variant="outline" 
                 size="sm" 
-                className="h-8 bg-transparent border-white/10 disabled:opacity-30"
+                className="h-8 bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30"
                 onClick={() => setPage(prev => Math.min(data.totalPages, prev + 1))}
                 disabled={page === data.totalPages}
               >

@@ -73,7 +73,7 @@ export default function LoginPage() {
                   {...register('email')}
                   type="email"
                   placeholder="admin@adl-kairouan.tn"
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-600 h-12 rounded-xl focus-visible:ring-brand-500"
+                  className="pl-10 bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-white placeholder:text-slate-600 h-12 rounded-xl focus-visible:ring-brand-500"
                 />
               </div>
               {errors.email && <p className="text-xs text-destructive ml-1">{errors.email.message}</p>}
@@ -89,7 +89,7 @@ export default function LoginPage() {
                   {...register('password')}
                   type="password"
                   placeholder="••••••••"
-                  className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-slate-600 h-12 rounded-xl focus-visible:ring-brand-500"
+                  className="pl-10 bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-white placeholder:text-slate-600 h-12 rounded-xl focus-visible:ring-brand-500"
                 />
               </div>
               {errors.password && <p className="text-xs text-destructive ml-1">{errors.password.message}</p>}

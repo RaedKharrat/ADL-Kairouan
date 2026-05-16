@@ -91,7 +91,7 @@ export default function AdminBlogNewPage() {
     <form className="space-y-8 max-w-7xl mx-auto pb-20" onSubmit={(e) => e.preventDefault()}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
         <div className="flex items-center gap-5">
-          <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-white/5 border border-white/5">
+          <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-slate-50 dark:hover:bg-white/5 border border-slate-200/50 dark:border-white/5">
             <Link href="/admin/blog">
               <ArrowLeft className="w-5 h-5" />
             </Link>
@@ -105,7 +105,7 @@ export default function AdminBlogNewPage() {
           <Button 
             variant="outline" 
             type="button"
-            className="bg-transparent border-white/10 hover:bg-white/5 h-12 px-6 rounded-xl"
+            className="bg-transparent border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 h-12 px-6 rounded-xl"
             onClick={handleSubmit(onSubmit)}
             disabled={createMutation.isPending}
           >
@@ -127,7 +127,7 @@ export default function AdminBlogNewPage() {
         
         {/* Main Content Area */}
         <div className="xl:col-span-8 space-y-8">
-          <div className="glass-card rounded-[2rem] p-8 md:p-10 border-white/5">
+          <div className="glass-card rounded-[2rem] p-8 md:p-10 border-slate-200/50 dark:border-white/5">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-500">
                 <FileText className="w-5 h-5" />
@@ -141,7 +141,7 @@ export default function AdminBlogNewPage() {
                 <Input 
                   {...register('title')}
                   placeholder="Ex: L'impact durable du développement local..." 
-                  className={`bg-white/5 border-white/10 h-14 rounded-xl text-lg focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`} 
+                  className={`bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-14 rounded-xl text-lg focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`} 
                 />
                 {errors.title && <p className="text-xs text-red-500 font-medium">{errors.title.message}</p>}
               </div>
@@ -154,10 +154,10 @@ export default function AdminBlogNewPage() {
                     name="categoryId"
                     render={({ field }) => (
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <SelectTrigger className="bg-white/5 border-white/10 h-14 rounded-xl focus:ring-brand-500">
+                        <SelectTrigger className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-14 rounded-xl focus:ring-brand-500">
                           <SelectValue placeholder="Sélectionner une catégorie" />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-900 border-white/10 text-white">
+                        <SelectContent className="bg-slate-900 border-slate-200 dark:border-white/10 text-white">
                           {categories?.map((cat) => (
                             <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                           ))}
@@ -172,13 +172,13 @@ export default function AdminBlogNewPage() {
                     control={control}
                     name="status"
                     render={({ field }) => (
-                      <div className="flex p-1 bg-white/5 rounded-xl border border-white/5 h-14">
+                      <div className="flex p-1 bg-slate-100/50 dark:bg-white/5 rounded-xl border border-slate-200/50 dark:border-white/5 h-14">
                         <button
                           type="button"
                           onClick={() => field.onChange('DRAFT')}
                           className={cn(
                             "flex-1 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
-                            field.value === 'DRAFT' ? "bg-white text-slate-950 shadow-lg" : "text-slate-500 hover:text-white"
+                            field.value === 'DRAFT' ? "bg-white text-slate-950 shadow-lg" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                           )}
                         >
                           Brouillon
@@ -188,7 +188,7 @@ export default function AdminBlogNewPage() {
                           onClick={() => field.onChange('PUBLISHED')}
                           className={cn(
                             "flex-1 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all",
-                            field.value === 'PUBLISHED' ? "bg-white text-slate-950 shadow-lg" : "text-slate-500 hover:text-white"
+                            field.value === 'PUBLISHED' ? "bg-white text-slate-950 shadow-lg" : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
                           )}
                         >
                           Public
@@ -205,7 +205,7 @@ export default function AdminBlogNewPage() {
                   {...register('excerpt')}
                   rows={3}
                   placeholder="Résumez l'article en 2-3 phrases pour attirer les lecteurs..."
-                  className="bg-white/5 border-white/10 rounded-xl p-5 leading-relaxed resize-none focus-visible:ring-brand-500"
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 rounded-xl p-5 leading-relaxed resize-none focus-visible:ring-brand-500"
                 />
               </div>
 
@@ -216,14 +216,14 @@ export default function AdminBlogNewPage() {
                     {...register('content')}
                     rows={20}
                     placeholder="Il était une fois à Kairouan..."
-                    className="bg-white/5 border-white/10 rounded-2xl p-6 font-serif text-lg leading-relaxed focus-visible:ring-brand-500 min-h-[500px]"
+                    className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 rounded-2xl p-6 font-serif text-lg leading-relaxed focus-visible:ring-brand-500 min-h-[500px]"
                   />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="glass-card rounded-[2rem] p-8 border-white/5">
+          <div className="glass-card rounded-[2rem] p-8 border-slate-200/50 dark:border-white/5">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500">
                 <Video className="w-5 h-5" />
@@ -235,7 +235,7 @@ export default function AdminBlogNewPage() {
               <Input 
                 {...register('videoUrl')}
                 placeholder="https://www.youtube.com/watch?v=..." 
-                className="bg-white/5 border-white/10 h-14 rounded-xl focus-visible:ring-brand-500" 
+                className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-14 rounded-xl focus-visible:ring-brand-500" 
               />
               <p className="text-[10px] text-slate-500 uppercase tracking-wider">Cette vidéo sera mise en avant dans l'en-tête de l'article.</p>
             </div>
@@ -244,7 +244,7 @@ export default function AdminBlogNewPage() {
 
         {/* Sidebar */}
         <div className="xl:col-span-4 space-y-8">
-          <div className="glass-card rounded-[2rem] p-8 border-white/5">
+          <div className="glass-card rounded-[2rem] p-8 border-slate-200/50 dark:border-white/5">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-500">
                 <Globe className="w-5 h-5" />
@@ -264,7 +264,7 @@ export default function AdminBlogNewPage() {
             />
           </div>
 
-          <div className="glass-card rounded-[2rem] p-8 border-white/5">
+          <div className="glass-card rounded-[2rem] p-8 border-slate-200/50 dark:border-white/5">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-500">
                 <ImageIcon className="w-5 h-5" />
@@ -284,7 +284,7 @@ export default function AdminBlogNewPage() {
             />
           </div>
 
-          <div className="glass-card rounded-[2rem] p-8 border-white/5">
+          <div className="glass-card rounded-[2rem] p-8 border-slate-200/50 dark:border-white/5">
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500">
                 <Settings2 className="w-5 h-5" />

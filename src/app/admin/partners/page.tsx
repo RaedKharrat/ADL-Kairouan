@@ -120,20 +120,20 @@ export default function AdminPartnersPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Partenaires</h1>
-          <p className="text-muted-foreground mt-1">Gérez la liste de vos partenaires institutionnels et privés.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez la liste de vos partenaires institutionnels et privés.</p>
         </div>
         <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
           <Plus className="w-4 h-4 mr-2" /> Ajouter un Partenaire
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 overflow-hidden">
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-black/10">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input 
               placeholder="Rechercher par nom..." 
-              className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -142,7 +142,7 @@ export default function AdminPartnersPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-black/20 text-muted-foreground border-b border-white/5">
+            <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
                 <th className="px-6 py-4 font-medium">Logo & Nom</th>
                 <th className="px-6 py-4 font-medium">Site Web</th>
@@ -150,7 +150,7 @@ export default function AdminPartnersPage() {
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
@@ -167,13 +167,13 @@ export default function AdminPartnersPage() {
                 ))
               ) : filteredPartners?.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-muted-foreground">
+                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     Aucun partenaire trouvé.
                   </td>
                 </tr>
               ) : (
                 filteredPartners?.map((partner) => (
-                  <tr key={partner.id} className="hover:bg-white/5 transition-colors group">
+                  <tr key={partner.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-2 shrink-0 overflow-hidden">
@@ -183,12 +183,12 @@ export default function AdminPartnersPage() {
                             className="w-full h-full object-contain"
                           />
                         </div>
-                        <div className="font-medium text-white group-hover:text-brand-400 transition-colors">
+                        <div className="font-medium text-slate-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors">
                           {partner.name}
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-muted-foreground">
+                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       {partner.website ? (
                         <a 
                           href={partner.website} 
@@ -217,7 +217,7 @@ export default function AdminPartnersPage() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-brand-400 hover:bg-brand-400/10"
+                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
                           onClick={() => openModal(partner)}
                         >
                           <Edit className="w-4 h-4" />
@@ -225,7 +225,7 @@ export default function AdminPartnersPage() {
                         <Button 
                           variant="ghost" 
                           size="icon" 
-                          className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                           onClick={() => handleDelete(partner.id)}
                           disabled={deleteMutation.isPending}
                         >
@@ -244,10 +244,10 @@ export default function AdminPartnersPage() {
       {/* Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-white/10 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
+          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
               <h2 className="text-lg font-bold">{editingPartner ? 'Modifier' : 'Ajouter'} un Partenaire</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-white/5">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -276,7 +276,7 @@ export default function AdminPartnersPage() {
                   <Input 
                     {...register('name')}
                     placeholder="Nom complet..." 
-                    className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.name ? 'border-red-500' : ''}`}
+                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.name ? 'border-red-500' : ''}`}
                   />
                   {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
                 </div>
@@ -286,7 +286,7 @@ export default function AdminPartnersPage() {
                   <Input 
                     {...register('website')}
                     placeholder="https://..." 
-                    className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.website ? 'border-red-500' : ''}`}
+                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.website ? 'border-red-500' : ''}`}
                   />
                   {errors.website && <p className="text-xs text-red-500">{errors.website.message}</p>}
                 </div>
@@ -296,7 +296,7 @@ export default function AdminPartnersPage() {
                     type="checkbox" 
                     id="isActive" 
                     {...register('isActive')}
-                    className="rounded border-white/10 bg-black/20 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
+                    className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
                   />
                   <label htmlFor="isActive" className="text-sm font-medium text-slate-300">
                     Partenaire actif (visible sur le site)
@@ -306,8 +306,8 @@ export default function AdminPartnersPage() {
               </form>
             </div>
             
-            <div className="p-4 border-t border-white/5 flex justify-end gap-3 bg-black/20">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-white/10">Annuler</Button>
+            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
+              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
               <Button type="submit" form="partner-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                 Enregistrer

@@ -142,19 +142,19 @@ export default function AdminVideosPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Médiathèque Vidéo</h1>
-          <p className="text-muted-foreground mt-1">Gérez vos contenus vidéo et reportages intégrés.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez vos contenus vidéo et reportages intégrés.</p>
         </div>
         <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
           <Plus className="w-4 h-4 mr-2" /> Ajouter une Vidéo
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 p-4 flex flex-col sm:flex-row gap-4 justify-between bg-black/10">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none p-4 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
         <div className="relative w-full max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
           <Input 
             placeholder="Rechercher par titre..." 
-            className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+            className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -167,29 +167,29 @@ export default function AdminVideosPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {isLoading ? (
           Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="glass-card rounded-2xl border-white/5 overflow-hidden animate-pulse">
-              <div className="aspect-video bg-white/5" />
+            <div key={i} className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden animate-pulse">
+              <div className="aspect-video bg-slate-100/50 dark:bg-white/5" />
               <div className="p-4 space-y-3">
-                <div className="h-4 w-3/4 bg-white/5 rounded" />
-                <div className="h-3 w-1/2 bg-white/5 rounded" />
+                <div className="h-4 w-3/4 bg-slate-100/50 dark:bg-white/5 rounded" />
+                <div className="h-3 w-1/2 bg-slate-100/50 dark:bg-white/5 rounded" />
               </div>
             </div>
           ))
         ) : (data?.items?.length ?? 0) === 0 ? (
-          <div className="col-span-full py-20 text-center text-muted-foreground glass-card rounded-3xl border-dashed border-2 border-white/5">
+          <div className="col-span-full py-20 text-center text-slate-500 dark:text-slate-400 glass-card rounded-3xl border-dashed border-2 border-slate-200/50 dark:border-white/5">
             <MonitorPlay className="w-12 h-12 mx-auto mb-4 opacity-10" />
             <p>Aucune vidéo trouvée.</p>
           </div>
         ) : (
           data?.items?.map((video) => (
-            <div key={video.id} className="group glass-card rounded-2xl border-white/5 overflow-hidden hover:border-brand-500/30 transition-all duration-500">
+            <div key={video.id} className="group bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden hover:border-brand-500/30 transition-all duration-500">
               <div className="relative aspect-video">
                 <img 
                   src={getImageUrl(video.thumbnail)} 
                   alt={video.title} 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-all">
+                <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-slate-100/50 dark:bg-black/40 transition-all">
                   <div className="w-12 h-12 rounded-full bg-brand-600 text-white flex items-center justify-center shadow-glow-sm transform group-hover:scale-110 transition-all">
                     <MonitorPlay className="w-6 h-6 fill-current" />
                   </div>
@@ -197,24 +197,24 @@ export default function AdminVideosPage() {
               </div>
               <div className="p-5 space-y-4">
                 <div>
-                  <h3 className="text-lg font-bold text-white group-hover:text-brand-400 transition-colors line-clamp-1">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors line-clamp-1">
                     {video.title}
                   </h3>
-                  <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-3 mt-2 text-xs text-slate-500 dark:text-slate-400">
                     <span className="flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {formatDate(video.createdAt, 'dd MMM yyyy')}</span>
                     <span className="flex items-center gap-1 uppercase tracking-wider font-bold text-brand-500"><Tag className="w-3.5 h-3.5" /> {(video as any).category?.name || 'Général'}</span>
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                <div className="flex items-center justify-between pt-4 border-t border-slate-200/50 dark:border-white/5">
                   <div className="flex items-center gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-white hover:bg-white/10">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-white hover:bg-slate-100 dark:hover:bg-white/10">
                       <Eye className="w-4 h-4" />
                     </Button>
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-8 w-8 text-muted-foreground hover:text-brand-400 hover:bg-brand-400/10"
+                      className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
                       onClick={() => openModal(video)}
                     >
                       <Edit className="w-4 h-4" />
@@ -223,7 +223,7 @@ export default function AdminVideosPage() {
                   <Button 
                     variant="ghost" 
                     size="icon" 
-                    className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                    className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                     onClick={() => handleDelete(video.id)}
                     disabled={deleteMutation.isPending}
                   >
@@ -240,13 +240,13 @@ export default function AdminVideosPage() {
         <div className="flex justify-center gap-2 mt-8">
           <Button 
             variant="outline" 
-            className="bg-transparent border-white/10 disabled:opacity-30 rounded-xl"
+            className="bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30 rounded-xl"
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
           >Précédent</Button>
           <Button 
             variant="outline" 
-            className="bg-transparent border-white/10 disabled:opacity-30 rounded-xl"
+            className="bg-transparent border-slate-200 dark:border-white/10 disabled:opacity-30 rounded-xl"
             onClick={() => setPage(p => Math.min(data.totalPages, p + 1))}
             disabled={page === data.totalPages}
           >Suivant</Button>
@@ -256,10 +256,10 @@ export default function AdminVideosPage() {
       {/* Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
+          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
               <h2 className="text-lg font-bold">{editingVideo ? 'Modifier' : 'Ajouter'} une Vidéo</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-white/5">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -272,7 +272,7 @@ export default function AdminVideosPage() {
                   <Input 
                     {...register('title')}
                     placeholder="Saisir le titre..." 
-                    className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`}
+                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`}
                   />
                   {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
                 </div>
@@ -283,7 +283,7 @@ export default function AdminVideosPage() {
                     <Input 
                       {...register('url')}
                       placeholder="https://youtube.com/watch?v=..." 
-                      className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.url ? 'border-red-500' : ''}`}
+                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.url ? 'border-red-500' : ''}`}
                     />
                     {errors.url && <p className="text-xs text-red-500">{errors.url.message}</p>}
                   </div>
@@ -292,7 +292,7 @@ export default function AdminVideosPage() {
                     <Input 
                       {...register('youtubeId')}
                       placeholder="Ex: dQw4w9WgXcQ" 
-                      className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                     />
                   </div>
                 </div>
@@ -303,7 +303,7 @@ export default function AdminVideosPage() {
                     {...register('description')}
                     placeholder="Saisir une courte description..." 
                     rows={3}
-                    className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                    className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                   />
                 </div>
 
@@ -328,7 +328,7 @@ export default function AdminVideosPage() {
                     <Input 
                       type="number"
                       {...register('order', { valueAsNumber: true })}
-                      className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                     />
                   </div>
                   
@@ -338,7 +338,7 @@ export default function AdminVideosPage() {
                         type="checkbox" 
                         id="featured" 
                         {...register('featured')}
-                        className="rounded border-white/10 bg-black/20 text-brand-500 focus:ring-brand-500"
+                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500"
                       />
                       <label htmlFor="featured" className="text-sm font-medium text-slate-300">Mise en avant</label>
                     </div>
@@ -347,7 +347,7 @@ export default function AdminVideosPage() {
                         type="checkbox" 
                         id="isActive" 
                         {...register('isActive')}
-                        className="rounded border-white/10 bg-black/20 text-brand-500 focus:ring-brand-500"
+                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500"
                       />
                       <label htmlFor="isActive" className="text-sm font-medium text-slate-300">Actif</label>
                     </div>
@@ -357,8 +357,8 @@ export default function AdminVideosPage() {
               </form>
             </div>
             
-            <div className="p-4 border-t border-white/5 flex justify-end gap-3 bg-black/20">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-white/10">Annuler</Button>
+            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
+              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
               <Button type="submit" form="video-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                 Enregistrer

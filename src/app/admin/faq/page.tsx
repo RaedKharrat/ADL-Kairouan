@@ -123,20 +123,20 @@ export default function AdminFaqPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-display font-bold">Foire Aux Questions</h1>
-          <p className="text-muted-foreground mt-1">Gérez les questions fréquemment posées par les citoyens.</p>
+          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez les questions fréquemment posées par les citoyens.</p>
         </div>
         <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
           <Plus className="w-4 h-4 mr-2" /> Nouvelle Question
         </Button>
       </div>
 
-      <div className="glass-card rounded-2xl border-white/5 overflow-hidden">
-        <div className="p-4 border-b border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-black/10">
+      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
             <Input 
               placeholder="Rechercher dans les questions/réponses..." 
-              className="pl-9 bg-white/5 border-transparent focus-visible:ring-brand-500" 
+              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -146,25 +146,25 @@ export default function AdminFaqPage() {
         <div className="p-6 space-y-4">
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="p-6 rounded-2xl border border-white/5 bg-white/5 space-y-3">
+              <div key={i} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 space-y-3">
                 <Skeleton className="h-6 w-3/4" />
                 <Skeleton className="h-20 w-full" />
               </div>
             ))
           ) : filteredFaqs?.length === 0 ? (
-            <div className="py-20 text-center text-muted-foreground">
+            <div className="py-20 text-center text-slate-500 dark:text-slate-400">
               <HelpCircle className="w-12 h-12 mx-auto mb-4 opacity-20" />
               <p>Aucune question trouvée.</p>
             </div>
           ) : (
             filteredFaqs?.map((faq) => (
-              <div key={faq.id} className="p-6 rounded-2xl border border-white/5 bg-white/5 hover:border-brand-500/30 transition-all group relative">
+              <div key={faq.id} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 hover:border-brand-500/30 transition-all group relative">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
                       <span className="text-brand-500 font-display">Q.</span> {faq.question}
                     </h3>
-                    <p className="text-slate-400 leading-relaxed pl-6 border-l border-white/10">
+                    <p className="text-slate-400 leading-relaxed pl-6 border-l border-slate-200 dark:border-white/10">
                       {faq.answer}
                     </p>
                   </div>
@@ -172,7 +172,7 @@ export default function AdminFaqPage() {
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-9 w-9 text-muted-foreground hover:text-brand-400 hover:bg-brand-400/10"
+                      className="h-9 w-9 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
                       onClick={() => openModal(faq)}
                     >
                       <Edit className="w-4 h-4" />
@@ -180,7 +180,7 @@ export default function AdminFaqPage() {
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                      className="h-9 w-9 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
                       onClick={() => handleDelete(faq.id)}
                       disabled={deleteMutation.isPending}
                     >
@@ -204,10 +204,10 @@ export default function AdminFaqPage() {
       {/* Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-white/5 flex justify-between items-center bg-black/20">
+          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
               <h2 className="text-lg font-bold">{editingFaq ? 'Modifier' : 'Ajouter'} une Question</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-white/5">
+              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
                 <X className="w-4 h-4" />
               </Button>
             </div>
@@ -220,7 +220,7 @@ export default function AdminFaqPage() {
                   <Input 
                     {...register('question')}
                     placeholder="Saisir la question..." 
-                    className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.question ? 'border-red-500' : ''}`}
+                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.question ? 'border-red-500' : ''}`}
                   />
                   {errors.question && <p className="text-xs text-red-500">{errors.question.message}</p>}
                 </div>
@@ -231,7 +231,7 @@ export default function AdminFaqPage() {
                     {...register('answer')}
                     placeholder="Saisir la réponse détaillée..." 
                     rows={6}
-                    className={`bg-black/20 border-white/5 focus-visible:ring-brand-500 ${errors.answer ? 'border-red-500' : ''}`}
+                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.answer ? 'border-red-500' : ''}`}
                   />
                   {errors.answer && <p className="text-xs text-red-500">{errors.answer.message}</p>}
                 </div>
@@ -242,7 +242,7 @@ export default function AdminFaqPage() {
                     <Input 
                       type="number"
                       {...register('order', { valueAsNumber: true })}
-                      className="bg-black/20 border-white/5 focus-visible:ring-brand-500"
+                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
                     />
                   </div>
                   <div className="flex items-end pb-2">
@@ -251,7 +251,7 @@ export default function AdminFaqPage() {
                         type="checkbox" 
                         id="isActive" 
                         {...register('isActive')}
-                        className="rounded border-white/10 bg-black/20 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
+                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
                       />
                       <label htmlFor="isActive" className="text-sm font-medium text-slate-300">
                         Visible sur le site
@@ -263,8 +263,8 @@ export default function AdminFaqPage() {
               </form>
             </div>
             
-            <div className="p-4 border-t border-white/5 flex justify-end gap-3 bg-black/20">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-white/10">Annuler</Button>
+            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
+              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
               <Button type="submit" form="faq-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
                 {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
                 Enregistrer

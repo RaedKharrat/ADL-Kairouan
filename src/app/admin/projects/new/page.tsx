@@ -84,20 +84,20 @@ export default function AdminProjectNewPage() {
     <form className="space-y-8 max-w-5xl mx-auto" onSubmit={(e) => e.preventDefault()}>
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-white/5">
+          <Button variant="ghost" size="icon" asChild className="rounded-full hover:bg-slate-50 dark:hover:bg-white/5">
             <Link href="/admin/projects">
               <ArrowLeft className="w-5 h-5" />
             </Link>
           </Button>
           <div>
             <h1 className="text-3xl font-display font-bold">Créer un Projet</h1>
-            <p className="text-muted-foreground mt-1">Ajoutez un nouveau projet à la plateforme.</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-1">Ajoutez un nouveau projet à la plateforme.</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
           <Button 
             variant="outline" 
-            className="bg-transparent border-white/10 hover:bg-white/5 disabled:opacity-50"
+            className="bg-transparent border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-50"
             onClick={handleSubmit((data) => onSubmit(data, false))}
             disabled={createMutation.isPending}
           >
@@ -118,7 +118,7 @@ export default function AdminProjectNewPage() {
         
         {/* Main Content Form */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="glass-card rounded-2xl p-6 border-white/5">
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
             <h2 className="text-lg font-bold mb-6">Informations Générales</h2>
             
             <div className="space-y-6">
@@ -127,7 +127,7 @@ export default function AdminProjectNewPage() {
                 <Input 
                   {...register('title')}
                   placeholder="Saisir le titre..." 
-                  className={`bg-white/5 border-white/10 h-12 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`} 
+                  className={`bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12 focus-visible:ring-brand-500 ${errors.title ? 'border-red-500' : ''}`} 
                 />
                 {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
               </div>
@@ -138,7 +138,7 @@ export default function AdminProjectNewPage() {
                   {...register('excerpt')}
                   rows={3}
                   placeholder="Un résumé de 2-3 lignes..."
-                  className="bg-white/5 border-white/10"
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10"
                 />
               </div>
 
@@ -148,7 +148,7 @@ export default function AdminProjectNewPage() {
                   {...register('content')}
                   rows={15}
                   placeholder="<h2>Titre de section</h2><p>Contenu...</p>"
-                  className="bg-white/5 border-white/10 font-mono text-sm"
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 font-mono text-sm"
                 />
               </div>
             </div>
@@ -158,14 +158,14 @@ export default function AdminProjectNewPage() {
         {/* Sidebar Settings */}
         <div className="space-y-6">
           
-          <div className="glass-card rounded-2xl p-6 border-white/5">
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
             <h2 className="text-lg font-bold mb-6">Organisation</h2>
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-300">Catégorie <span className="text-red-500">*</span></label>
                 <select 
                   {...register('categoryId')}
-                  className={`flex h-12 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-500 ${errors.categoryId ? 'border-red-500' : ''}`}
+                  className={`flex h-12 w-full rounded-xl border border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-brand-500 ${errors.categoryId ? 'border-red-500' : ''}`}
                 >
                   <option value="" className="bg-surface">Sélectionner une catégorie</option>
                   {categories?.map(c => (
@@ -177,7 +177,7 @@ export default function AdminProjectNewPage() {
             </div>
           </div>
 
-          <div className="glass-card rounded-2xl p-6 border-white/5">
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
             <h2 className="text-lg font-bold mb-6">Image de couverture</h2>
             <Controller
               control={control}
