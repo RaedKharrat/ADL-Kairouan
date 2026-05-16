@@ -697,6 +697,72 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── ARCHITECTURAL MARQUEE DIVIDER ──────────────────────────────── */}
+      <section className="relative py-24 bg-slate-950 dark:bg-white overflow-hidden transition-colors duration-1000 border-y border-white/5 dark:border-slate-100">
+        {/* Layered Motion Typography */}
+        <div className="absolute inset-0 flex flex-col justify-center gap-4 opacity-[0.03] dark:opacity-[0.05] pointer-events-none select-none">
+          <div className="flex whitespace-nowrap animate-marquee text-[12rem] font-display font-black uppercase tracking-tighter text-white dark:text-slate-950 leading-none">
+            <span>KAIROUAN&nbsp;•&nbsp;INNOVATION&nbsp;•&nbsp;CITOYENNETÉ&nbsp;•&nbsp;RÉSILIENCE&nbsp;•&nbsp;</span>
+            <span>KAIROUAN&nbsp;•&nbsp;INNOVATION&nbsp;•&nbsp;CITOYENNETÉ&nbsp;•&nbsp;RÉSILIENCE&nbsp;•&nbsp;</span>
+          </div>
+          <div className="flex whitespace-nowrap animate-marquee-reverse text-[12rem] font-display font-black uppercase tracking-tighter text-white dark:text-slate-950 leading-none opacity-50">
+            <span>URBANISME&nbsp;•&nbsp;VISION&nbsp;2030&nbsp;•&nbsp;SOLIDARITÉ&nbsp;•&nbsp;AVENIR&nbsp;•&nbsp;</span>
+            <span>URBANISME&nbsp;•&nbsp;VISION&nbsp;2030&nbsp;•&nbsp;SOLIDARITÉ&nbsp;•&nbsp;AVENIR&nbsp;•&nbsp;</span>
+          </div>
+        </div>
+
+        <div className="container-tight px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24">
+            
+            <div className="flex flex-col gap-6 max-w-xl text-center lg:text-left">
+              <div className="flex items-center justify-center lg:justify-start gap-3">
+                <div className="w-12 h-[1px] bg-royal-500" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-500">Impulsion Urbaine</span>
+              </div>
+              <h3 className="text-5xl md:text-7xl font-display font-bold text-white dark:text-slate-950 uppercase tracking-tighter leading-[0.85]">
+                Le futur <br /> se dessine <br /> <span className="text-royal-500">maintenant.</span>
+              </h3>
+            </div>
+
+            {/* Glassmorphic Floating Card */}
+            <div className="relative group/card">
+              <div className="absolute -inset-4 bg-royal-500/20 rounded-[3rem] blur-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-1000"></div>
+              <div className="relative w-full md:w-[400px] glass-card p-10 md:p-12 rounded-[2.5rem] border-white/10 dark:border-slate-200 bg-white/5 dark:bg-slate-50/50 backdrop-blur-3xl shadow-2xl">
+                <div className="space-y-10">
+                  <div className="flex items-start justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-5xl font-display font-bold text-white dark:text-slate-950 leading-none mb-2">95%</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Satisfaction Citoyenne</span>
+                    </div>
+                    <div className="w-12 h-12 rounded-2xl bg-royal-600/10 flex items-center justify-center border border-royal-500/20">
+                      <Users className="w-6 h-6 text-royal-500" />
+                    </div>
+                  </div>
+                  
+                  <div className="h-px bg-white/10 dark:bg-slate-200 w-full" />
+                  
+                  <div className="flex items-start justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-5xl font-display font-bold text-white dark:text-slate-950 leading-none mb-2">124</span>
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Projets Réalisés</span>
+                    </div>
+                    <div className="w-12 h-12 rounded-2xl bg-royal-600/10 flex items-center justify-center border border-royal-500/20">
+                      <Star className="w-6 h-6 text-royal-500" />
+                    </div>
+                  </div>
+
+                  <Link href="/reports" className="w-full h-14 rounded-full bg-white dark:bg-slate-950 text-slate-950 dark:text-white flex items-center justify-center text-[10px] font-bold uppercase tracking-widest hover:bg-royal-500 hover:text-white dark:hover:bg-royal-600 transition-all group">
+                    Consulter les Rapports 
+                    <ArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* ─── FAQ SECTION (MODERN ARCHITECTURAL) ─────────────────────────── */}
       <section className="faq-section py-32 bg-background relative overflow-hidden">
         <div className="container-tight px-6 relative z-10">

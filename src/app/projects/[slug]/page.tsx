@@ -77,7 +77,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
       />
 
       {/* ─── CINEMATIC PROJECT HEADER ───────────────────────────────── */}
-      <section className="relative w-full pt-32 pb-12 px-4 lg:px-8 overflow-hidden bg-slate-950 dark:bg-white transition-colors duration-500">
+      <section className="relative w-full pt-20 pb-32 px-4 lg:px-8 overflow-hidden bg-slate-950 dark:bg-white transition-colors duration-500">
         {/* Background mesh grid */}
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff10_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-20"></div>
         
