@@ -86,8 +86,6 @@ export default function AboutPage() {
               {/* Architectural Frame Shape - Rotated behind the image */}
               <div className="absolute inset-0 bg-slate-100 dark:bg-slate-800/50 rounded-[4rem] rotate-6 border border-slate-200 dark:border-white/10 transition-transform duration-1000 group-hover:rotate-[8deg] group-hover:scale-[1.02]"></div>
               
-              {/* Accent Shape */}
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-royal-600/20 rounded-3xl -rotate-12 blur-sm transition-all duration-1000 group-hover:rotate-0 group-hover:scale-110"></div>
 
               {/* Main Image Container */}
               <div className="relative z-10 aspect-[4/5] rounded-[3rem] overflow-hidden bg-slate-100 dark:bg-slate-900 shadow-2xl border border-slate-200/50 dark:border-white/5">
@@ -189,15 +187,15 @@ export default function AboutPage() {
           </div>
 
           <div className="relative flex overflow-hidden group py-12 border-y border-slate-100 dark:border-white/5">
-            <div className="flex animate-marquee whitespace-nowrap gap-24 items-center">
+            <div className="flex animate-marquee whitespace-nowrap gap-12 md:gap-24 items-center will-change-transform">
               {partners && partners.length > 0 ? (
                 [...partners, ...partners].map((partner, i) => (
-                  <div key={i} className="inline-block">
-                    <div className="flex items-center gap-6 opacity-100 transition-all duration-700 hover:scale-110">
+                  <div key={i} className="inline-block shrink-0 min-w-[120px] md:min-w-[180px]">
+                    <div className="flex items-center justify-center gap-6 opacity-100 transition-all duration-700 hover:scale-110">
                       {partner.logo ? (
-                        <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-12 md:h-20 w-auto object-contain" />
+                        <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-10 md:h-20 w-auto object-contain" />
                       ) : (
-                        <span className="text-xl font-display font-bold uppercase tracking-widest text-slate-300 dark:text-slate-700">{partner.name}</span>
+                        <span className="text-lg md:text-xl font-display font-bold uppercase tracking-widest text-slate-300 dark:text-slate-700">{partner.name}</span>
                       )}
                     </div>
                   </div>

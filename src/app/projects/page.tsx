@@ -1,6 +1,6 @@
 'use client';
 
-import { Search, BookOpen, LayoutGrid, List, Image as ImageIcon, Video as VideoIcon, PlayCircle, X, Loader2, Plus } from 'lucide-react';
+import { Search, BookOpen, LayoutGrid, List, Image as ImageIcon, Video as VideoIcon, PlayCircle, X, Loader2, Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
