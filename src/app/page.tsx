@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, BookOpen, ShieldCheck, Globe2, TrendingUp, ChevronRight, ChevronLeft, PlayCircle, Mail, Phone, MapPin, ChevronDown, Quote, Star } from 'lucide-react';
+import { ArrowRight, BookOpen, ShieldCheck, Globe2, TrendingUp, ChevronRight, ChevronLeft, PlayCircle, Mail, Phone, MapPin, ChevronDown, Quote, Star, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useQuery } from '@tanstack/react-query';
