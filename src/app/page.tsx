@@ -434,8 +434,24 @@ export default function Home() {
 
       {/* ─── PROJECTS SECTION (MODERN ARCHITECTURAL) ────────────────────── */}
       <section className="projects-section py-32 relative bg-slate-50 dark:bg-slate-900/50 overflow-hidden">
-        {/* Signature Dot Pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-40"></div>
+        {/* Custom Code-Generated Texture: Tiger + Dots (Matched to Team Section) */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.08] text-slate-950 dark:text-white">
+          <svg width="100%" height="100%" className="absolute inset-0">
+            <filter id="tigerFilterHome">
+              <feTurbulence type="fractalNoise" baseFrequency="0.015 0.08" numOctaves="2" result="noise" />
+              <feDisplacementMap in="SourceGraphic" in2="noise" scale="30" />
+            </filter>
+            <pattern id="tigerPatternHome" x="0" y="0" width="300" height="200" patternUnits="userSpaceOnUse">
+              <rect width="300" height="200" fill="transparent" />
+              {/* Organic Wavy Lines */}
+              <path d="M-50 40 L350 40 M-50 100 L350 100 M-50 160 L350 160" 
+                    stroke="currentColor" strokeWidth="12" strokeLinecap="round" filter="url(#tigerFilterHome)" />
+            </pattern>
+            <rect width="100%" height="100%" fill="url(#tigerPatternHome)" />
+          </svg>
+          {/* Dots Overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(currentColor_1.5px,transparent_1.5px)] [background-size:40px_40px] opacity-30"></div>
+        </div>
         
         <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
           <div className="projects-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
