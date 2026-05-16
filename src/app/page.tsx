@@ -315,12 +315,12 @@ export default function Home() {
       </section>
 
       {/* ─── ACTUALITY SECTION ────────────────────────────────────────────── */}
-      <section className="actuality-section py-32 relative bg-background overflow-hidden">
+      <section className="actuality-section py-20 relative bg-background overflow-hidden">
         <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
-          <div className="actuality-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
+          <div className="actuality-header flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-3xl">
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-6">Vie Associative</p>
-              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85] mb-8">Actualités <br /> &amp; Nouvelles</h2>
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-2">Vie Associative</p>
+              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85] mb-4">Actualités <br /> &amp; Nouvelles</h2>
               <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed font-light max-w-xl">
                 Restez informé des dernières nouvelles, événements et publications de l'ADL Kairouan.
               </p>
@@ -433,7 +433,7 @@ export default function Home() {
       </section>
 
       {/* ─── PROJECTS SECTION (MODERN ARCHITECTURAL) ────────────────────── */}
-      <section className="projects-section py-32 relative bg-slate-50 dark:bg-slate-900/50 overflow-hidden">
+      <section className="projects-section py-20 relative bg-slate-50 dark:bg-slate-900/50 overflow-hidden">
         {/* Custom Code-Generated Texture: Tiger + Dots (Matched to Team Section) */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03] dark:opacity-[0.08] text-slate-950 dark:text-white">
           <svg width="100%" height="100%" className="absolute inset-0">
@@ -454,10 +454,10 @@ export default function Home() {
         </div>
         
         <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10">
-          <div className="projects-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
+          <div className="projects-header flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div className="max-w-3xl">
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-6">Impact Local</p>
-              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85] mb-8">Dernières <br /> Réalisations</h2>
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600 mb-2">Impact Local</p>
+              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85] mb-4">Dernières <br /> Réalisations</h2>
               <p className="text-sm md:text-base text-slate-500 dark:text-slate-400 leading-relaxed font-light max-w-xl">
                 Explorer nos initiatives concrètes pour transformer durablement le paysage socio-économique de Kairouan.
               </p>
