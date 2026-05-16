@@ -1,21 +1,29 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   ArrowLeft, Calendar, MapPin, CheckCircle2, Share2, 
   Download, BookOpen, Target, ChevronLeft, Globe, 
-  Users, Zap, Shield, ArrowRight
+  Users, Zap, Shield, ArrowRight, Eye, Play, 
+  FileText, Bookmark, Facebook, Twitter, Linkedin
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
 import { Project } from '@/types';
-import { getImageUrl, formatDate, cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
+import { getImageUrl, formatDate, cn, getYoutubeId } from '@/lib/utils';
+import { motion, useScroll, useSpring } from 'framer-motion';
 
 export default function ProjectDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = React.use(params);
+  
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
   
   const { data: project, isLoading } = useQuery<Project>({
     queryKey: ['project-public', slug],
@@ -58,14 +66,22 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
     );
   }
 
+  const youtubeId = getYoutubeId(project.videoUrl);
+
   return (
     <div className="relative min-h-screen bg-background">
-      
+      {/* ─── READING PROGRESS BAR ────────────────────────────────────── */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1.5 bg-brand-600 origin-left z-[100]"
+        style={{ scaleX }}
+      />
+
       {/* ─── CINEMATIC PROJECT HEADER ───────────────────────────────── */}
-      <section className="relative w-full pt-40 pb-20 px-4 lg:px-8 overflow-hidden bg-slate-50 dark:bg-slate-950/50">
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:40px_40px] opacity-20"></div>
+      <section className="relative w-full pt-40 pb-20 px-4 lg:px-8 overflow-hidden">
+        {/* Background mesh grid */}
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1.5px,transparent_1.5px)] dark:bg-[radial-gradient(#334155_1.5px,transparent_1.5px)] [background-size:32px_32px] opacity-20"></div>
         
-        <div className="container max-w-7xl relative z-10">
+        <div className="container max-w-[1400px] mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -76,82 +92,87 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
               Répertoire des Projets
             </Link>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end">
-              <div>
-                <div className="flex flex-wrap items-center gap-4 mb-8">
-                  {project.category && (
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-600 bg-brand-500/10 px-4 py-1.5 rounded-full border border-brand-500/20">
-                      {project.category.name}
-                    </span>
-                  )}
-                  <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    {project.status === 'PUBLISHED' ? 'Impact Actif' : 'En Étude'}
-                  </span>
+            <div className="flex flex-wrap items-center gap-4 mb-8">
+              {project.category && (
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-600 bg-brand-500/10 px-4 py-1.5 rounded-full border border-brand-500/20">
+                  {project.category.name}
+                </span>
+              )}
+              <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                {project.status === 'PUBLISHED' ? 'Impact Actif' : 'En Étude'}
+              </span>
+              <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                <span className="flex items-center gap-2"><Eye className="w-4 h-4" /> {project.views || 0} vues</span>
+                <span className="flex items-center gap-2"><Calendar className="w-4 h-4" /> {formatDate(project.createdAt, 'MMM yyyy')}</span>
+              </div>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-slate-950 dark:text-white leading-[0.9] tracking-tighter mb-12">
+              {project.title}
+            </h1>
+
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 pt-10 border-t border-slate-200 dark:border-white/10">
+              <div className="flex items-center gap-10">
+                <div className="flex flex-col">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Localisation</p>
+                  <p className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-brand-600" /> Kairouan Centre
+                  </p>
                 </div>
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-slate-950 dark:text-white leading-[0.9] tracking-tighter mb-4">
-                  {project.title}
-                </h1>
+                <div className="w-px h-10 bg-slate-200 dark:bg-white/10" />
+                <div className="flex flex-col">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">Bénéficiaires</p>
+                  <p className="font-bold text-lg text-slate-900 dark:text-white flex items-center gap-2">
+                    <Users className="w-4 h-4 text-brand-600" /> Directs & Indirects
+                  </p>
+                </div>
               </div>
 
-              <div className="lg:pb-4">
-                <p className="text-xl md:text-2xl text-slate-500 dark:text-slate-400 font-light leading-relaxed max-w-xl">
-                  {project.excerpt || "Une initiative stratégique visant à transformer le paysage local de Kairouan par l'innovation et l'engagement communautaire."}
-                </p>
+              <div className="flex items-center gap-3">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mr-2">Partager :</p>
+                {[Facebook, Twitter, Linkedin].map((Icon, i) => (
+                  <button key={i} className="w-10 h-10 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-500 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all">
+                    <Icon className="w-4 h-4" />
+                  </button>
+                ))}
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ─── PROJECT SNAPSHOT GRID ───────────────────────────────────── */}
-      <section className="container max-w-7xl px-4 lg:px-8 -mt-10 relative z-20">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {[
-            { label: 'Localisation', value: 'Kairouan Centre', icon: MapPin, color: 'text-brand-600' },
-            { label: 'Date Lancement', value: formatDate(project.createdAt, 'MMM yyyy'), icon: Calendar, color: 'text-purple-600' },
-            { label: 'Bénéficiaires', value: 'Directs & Indirects', icon: Users, color: 'text-emerald-600' },
-            { label: 'Portée', value: 'Gouvernementale', icon: Globe, color: 'text-amber-600' }
-          ].map((stat, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 * i }}
-              className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-[2rem] shadow-xl border border-slate-100 dark:border-white/5 flex flex-col items-center text-center group hover:border-brand-500/20 transition-all"
-            >
-              <div className={cn("w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform", stat.color)}>
-                <stat.icon className="w-5 h-5" />
-              </div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{stat.label}</p>
-              <p className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">{stat.value}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* ─── MAIN CONTENT ────────────────────────────────────────────── */}
-      <section className="container max-w-7xl px-4 lg:px-8 py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24">
+      {/* ─── MAIN CONTENT AREA ─────────────────────────────────────────── */}
+      <section className="container max-w-[1400px] mx-auto px-4 lg:px-8 pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           
-          {/* PROJECT DESCRIPTION */}
+          {/* PROJECT CONTENT */}
           <div className="lg:col-span-8">
-            {project.coverImage && (
-              <motion.div 
-                initial={{ opacity: 0, clipPath: 'inset(100% 0 0 0)' }}
-                whileInView={{ opacity: 1, clipPath: 'inset(0% 0 0 0)' }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full aspect-[21/9] rounded-[2.5rem] overflow-hidden shadow-2xl mb-24 bg-slate-100"
-              >
+            {/* HERO MEDIA */}
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="w-full rounded-[2.5rem] overflow-hidden shadow-2xl bg-slate-100 dark:bg-slate-900 mb-12 aspect-[16/9] relative"
+            >
+              {project.coverImage && (
                 <img 
                   src={getImageUrl(project.coverImage)} 
                   alt={project.title} 
                   className="w-full h-full object-cover" 
                 />
-              </motion.div>
-            )}
+              )}
+            </motion.div>
 
-            <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-headings:tracking-tight prose-headings:uppercase prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:leading-relaxed prose-p:text-xl prose-p:font-light">
+            <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-headings:tracking-tight prose-headings:uppercase prose-p:text-slate-600 dark:prose-p:text-slate-400 prose-p:leading-relaxed prose-p:text-xl prose-blockquote:border-brand-600 prose-blockquote:bg-slate-50 dark:prose-blockquote:bg-slate-900/50 prose-blockquote:py-2 prose-blockquote:rounded-r-2xl">
+              {project.excerpt && (
+                <div className="mb-12">
+                  <p className="text-3xl md:text-4xl font-display font-medium text-slate-900 dark:text-white leading-[1.2] tracking-tight italic border-l-4 border-brand-600 pl-8">
+                    {project.excerpt}
+                  </p>
+                </div>
+              )}
+
               <div 
                 className="tiptap-content"
                 dangerouslySetInnerHTML={{ __html: project.content || '' }}
@@ -160,18 +181,18 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
 
             {/* VIDEO SHOWCASE */}
             {project.videoUrl && (
-              <div className="mt-32 pt-20 border-t border-slate-100 dark:border-white/5">
+              <div className="mt-24 pt-24 border-t border-slate-100 dark:border-white/5">
                 <div className="flex flex-col mb-12">
-                  <p className="text-xs font-bold uppercase tracking-[0.4em] text-brand-600 mb-4">Présentation</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.4em] text-brand-600 mb-4">Médiathèque</p>
                   <h2 className="text-4xl md:text-5xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.9]">
-                    Impact en <br /> Mouvement
+                    L'Impact en <br /> Mouvement
                   </h2>
                 </div>
-                <div className="aspect-video rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 bg-slate-900 group relative">
-                  {(project.videoUrl.includes('youtube.com') || project.videoUrl.includes('youtu.be')) ? (
-                    <iframe 
-                      src={`https://www.youtube.com/embed/${project.videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&?]+)/)?.[1]}?autoplay=0&rel=0`}
-                      className="w-full h-full"
+                <div className="aspect-video rounded-[3rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-white/10 bg-slate-900 relative">
+                  {youtubeId ? (
+                    <iframe
+                      src={`https://www.youtube.com/embed/${youtubeId}?autoplay=0&rel=0`}
+                      className="absolute inset-0 w-full h-full"
                       allowFullScreen
                     />
                   ) : (
@@ -186,67 +207,103 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
             )}
           </div>
 
-          {/* SIDEBAR ASSETS */}
-          <aside className="lg:col-span-4 space-y-12">
-            
-            {/* TECHNICAL SPECS */}
-            <div className="p-8 md:p-10 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 shadow-xl sticky top-32">
-              <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-950 dark:text-white mb-8 flex items-center gap-3">
-                <Shield className="w-5 h-5 text-brand-600" />
-                Spécifications
-              </h3>
+          {/* SIDEBAR */}
+          <aside className="lg:col-span-4">
+            <div className="sticky top-32 space-y-6">
               
-              <div className="space-y-6">
-                {[
-                  { icon: Zap, label: 'Phase actuelle', value: 'Implémentation' },
-                  { icon: Target, label: 'Objectif principal', value: 'Innovation Sociale' },
-                  { icon: Users, label: 'Partenaires', value: 'ADL & PNUD' }
-                ].map((spec, i) => (
-                  <div key={i} className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <spec.icon className="w-3.5 h-3.5 text-slate-400" />
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{spec.label}</p>
-                    </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">{spec.value}</p>
-                    {i < 2 && <div className="h-px bg-slate-100 dark:bg-white/5 mt-4" />}
-                  </div>
-                ))}
+              {/* INTERACTION BUTTONS */}
+              <div className="flex justify-between items-center px-8 py-5 rounded-2xl bg-white dark:bg-slate-900 shadow-xl border border-slate-100 dark:border-white/5">
+                <div className="flex flex-col items-center gap-2 text-slate-400">
+                  <Eye className="w-5 h-5 text-brand-600" />
+                  <span className="text-[10px] font-bold tracking-widest">{project.views || 0} lectures</span>
+                </div>
+                <div className="w-px h-6 bg-slate-200 dark:bg-white/10" />
+                <button className="flex flex-col items-center gap-2 text-slate-400 hover:text-brand-600 transition-all duration-500">
+                  <Bookmark className="w-5 h-5" />
+                  <span className="text-[10px] font-bold tracking-widest uppercase">Sauver</span>
+                </button>
+                <div className="w-px h-6 bg-slate-200 dark:bg-white/10" />
+                <button 
+                   onClick={() => navigator.clipboard.writeText(window.location.href)}
+                   className="flex flex-col items-center gap-2 text-slate-400 hover:text-brand-600 transition-all duration-500"
+                >
+                  <Share2 className="w-5 h-5" />
+                  <span className="text-[10px] font-bold tracking-widest uppercase">Lien</span>
+                </button>
               </div>
 
-              {/* DOWNLOADS */}
-              {project.pdfFiles && project.pdfFiles.length > 0 && (
-                <div className="mt-12 pt-10 border-t border-slate-100 dark:border-white/5 space-y-4">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-4">Dossiers Techniques</p>
-                  {project.pdfFiles.map((file, i) => (
-                    <a 
-                      key={i} 
-                      href={`/api/download?url=${encodeURIComponent(getImageUrl(file))}&filename=${encodeURIComponent(`${project.title}-dossier-${i + 1}.pdf`)}`}
-                      className="group flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-white/5 hover:border-brand-600 transition-all"
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 flex items-center justify-center text-slate-400 group-hover:text-brand-600">
-                          <Download className="w-4 h-4" />
-                        </div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Document {i + 1}</span>
+              {/* TECHNICAL SPECS (Facebook Style) */}
+              <div className="flex flex-col rounded-[2rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-xl overflow-hidden">
+                <div className="p-5 border-b border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-slate-950/30">
+                  <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-slate-900 dark:text-white flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-brand-600" />
+                    Spécifications
+                  </h3>
+                </div>
+
+                <div className="p-8 space-y-8">
+                  {[
+                    { icon: Zap, label: 'Phase actuelle', value: 'Implémentation' },
+                    { icon: Target, label: 'Objectif principal', value: 'Innovation Sociale' },
+                    { icon: Users, label: 'Partenaires', value: 'ADL & PNUD' },
+                    { icon: Globe, label: 'Portée', value: 'Gouvernementale' }
+                  ].map((spec, i) => (
+                    <div key={i} className="flex gap-4">
+                      <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0">
+                        <spec.icon className="w-5 h-5 text-brand-600" />
                       </div>
-                      <ArrowRight className="w-4 h-4 text-slate-300 group-hover:text-brand-600 group-hover:translate-x-1 transition-all" />
-                    </a>
+                      <div className="space-y-1">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{spec.label}</p>
+                        <p className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">{spec.value}</p>
+                      </div>
+                    </div>
                   ))}
+                </div>
+              </div>
+
+              {/* PDF DOCUMENTS */}
+              {project.pdfFiles && project.pdfFiles.length > 0 && (
+                <div className="p-8 rounded-[2rem] bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5">
+                  <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+                    <FileText className="w-4 h-4 text-brand-600" />
+                    Dossiers Tech
+                  </h3>
+                  <div className="space-y-3">
+                    {project.pdfFiles.map((file, i) => (
+                      <a 
+                        key={i} 
+                        href={`/api/download?url=${encodeURIComponent(getImageUrl(file))}&filename=${encodeURIComponent(`${project.title}-doc-${i + 1}.pdf`)}`}
+                        className="group flex items-center justify-between p-4 rounded-xl bg-white dark:bg-slate-950 border border-slate-100 dark:border-white/10 hover:border-brand-600 transition-all"
+                      >
+                        <span className="text-[10px] font-bold uppercase tracking-widest truncate max-w-[150px]">Dossier Technique {i + 1}</span>
+                        <Download className="w-4 h-4 text-slate-400 group-hover:text-brand-600 transition-all" />
+                      </a>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              {/* SHARE ACTION */}
-              <div className="mt-10">
-                <Button className="w-full h-14 rounded-2xl bg-brand-600 hover:bg-brand-500 text-white font-bold uppercase text-[10px] tracking-[0.2em] shadow-lg group">
-                  Partager le projet
-                  <Share2 className="w-4 h-4 ml-3 group-hover:rotate-12 transition-transform" />
+              {/* ACTION CARD */}
+              <div className="relative overflow-hidden p-8 rounded-[2rem] bg-brand-600 text-white shadow-2xl shadow-brand-600/20">
+                <div className="absolute -right-8 -top-8 w-32 h-32 bg-white/10 rounded-full blur-3xl" />
+                <h4 className="text-xl font-display font-bold uppercase tracking-tight mb-4 leading-tight">
+                  Soutenir <br /> l'Innovation
+                </h4>
+                <p className="text-[10px] font-medium text-white/70 mb-8 leading-relaxed">
+                  Contribuez au développement de Kairouan à travers nos projets.
+                </p>
+                <Button 
+                   asChild
+                  className="w-full h-11 rounded-xl bg-white text-brand-600 font-bold uppercase text-[9px] tracking-widest hover:bg-slate-100 border-none shadow-lg"
+                >
+                  <Link href="/contact">Nous Contacter</Link>
                 </Button>
               </div>
             </div>
           </aside>
         </div>
 
-        {/* PROJECT GALLERY */}
+        {/* PHOTO GALLERY (EDITORIAL GRID) */}
         {project.gallery && project.gallery.length > 0 && (
           <div className="mt-32">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-10">
@@ -257,23 +314,25 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
                 </h2>
               </div>
               <p className="text-sm text-slate-500 font-light max-w-[300px] italic">
-                Captures réelles de nos équipes et partenaires en pleine action.
+                "Une image vaut mille mots, une vision vaut tout l'avenir."
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {project.gallery.map((img, i) => (
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-[600px] md:h-[800px]">
+              {project.gallery.slice(0, 3).map((img, i) => (
                 <motion.div 
                   key={i} 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="aspect-[16/10] rounded-[2.5rem] overflow-hidden group shadow-2xl relative"
+                  className={cn(
+                    "relative rounded-[2rem] overflow-hidden group shadow-xl",
+                    i === 0 ? "md:col-span-8 md:row-span-2" : "md:col-span-4"
+                  )}
                 >
                   <img 
                     src={getImageUrl(img)} 
-                    alt={`Gallery ${i}`} 
+                    alt={`Scène ${i + 1}`} 
                     className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110" 
                   />
                   <div className="absolute inset-0 bg-brand-950/20 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -286,4 +345,3 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
     </div>
   );
 }
-
