@@ -33,9 +33,13 @@ export function GenericFileUpload({ value, onChange, onRemove, className, disabl
         },
       });
 
-      const url = response.data?.data?.url || response.data?.data?.path;
+      const d = response.data?.data;
+      // Support both new standardized { url } and old raw Cloudinary { secure_url }
+      const url = d?.url || d?.secure_url || d?.path;
       if (url) {
         onChange(url, file.size, file.type);
+      } else {
+        throw new Error('No URL returned from upload');
       }
     } catch (error) {
       console.error('Failed to upload file:', error);
