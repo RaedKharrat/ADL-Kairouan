@@ -1,8 +1,10 @@
 'use client';
 
 import React from 'react';
+import { cn } from '@/lib/utils';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import Link from 'next/link';
@@ -18,6 +20,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useQuery } from '@tanstack/react-query';
 import { BlogCategory } from '@/types';
 import { Video, FileText, ImageIcon, Settings2, Globe } from 'lucide-react';
+import { toast } from 'sonner';
 
 const blogSchema = z.object({
   title: z.string().min(3, 'Le titre doit faire au moins 3 caractères'),
@@ -283,7 +286,5 @@ export default function AdminBlogNewPage() {
         </div>
       </div>
     </form>
-  );
-}
   );
 }

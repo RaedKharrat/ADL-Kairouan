@@ -1,27 +1,224 @@
 {
-    "version": 3,
-    "caseSensitive": false,
-    "basePath": "",
-    "rewrites": {
-        "beforeFiles": [],
-        "afterFiles": [
-            {
-                "source": "/api/:path*",
-                "destination": "https://adl-kairouan-backend.onrender.com/api/v1/:path*",
-                "regex": "^\\/api(?:\\/((?:[^\\/]+?)(?:\\/(?:[^\\/]+?))*))?(?:\\/)?$",
-                "check": true
-            }
-        ],
-        "fallback": []
-    },
-    "redirects": [
-        {
-            "source": "/:path+/",
-            "destination": "/:path+",
-            "permanent": true,
-            "internal": true,
-            "regex": "^(?:\\/((?:[^\\/]+?)(?:\\/(?:[^\\/]+?))*))\\/$"
-        }
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [
+      {
+        "source": "/api/:path*",
+        "destination": "https://adl-kairouan-backend.onrender.com/api/v1/:path*",
+        "regex": "^/api(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))?(?:/)?$"
+      }
     ],
-    "headers": []
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/admin/blog/[id]",
+      "regex": "^/admin/blog/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/blog/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/admin/projects/[id]",
+      "regex": "^/admin/projects/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/admin/projects/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/blog/[slug]",
+      "regex": "^/blog/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/blog/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/projects/[slug]",
+      "regex": "^/projects/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/projects/(?<nxtPslug>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/about",
+      "regex": "^/about(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/about(?:/)?$"
+    },
+    {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin/blog",
+      "regex": "^/admin/blog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/blog(?:/)?$"
+    },
+    {
+      "page": "/admin/blog/new",
+      "regex": "^/admin/blog/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/blog/new(?:/)?$"
+    },
+    {
+      "page": "/admin/contact",
+      "regex": "^/admin/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/contact(?:/)?$"
+    },
+    {
+      "page": "/admin/faq",
+      "regex": "^/admin/faq(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/faq(?:/)?$"
+    },
+    {
+      "page": "/admin/login",
+      "regex": "^/admin/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/login(?:/)?$"
+    },
+    {
+      "page": "/admin/media",
+      "regex": "^/admin/media(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/media(?:/)?$"
+    },
+    {
+      "page": "/admin/newsletter",
+      "regex": "^/admin/newsletter(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/newsletter(?:/)?$"
+    },
+    {
+      "page": "/admin/partners",
+      "regex": "^/admin/partners(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/partners(?:/)?$"
+    },
+    {
+      "page": "/admin/projects",
+      "regex": "^/admin/projects(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/projects(?:/)?$"
+    },
+    {
+      "page": "/admin/projects/new",
+      "regex": "^/admin/projects/new(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/projects/new(?:/)?$"
+    },
+    {
+      "page": "/admin/reports",
+      "regex": "^/admin/reports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/reports(?:/)?$"
+    },
+    {
+      "page": "/admin/settings",
+      "regex": "^/admin/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/settings(?:/)?$"
+    },
+    {
+      "page": "/admin/taxonomies",
+      "regex": "^/admin/taxonomies(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/taxonomies(?:/)?$"
+    },
+    {
+      "page": "/admin/testimonials",
+      "regex": "^/admin/testimonials(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/testimonials(?:/)?$"
+    },
+    {
+      "page": "/admin/videos",
+      "regex": "^/admin/videos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/videos(?:/)?$"
+    },
+    {
+      "page": "/blog",
+      "regex": "^/blog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog(?:/)?$"
+    },
+    {
+      "page": "/contact",
+      "regex": "^/contact(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/contact(?:/)?$"
+    },
+    {
+      "page": "/faq",
+      "regex": "^/faq(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/faq(?:/)?$"
+    },
+    {
+      "page": "/projects",
+      "regex": "^/projects(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/projects(?:/)?$"
+    },
+    {
+      "page": "/reports",
+      "regex": "^/reports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/reports(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
 }
