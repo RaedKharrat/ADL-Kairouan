@@ -39,7 +39,7 @@ export function Navbar() {
         <div className={cn(
           "relative flex items-center justify-between transition-all duration-1000 px-10 rounded-b-[2rem] lg:rounded-b-[3rem] group",
           scrolled 
-            ? "py-3 bg-white/80 dark:bg-slate-950/80 backdrop-blur-2xl border border-slate-200/50 dark:border-white/10 shadow-2xl shadow-royal-950/10 rounded-t-[3rem]" 
+            ? "py-3 bg-slate-950/90 dark:bg-white/90 backdrop-blur-2xl border border-white/10 dark:border-slate-200/50 shadow-2xl shadow-royal-950/10 rounded-t-[3rem]" 
             : "py-8 bg-transparent border-transparent shadow-none"
         )}>
           {/* Logo */}
@@ -52,10 +52,10 @@ export function Navbar() {
               />
             </div>
             <div className="hidden sm:flex flex-col leading-none">
-              <span className="font-display font-bold text-base tracking-[0.2em] text-slate-950 dark:text-white uppercase">ADL Kairouan</span>
+              <span className="font-display font-bold text-base tracking-[0.2em] text-white dark:text-slate-950 uppercase">ADL Kairouan</span>
               <span className={cn(
                 "text-[8px] font-bold uppercase tracking-[0.4em] mt-1 transition-colors duration-700",
-                scrolled ? "text-royal-600" : "text-royal-500"
+                scrolled ? "text-royal-400 dark:text-royal-600" : "text-royal-500"
               )}>Vision Urbaine 2030</span>
             </div>
           </Link>
@@ -71,15 +71,15 @@ export function Navbar() {
                   className={cn(
                     'text-[10px] font-bold uppercase tracking-[0.5em] transition-all relative py-2 group/nav',
                     isActive 
-                      ? 'text-royal-600 dark:text-royal-400' 
+                      ? 'text-royal-400 dark:text-royal-600' 
                       : scrolled 
-                        ? 'text-slate-500 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white' 
-                        : 'text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white'
+                        ? 'text-slate-300 hover:text-white dark:text-slate-500 dark:hover:text-slate-950' 
+                        : 'text-slate-300 hover:text-white dark:text-slate-300 dark:hover:text-white'
                   )}
                 >
                   {item.name}
                   <span className={cn(
-                    "absolute bottom-0 left-0 w-0 h-[1.5px] bg-royal-600 transition-all duration-700 group-hover/nav:w-full",
+                    "absolute bottom-0 left-0 w-0 h-[1.5px] bg-royal-400 dark:bg-royal-600 transition-all duration-700 group-hover/nav:w-full",
                     isActive && "w-full"
                   )} />
                 </Link>
@@ -94,8 +94,8 @@ export function Navbar() {
               className={cn(
                 "w-11 h-11 rounded-full border flex items-center justify-center transition-all duration-700",
                 scrolled 
-                  ? "border-slate-100 dark:border-white/5 text-slate-400 hover:text-royal-600 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5" 
-                  : "border-slate-200 dark:border-white/10 text-slate-500 hover:text-slate-950 dark:hover:text-white"
+                  ? "border-white/10 dark:border-slate-100 text-slate-400 hover:text-white dark:hover:text-royal-600 hover:bg-white/5 dark:hover:bg-slate-50" 
+                  : "border-white/10 dark:border-white/10 text-white dark:text-white hover:bg-white/5"
               )}
             >
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -104,8 +104,8 @@ export function Navbar() {
             <Button asChild className={cn(
               "hidden md:flex rounded-full px-10 h-12 transition-all duration-700 font-display font-bold uppercase tracking-widest text-[10px]",
               scrolled 
-                ? "bg-slate-950 hover:bg-royal-600 dark:bg-white dark:text-slate-950 dark:hover:bg-royal-400 text-white shadow-2xl shadow-royal-950/10" 
-                : "bg-white/10 backdrop-blur-md border border-slate-950/10 dark:border-white/10 text-slate-950 dark:text-white hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-slate-950"
+                ? "bg-white text-slate-950 hover:bg-slate-200 dark:bg-slate-950 dark:text-white dark:hover:bg-royal-600 shadow-2xl shadow-royal-950/10" 
+                : "bg-white/10 backdrop-blur-md border border-white/10 text-white hover:bg-white hover:text-slate-950"
             )}>
               <Link href="/contact">S'engager</Link>
             </Button>
@@ -115,8 +115,8 @@ export function Navbar() {
               className={cn(
                 "lg:hidden w-11 h-11 rounded-full flex items-center justify-center transition-all",
                 scrolled 
-                  ? "bg-slate-50 dark:bg-white/5 text-slate-950 dark:text-white" 
-                  : "bg-white/20 backdrop-blur-md text-slate-950 dark:text-white border border-white/10"
+                  ? "bg-white/10 dark:bg-slate-100 text-white dark:text-slate-950" 
+                  : "bg-white/20 backdrop-blur-md text-white border border-white/10"
               )}
               onClick={() => setIsOpen(!isOpen)}
             >
