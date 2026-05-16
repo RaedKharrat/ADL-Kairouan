@@ -11,7 +11,6 @@ export function TopBar() {
   const { theme, setTheme } = useTheme();
 
   return (
-  return (
     <div className="px-4 md:px-8 lg:px-10 pt-6 pb-2 sticky top-0 z-30">
       <header className="h-16 rounded-2xl border border-white/20 dark:border-white/5 bg-white/70 dark:bg-[#0f172a]/70 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] px-6 flex items-center justify-between transition-all duration-300">
         <div className="flex items-center gap-4 flex-1">
