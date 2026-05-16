@@ -78,7 +78,7 @@ export default function Home() {
   const { data: hero } = useQuery<HeroSlide>({ queryKey: ['hero-active'], queryFn: async () => (await api.get(endpoints.hero.active)).data.data });
   const { data: stats } = useQuery<Statistic[]>({ queryKey: ['stats-active'], queryFn: async () => (await api.get(endpoints.statistics.active)).data.data });
   const { data: featuredProjects, isLoading: projectsLoading } = useQuery<Project[]>({ queryKey: ['projects-public-featured'], queryFn: async () => (await api.get(`${endpoints.projects}/public`)).data.data.items });
-  const { data: recentBlogs, isLoading: blogsLoading } = useQuery<BlogPost[]>({ queryKey: ['blog-recent-home'], queryFn: async () => (await api.get(`${endpoints.blog}?status=PUBLISHED&limit=5&sortBy=publishedAt&sortOrder=desc`)).data.data.items });
+  const { data: recentBlogs, isLoading: blogsLoading } = useQuery<BlogPost[]>({ queryKey: ['blog-recent-home'], queryFn: async () => (await api.get(`${endpoints.blog}/public`, { params: { limit: 5, sortBy: 'publishedAt', sortOrder: 'desc' } })).data.data.items });
   const { data: faqs } = useQuery<FAQ[]>({ queryKey: ['faqs-public'], queryFn: async () => (await api.get(`${endpoints.faq}/public`)).data.data });
   const { data: partners } = useQuery<Partner[]>({ queryKey: ['partners-public'], queryFn: async () => (await api.get(`${endpoints.partners}/public`)).data.data });
   const { data: testimonials } = useQuery<Testimonial[]>({ queryKey: ['testimonials-public'], queryFn: async () => (await api.get(`${endpoints.testimonials}/public`)).data.data });
@@ -314,65 +314,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── PARTNERS SECTION (MODERN ARCHITECTURAL) ────────────────────── */}
-      <section className="partners-section py-24 md:py-32 relative overflow-hidden bg-background">
-        <div className="container-tight px-6 relative z-10">
-          <div className="partners-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
-            <div className="max-w-3xl">
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400 mb-6">Écosystème</p>
-              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85]">Partenaires <br /> Institutionnels</h2>
-            </div>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-light max-w-[280px]">
-                Collaborer avec les acteurs clés pour bâtir un avenir transparent et prospère à Kairouan.
-              </p>
-              <div className="flex items-center gap-4 pt-4">
-                <div className="w-12 h-[1px] bg-royal-600" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-950 dark:text-white">Réseau d'Excellence</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative w-full overflow-hidden py-12 border-y border-slate-100 dark:border-white/5">
-            <div className="flex animate-marquee w-max gap-24 items-center">
-              {partners && partners.length > 0 ? (
-                // Doubling the list for a truly infinite seamless loop
-                [...partners, ...partners].map((partner, i) => (
-                  <div key={i} className="flex items-center gap-6 opacity-30 hover:opacity-100 transition-all duration-700 grayscale hover:grayscale-0 hover:scale-110 shrink-0">
-                    {partner.website ? (
-                      <a href={partner.website} target="_blank" rel="noopener noreferrer" className="block">
-                        {partner.logo ? (
-                          <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-8 md:h-12 w-auto object-contain" />
-                        ) : (
-                          <span className="text-xl font-display font-bold uppercase tracking-widest text-slate-300 dark:text-slate-700">{partner.name}</span>
-                        )}
-                      </a>
-                    ) : (
-                      <div className="block">
-                        {partner.logo ? (
-                          <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-8 md:h-12 w-auto object-contain" />
-                        ) : (
-                          <span className="text-xl font-display font-bold uppercase tracking-widest text-slate-300 dark:text-slate-700">{partner.name}</span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))
-              ) : (
-                // Fallback Partners
-                Array.from({ length: 12 }).map((_, i) => (
-                  <div key={i} className="w-32 h-10 bg-slate-100 dark:bg-slate-900 rounded animate-pulse shrink-0" />
-                ))
-              )}
-            </div>
-            
-            {/* Architectural Gradient Overlays */}
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
-          </div>
-        </div>
-      </section>
-
       {/* ─── ACTUALITY SECTION ────────────────────────────────────────────── */}
       <section className="actuality-section py-32 relative bg-background overflow-hidden">
         <div className="container-tight relative z-10 px-6">
@@ -598,6 +539,65 @@ export default function Home() {
 
         {/* Right Side Smooth Fade */}
         <div className="absolute right-0 top-0 bottom-0 w-32 md:w-64 z-10 bg-gradient-to-l from-slate-950 dark:from-white to-transparent pointer-events-none" />
+      </section>
+
+      {/* ─── PARTNERS SECTION (MODERN ARCHITECTURAL) ────────────────────── */}
+      <section className="partners-section py-24 md:py-32 relative overflow-hidden bg-background">
+        <div className="container-tight px-6 relative z-10">
+          <div className="partners-header flex flex-col md:flex-row md:items-end justify-between mb-24 gap-10">
+            <div className="max-w-3xl">
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-slate-400 mb-6">Écosystème</p>
+              <h2 className="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white leading-[0.85]">Partenaires <br /> Institutionnels</h2>
+            </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-light max-w-[280px]">
+                Collaborer avec les acteurs clés pour bâtir un avenir transparent et prospère à Kairouan.
+              </p>
+              <div className="flex items-center gap-4 pt-4">
+                <div className="w-12 h-[1px] bg-royal-600" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-950 dark:text-white">Réseau d'Excellence</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative w-full overflow-hidden py-12 border-y border-slate-100 dark:border-white/5">
+            <div className="flex animate-marquee w-max gap-24 items-center">
+              {partners && partners.length > 0 ? (
+                // Doubling the list for a truly infinite seamless loop
+                [...partners, ...partners].map((partner, i) => (
+                  <div key={i} className="flex items-center gap-6 opacity-30 hover:opacity-100 transition-all duration-700 grayscale hover:grayscale-0 hover:scale-110 shrink-0">
+                    {partner.website ? (
+                      <a href={partner.website} target="_blank" rel="noopener noreferrer" className="block">
+                        {partner.logo ? (
+                          <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-8 md:h-12 w-auto object-contain" />
+                        ) : (
+                          <span className="text-xl font-display font-bold uppercase tracking-widest text-slate-300 dark:text-slate-700">{partner.name}</span>
+                        )}
+                      </a>
+                    ) : (
+                      <div className="block">
+                        {partner.logo ? (
+                          <img src={getImageUrl(partner.logo)} alt={partner.name} className="h-8 md:h-12 w-auto object-contain" />
+                        ) : (
+                          <span className="text-xl font-display font-bold uppercase tracking-widest text-slate-300 dark:text-slate-700">{partner.name}</span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                // Fallback Partners
+                Array.from({ length: 12 }).map((_, i) => (
+                  <div key={i} className="w-32 h-10 bg-slate-100 dark:bg-slate-900 rounded animate-pulse shrink-0" />
+                ))
+              )}
+            </div>
+            
+            {/* Architectural Gradient Overlays */}
+            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background via-background/80 to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background via-background/80 to-transparent z-10 pointer-events-none" />
+          </div>
+        </div>
       </section>
 
       {/* ─── TESTIMONIALS SECTION (MODERN ARCHITECTURAL) ────────────────── */}
