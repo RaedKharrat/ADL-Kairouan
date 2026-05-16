@@ -42,44 +42,16 @@ export default function ReportsPage() {
     const rawUrl = getImageUrl(report.fileUrl);
     const fileName = `${report.title}.${(report.fileType || 'pdf').toLowerCase()}`;
 
-    try {
-      // ── Cloudinary URLs: use fl_attachment flag to force browser download ──
-      if (rawUrl.includes('cloudinary.com') || rawUrl.includes('res.cloudinary')) {
-        // Insert fl_attachment:{filename} into the Cloudinary transformation URL
-        // e.g. https://res.cloudinary.com/.../upload/v123/file.pdf
-        //   → https://res.cloudinary.com/.../upload/fl_attachment:MonRapport.pdf/v123/file.pdf
-        let downloadUrl = rawUrl;
-        if (rawUrl.includes('/upload/')) {
-          downloadUrl = rawUrl.replace('/upload/', `/upload/fl_attachment:${encodeURIComponent(fileName)}/`);
-        }
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.download = fileName;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        return;
-      }
-
-      // ── Local / API-served files: fetch as blob ──────────────────────────
-      const response = await fetch(rawUrl);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error('Download failed, falling back to new tab:', error);
-      // Last resort fallback — open in new tab so user can save manually
-      window.open(rawUrl, '_blank', 'noopener,noreferrer');
-    }
+    // Route the download through our Next.js API proxy
+    // This solves CORS issues and forces the browser to download the file with the exact filename.
+    const proxyUrl = `/api/download?url=${encodeURIComponent(rawUrl)}&filename=${encodeURIComponent(fileName)}`;
+    
+    const link = document.createElement('a');
+    link.href = proxyUrl;
+    link.download = fileName; // Supported because proxy is same-origin
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
