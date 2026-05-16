@@ -13,7 +13,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
   const { data: post, isLoading } = useQuery<BlogPost>({
     queryKey: ['blog-public', slug],
     queryFn: async () => {
-      const response = await api.get(`${endpoints.blog}/public/slug/${slug}`);
+      const response = await api.get(`${endpoints.blog}/slug/${slug}`);
       return response.data.data;
     }
   });

@@ -79,7 +79,13 @@ export default function AdminBlogNewPage() {
   });
 
   const onSubmit = (data: BlogFormValues, publish: boolean = false) => {
-    createMutation.mutate({ ...data, status: publish ? 'PUBLISHED' : 'DRAFT' });
+    // Sanitize categoryId: convert empty string to null to avoid foreign key errors
+    const sanitizedData = {
+      ...data,
+      categoryId: data.categoryId === '' ? null : data.categoryId,
+      status: publish ? 'PUBLISHED' : 'DRAFT'
+    };
+    createMutation.mutate(sanitizedData as BlogFormValues);
   };
 
   return (

@@ -103,6 +103,14 @@ export function Footer() {
             <Link href="/projects" className="h-10 px-6 rounded-full border border-white text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-white hover:text-black transition-all">
               Voir les projets
             </Link>
+            <a 
+              href="https://www.google.com/maps/place/ADL+Tunisie/@35.6724704,10.1034421,17z" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="h-10 px-6 rounded-full bg-white text-black text-[10px] font-bold uppercase tracking-widest flex items-center hover:bg-white/90 transition-all shadow-glow-sm"
+            >
+              Localisation du Siège
+            </a>
           </div>
         </div>
 
