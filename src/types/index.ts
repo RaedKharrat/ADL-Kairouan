@@ -92,6 +92,10 @@ export interface Project {
   publishedAt?: string | null;
   categoryId?: string | null;
   category?: ProjectCategory | null;
+  phase?: string | null;
+  mainObjective?: string | null;
+  partners?: string | null;
+  scope?: string | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
   seoKeywords: string[];

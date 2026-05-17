@@ -31,6 +31,10 @@ const projectSchema = z.object({
   videoUrl: z.string().optional(),
   gallery: z.array(z.string()).optional(),
   pdfFiles: z.array(z.string()).optional(),
+  phase: z.string().optional(),
+  mainObjective: z.string().optional(),
+  partners: z.string().optional(),
+  scope: z.string().optional(),
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
@@ -68,7 +72,11 @@ export default function AdminProjectEditPage() {
       coverImage: '',
       videoUrl: '',
       gallery: [],
-      pdfFiles: []
+      pdfFiles: [],
+      phase: '',
+      mainObjective: '',
+      partners: '',
+      scope: ''
     }
   });
 
@@ -83,7 +91,11 @@ export default function AdminProjectEditPage() {
         coverImage: project.coverImage || '',
         videoUrl: project.videoUrl || '',
         gallery: project.gallery || [],
-        pdfFiles: project.pdfFiles || []
+        pdfFiles: project.pdfFiles || [],
+        phase: project.phase || '',
+        mainObjective: project.mainObjective || '',
+        partners: project.partners || '',
+        scope: project.scope || ''
       });
     }
   }, [project, reset]);
@@ -226,6 +238,44 @@ export default function AdminProjectEditPage() {
                   )}
                 />
                 {errors.categoryId && <p className="text-xs text-red-500">{errors.categoryId.message}</p>}
+              </div>
+            </div>
+          </div>
+
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
+            <h2 className="text-lg font-bold mb-6">Spécifications Techniques</h2>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-900 dark:text-slate-300">Phase actuelle</label>
+                <Input 
+                  {...register('phase')}
+                  placeholder="Ex: Implémentation, Planification, Achevé" 
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-900 dark:text-slate-300">Objectif principal</label>
+                <Input 
+                  {...register('mainObjective')}
+                  placeholder="Ex: Innovation Sociale, Développement Durable" 
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-900 dark:text-slate-300">Partenaires</label>
+                <Input 
+                  {...register('partners')}
+                  placeholder="Ex: ADL & PNUD" 
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-900 dark:text-slate-300">Portée</label>
+                <Input 
+                  {...register('scope')}
+                  placeholder="Ex: Gouvernementale, Régionale, Locale" 
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12"
+                />
               </div>
             </div>
           </div>

@@ -243,11 +243,11 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
 
                 <div className="p-8 space-y-8">
                   {[
-                    { icon: Zap, label: 'Phase actuelle', value: 'Implémentation' },
-                    { icon: Target, label: 'Objectif principal', value: 'Innovation Sociale' },
-                    { icon: Users, label: 'Partenaires', value: 'ADL & PNUD' },
-                    { icon: Globe, label: 'Portée', value: 'Gouvernementale' }
-                  ].map((spec, i) => (
+                    { icon: Zap, label: 'Phase actuelle', value: project.phase },
+                    { icon: Target, label: 'Objectif principal', value: project.mainObjective },
+                    { icon: Users, label: 'Partenaires', value: project.partners },
+                    { icon: Globe, label: 'Portée', value: project.scope }
+                  ].filter(spec => spec.value).map((spec, i) => (
                     <div key={i} className="flex gap-4">
                       <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-950 flex items-center justify-center shrink-0">
                         <spec.icon className="w-5 h-5 text-brand-600" />
