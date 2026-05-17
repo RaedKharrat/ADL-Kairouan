@@ -52,11 +52,9 @@ export function Navbar() {
               />
             </div>
             <div className="hidden sm:flex flex-col leading-none">
-              <span className="font-display font-bold text-base tracking-[0.2em] text-white dark:text-slate-950 uppercase">ADL Kairouan</span>
-              <span className={cn(
-                "text-[8px] font-bold uppercase tracking-[0.4em] mt-1 transition-colors duration-700",
-                scrolled ? "text-royal-400 dark:text-royal-600" : "text-royal-500"
-              )}>Vision Urbaine 2030</span>
+              <span className="font-display font-bold text-base tracking-[0.2em] text-blue-600 dark:text-blue-500 uppercase">ADL Kairouan</span>
+              <span className="text-[8px] font-bold uppercase tracking-[0.4em] mt-1 transition-colors duration-700 text-orange-500 dark:text-orange-600">Territoire d&apos;Avenir</span>
+
             </div>
           </Link>
 
