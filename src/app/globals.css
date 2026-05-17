@@ -137,6 +137,11 @@
   100% { transform: translateX(0); }
 }
 
+@keyframes marquee-fast {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 .animate-slow-zoom { animation: slow-zoom 20s ease-in-out infinite alternate; }
 .animate-marquee { animation: marquee 60s linear infinite; }
 .animate-marquee-fast { animation: marquee-fast 15s linear infinite; }

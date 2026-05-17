@@ -697,10 +697,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── ARCHITECTURAL MARQUEE DIVIDER ──────────────────────────────── */}
-      <section className="relative py-24 bg-slate-950 dark:bg-white overflow-hidden transition-colors duration-1000 border-y border-white/5 dark:border-slate-100">
-        {/* Layered Motion Typography */}
-        <div className="absolute inset-0 flex flex-col justify-center gap-4 opacity-[0.03] dark:opacity-[0.05] pointer-events-none select-none">
+      {/* ─── NEON IMPACT DIVIDER ──────────────────────────────────────────── */}
+      <section className="relative py-32 bg-slate-950 dark:bg-white overflow-hidden transition-colors duration-1000">
+        {/* Ambient Neon Glow Blobs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-royal-600/8 dark:bg-royal-500/5 blur-[150px] animate-pulse-slow" />
+          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-royal-500/5 dark:bg-royal-400/3 blur-[120px] animate-pulse-slow" style={{ animationDelay: '4s' }} />
+        </div>
+
+        {/* Neon Inner Shadows / Line Borders */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-royal-900/20 dark:from-royal-500/10 to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-royal-500/40 dark:via-royal-500/20 to-transparent" />
+        
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-royal-900/20 dark:from-royal-500/10 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-royal-500/40 dark:via-royal-500/20 to-transparent" />
+
+        {/* Layered Motion Typography BG */}
+        <div className="absolute inset-0 flex flex-col justify-center gap-4 opacity-10 dark:opacity-10 pointer-events-none select-none">
           <div className="flex whitespace-nowrap animate-marquee text-[12rem] font-display font-black uppercase tracking-tighter text-white dark:text-slate-950 leading-none">
             <span>KAIROUAN&nbsp;•&nbsp;INNOVATION&nbsp;•&nbsp;CITOYENNETÉ&nbsp;•&nbsp;RÉSILIENCE&nbsp;•&nbsp;</span>
             <span>KAIROUAN&nbsp;•&nbsp;INNOVATION&nbsp;•&nbsp;CITOYENNETÉ&nbsp;•&nbsp;RÉSILIENCE&nbsp;•&nbsp;</span>
@@ -711,50 +724,82 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="container-tight px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-24">
-            
-            <div className="flex flex-col gap-6 max-w-xl text-center lg:text-left">
-              <div className="flex items-center justify-center lg:justify-start gap-3">
-                <div className="w-12 h-[1px] bg-royal-500" />
+        <div className="max-w-[1400px] mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+            {/* LEFT — Statement */}
+            <div className="flex flex-col gap-8">
+              <div className="flex items-center gap-3">
+                <div className="relative flex-shrink-0">
+                  <div className="w-2 h-2 rounded-full bg-royal-500 animate-pulse" />
+                  <div className="absolute inset-0 w-2 h-2 rounded-full bg-royal-400 blur-sm animate-pulse" />
+                </div>
                 <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-500">Impulsion Urbaine</span>
               </div>
-              <h3 className="text-5xl md:text-7xl font-display font-bold text-white dark:text-slate-950 uppercase tracking-tighter leading-[0.85]">
-                Le futur <br /> se dessine <br /> <span className="text-royal-500">maintenant.</span>
+
+              <h3 className="text-6xl md:text-8xl font-display font-bold text-white dark:text-slate-950 uppercase tracking-tighter leading-[0.85]">
+                Le futur<br />
+                se dessine<br />
+                <span className="relative inline-block">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-royal-400 via-royal-500 to-royal-600 dark:from-royal-500 dark:to-royal-700">maintenant.</span>
+                </span>
               </h3>
+
+              <p className="text-sm text-slate-400 dark:text-slate-500 font-light leading-relaxed max-w-sm">
+                ADL Kairouan transforme les idées en actions concrètes pour bâtir une ville résiliente, inclusive et tournée vers l&apos;avenir.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href="/projects" className="group inline-flex items-center gap-3 h-12 px-8 rounded-full bg-royal-600 hover:bg-royal-500 text-white text-[10px] font-bold uppercase tracking-widest transition-all duration-300 shadow-[0_0_0px_rgba(99,102,241,0)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] dark:hover:shadow-[0_0_20px_rgba(99,102,241,0.2)]">
+                  Voir les projets
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <Link href="/reports" className="group inline-flex items-center gap-3 h-12 px-8 rounded-full border border-white/10 dark:border-slate-200 text-white/70 dark:text-slate-600 text-[10px] font-bold uppercase tracking-widest hover:border-royal-500/60 dark:hover:border-royal-500 hover:text-royal-400 dark:hover:text-royal-600 transition-all duration-300">
+                  Rapports
+                </Link>
+              </div>
             </div>
 
-            {/* Glassmorphic Floating Card */}
-            <div className="relative group/card">
-              <div className="absolute -inset-4 bg-royal-500/20 rounded-[3rem] blur-2xl opacity-0 group-hover/card:opacity-100 transition-opacity duration-1000"></div>
-              <div className="relative w-full md:w-[400px] glass-card p-10 md:p-12 rounded-[2.5rem] border-white/10 dark:border-slate-200 bg-white/5 dark:bg-slate-50/50 backdrop-blur-3xl shadow-2xl">
-                <div className="space-y-10">
-                  <div className="flex items-start justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-5xl font-display font-bold text-white dark:text-slate-950 leading-none mb-2">95%</span>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Satisfaction Citoyenne</span>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-royal-600/10 flex items-center justify-center border border-royal-500/20">
-                      <Users className="w-6 h-6 text-royal-500" />
-                    </div>
+            {/* RIGHT — Bento Stats Grid */}
+            <div className="grid grid-cols-2 gap-3">
+              {/* Stat Card 1 — wide */}
+              <div className="group col-span-2 relative overflow-hidden rounded-2xl border border-white/[0.06] dark:border-slate-100 bg-white/[0.03] dark:bg-slate-50/70 hover:bg-white/[0.07] dark:hover:bg-slate-50 p-8 transition-all duration-500 hover:border-royal-500/40 dark:hover:border-royal-500/30 cursor-default">
+                <div className="absolute inset-0 bg-gradient-to-br from-royal-600/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute top-5 right-5">
+                  <div className="w-2 h-2 rounded-full bg-royal-500/20 group-hover:bg-royal-400 group-hover:shadow-[0_0_12px_rgba(99,102,241,0.8)] transition-all duration-500" />
+                </div>
+                <div className="relative z-10 flex items-end justify-between gap-4">
+                  <div>
+                    <div className="text-6xl font-display font-bold text-white dark:text-slate-950 leading-none mb-1 group-hover:text-royal-400 dark:group-hover:text-royal-600 transition-colors duration-500">95%</div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Satisfaction Citoyenne</div>
                   </div>
-                  
-                  <div className="h-px bg-white/10 dark:bg-slate-200 w-full" />
-                  
-                  <div className="flex items-start justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-5xl font-display font-bold text-white dark:text-slate-950 leading-none mb-2">124</span>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Projets Réalisés</span>
-                    </div>
-                    <div className="w-12 h-12 rounded-2xl bg-royal-600/10 flex items-center justify-center border border-royal-500/20">
-                      <Star className="w-6 h-6 text-royal-500" />
-                    </div>
+                  <div className="w-14 h-14 flex-shrink-0 rounded-xl bg-royal-600/[0.08] dark:bg-royal-500/10 flex items-center justify-center border border-royal-500/10 group-hover:border-royal-500/50 group-hover:bg-royal-600/20 transition-all duration-500">
+                    <Users className="w-6 h-6 text-royal-500/50 group-hover:text-royal-400 transition-colors duration-300" />
                   </div>
+                </div>
+              </div>
 
-                  <Link href="/reports" className="w-full h-14 rounded-full bg-white dark:bg-slate-950 text-slate-950 dark:text-white flex items-center justify-center text-[10px] font-bold uppercase tracking-widest hover:bg-royal-500 hover:text-white dark:hover:bg-royal-600 transition-all group">
-                    Consulter les Rapports 
-                    <ArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Link>
+              {/* Stat Card 2 */}
+              <div className="group relative overflow-hidden rounded-2xl border border-white/[0.06] dark:border-slate-100 bg-white/[0.03] dark:bg-slate-50/70 hover:bg-white/[0.07] dark:hover:bg-slate-50 p-8 transition-all duration-500 hover:border-royal-500/40 dark:hover:border-royal-500/30 cursor-default">
+                <div className="absolute inset-0 bg-gradient-to-br from-royal-600/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute top-4 right-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-royal-500/20 group-hover:bg-royal-400 group-hover:shadow-[0_0_8px_rgba(99,102,241,0.8)] transition-all duration-500" />
+                </div>
+                <div className="relative z-10">
+                  <div className="text-5xl font-display font-bold text-white dark:text-slate-950 leading-none mb-1 group-hover:text-royal-400 dark:group-hover:text-royal-600 transition-colors duration-500">124</div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Projets</div>
+                </div>
+              </div>
+
+              {/* Stat Card 3 */}
+              <div className="group relative overflow-hidden rounded-2xl border border-white/[0.06] dark:border-slate-100 bg-white/[0.03] dark:bg-slate-50/70 hover:bg-white/[0.07] dark:hover:bg-slate-50 p-8 transition-all duration-500 hover:border-royal-500/40 dark:hover:border-royal-500/30 cursor-default">
+                <div className="absolute inset-0 bg-gradient-to-br from-royal-600/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute top-4 right-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-royal-500/20 group-hover:bg-royal-400 group-hover:shadow-[0_0_8px_rgba(99,102,241,0.8)] transition-all duration-500" />
+                </div>
+                <div className="relative z-10">
+                  <div className="text-5xl font-display font-bold text-white dark:text-slate-950 leading-none mb-1 group-hover:text-royal-400 dark:group-hover:text-royal-600 transition-colors duration-500">12k+</div>
+                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Citoyens</div>
                 </div>
               </div>
             </div>
