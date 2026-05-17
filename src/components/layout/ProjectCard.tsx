@@ -26,7 +26,7 @@ export function ProjectCard({ project, className, layout = 'grid' }: ProjectCard
           
           <div className="absolute bottom-6 left-6 overflow-hidden">
             <span className="inline-block text-[9px] font-bold uppercase tracking-[0.3em] text-white bg-royal-600 px-4 py-1.5 rounded-full">
-              {project.status === 'PUBLISHED' ? 'En Cours' : 'Réalisé'}
+              {project.phase || 'En Cours'}
             </span>
           </div>
         </div>
@@ -66,7 +66,7 @@ export function ProjectCard({ project, className, layout = 'grid' }: ProjectCard
 
         <div className="absolute bottom-6 left-6 overflow-hidden">
           <span className="inline-block text-[9px] font-bold uppercase tracking-[0.3em] text-white bg-royal-600 px-4 py-1.5 rounded-full translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-            {project.status === 'PUBLISHED' ? 'En Cours' : 'Réalisé'}
+            {project.phase || 'En Cours'}
           </span>
         </div>
       </div>
