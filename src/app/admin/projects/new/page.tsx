@@ -205,10 +205,23 @@ export default function AdminProjectNewPage() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-900 dark:text-slate-300">Phase actuelle</label>
-                <Input 
-                  {...register('phase')}
-                  placeholder="Ex: Implémentation, Planification, Achevé" 
-                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12"
+                <Controller
+                  control={control}
+                  name="phase"
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value || ''}>
+                      <SelectTrigger className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12 rounded-xl focus:ring-brand-500">
+                        <SelectValue placeholder="Sélectionner la phase" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white dark:bg-[#1a2333] border-slate-200 dark:border-white/10 rounded-xl">
+                        <SelectItem value="En Étude">En Étude</SelectItem>
+                        <SelectItem value="En Planification">En Planification</SelectItem>
+                        <SelectItem value="En Cours">En Cours</SelectItem>
+                        <SelectItem value="Achevé">Achevé</SelectItem>
+                        <SelectItem value="Suspendu">Suspendu</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                 />
               </div>
               <div className="space-y-2">
