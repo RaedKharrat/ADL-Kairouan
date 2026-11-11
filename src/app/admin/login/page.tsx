@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -58,9 +59,12 @@ export default function LoginPage() {
         <div className="flex flex-col items-center mb-12 animate-fade-in">
           <div className="relative w-20 h-20 mb-6 group cursor-default">
             <div className="absolute inset-0 bg-royal-600/20 rounded-full blur-2xl group-hover:bg-royal-600/30 transition-all duration-700"></div>
-            <img 
+            <Image 
               src="/logo.png" 
               alt="ADL Kairouan" 
+              width={80}
+              height={80}
+              priority
               className="relative w-full h-full object-contain drop-shadow-2xl"
             />
           </div>

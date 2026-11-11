@@ -60,13 +60,19 @@ api.interceptors.response.use(
 
       try {
         const refreshToken = Cookies.get('refresh_token');
+        const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
         const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
           { refreshToken },
+          { withCredentials: true },
         );
-        const { accessToken, refreshToken: newRefreshToken } = data.data;
-        Cookies.set('access_token', accessToken, { expires: 1, secure: true, sameSite: 'strict' });
-        Cookies.set('refresh_token', newRefreshToken, { expires: 7, secure: true, sameSite: 'strict' });
+        const { accessToken, refreshToken: newRefreshToken } = data.data || {};
+        if (accessToken) {
+          Cookies.set('access_token', accessToken, { expires: 1, secure: isSecure, sameSite: 'strict' });
+        }
+        if (newRefreshToken) {
+          Cookies.set('refresh_token', newRefreshToken, { expires: 7, secure: isSecure, sameSite: 'strict' });
+        }
         processQueue(accessToken);
         original.headers.Authorization = `Bearer ${accessToken}`;
         return api(original);

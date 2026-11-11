@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronRight, Calendar, Tag, ArrowRight } from 'lucide-react';
 import { Project } from '@/types';
 import { getImageUrl, formatDate } from '@/lib/utils';
@@ -17,9 +18,11 @@ export function ProjectCard({ project, className, layout = 'grid' }: ProjectCard
     return (
       <Link href={`/projects/${project.slug}`} className={cn("group flex flex-col md:flex-row bg-slate-50 dark:bg-slate-900/50 rounded-[3rem] border border-slate-200/50 dark:border-white/5 overflow-hidden hover:border-royal-600/30 transition-all duration-700 mb-12", className)}>
         <div className="relative w-full md:w-[450px] aspect-[16/10] md:aspect-auto overflow-hidden bg-slate-100 dark:bg-slate-800 shrink-0">
-          <img 
+          <Image 
             src={getImageUrl(project.coverImage)} 
             alt={project.title} 
+            fill
+            sizes="(max-width: 768px) 100vw, 450px"
             className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[1.5s]" 
           />
           <div className="absolute inset-0 bg-royal-600/5 mix-blend-multiply group-hover:bg-transparent transition-all duration-700" />
@@ -57,9 +60,11 @@ export function ProjectCard({ project, className, layout = 'grid' }: ProjectCard
   return (
     <Link href={`/projects/${project.slug}`} className={cn("group block mb-12", className)}>
       <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden mb-8 bg-slate-100 dark:bg-slate-900 border border-slate-200/50 dark:border-white/5">
-        <img
+        <Image
           src={getImageUrl(project.coverImage)}
           alt={project.title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-[1.5s] ease-out group-hover:scale-110"
         />
         <div className="absolute inset-0 bg-royal-600/5 mix-blend-multiply group-hover:bg-transparent transition-all duration-700" />

@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Moon, Sun, ChevronRight } from 'lucide-react';
 import { useTheme } from 'next-themes';
@@ -45,9 +46,12 @@ export function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-4 group/logo">
             <div className="relative w-12 h-12 flex items-center justify-center transition-transform duration-700 group-hover/logo:scale-105">
-              <img 
+              <Image 
                 src="/logo.png" 
                 alt="ADL Kairouan" 
+                width={48}
+                height={48}
+                priority
                 className="w-full h-full object-contain"
               />
             </div>

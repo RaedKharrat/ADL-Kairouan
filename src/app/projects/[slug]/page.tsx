@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
 import { Project } from '@/types';
 import { getImageUrl, formatDate, cn, getYoutubeId } from '@/lib/utils';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
 export default function ProjectDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -175,7 +176,7 @@ export default function ProjectDetailsPage({ params }: { params: Promise<{ slug:
 
               <div 
                 className="tiptap-content"
-                dangerouslySetInnerHTML={{ __html: project.content || '' }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.content) }}
               />
             </article>
 

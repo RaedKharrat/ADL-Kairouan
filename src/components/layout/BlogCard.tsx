@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ChevronRight, Calendar, User, ArrowRight, Clock, Heart, MessageCircle, Loader2 } from 'lucide-react';
 import { BlogPost } from '@/types';
 import { getImageUrl, formatDate } from '@/lib/utils';
@@ -55,9 +56,12 @@ export function BlogCard({ post: initialPost, className, variant = 'default', la
       >
         <Link href={`/blog/${post.slug}`} className={cn("group block relative rounded-[3rem] lg:rounded-[4rem] overflow-hidden aspect-[16/9] lg:aspect-[21/9] min-h-[500px] border border-slate-200/50 dark:border-white/5 shadow-2xl", className)}>
           <div className="absolute inset-0">
-            <img 
+            <Image 
               src={getImageUrl(post.coverImage)} 
               alt={post.title} 
+              fill
+              priority
+              sizes="100vw"
               className="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[2.5s] ease-out" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent opacity-90 group-hover:opacity-70 transition-opacity duration-1000" />
@@ -122,9 +126,11 @@ export function BlogCard({ post: initialPost, className, variant = 'default', la
       >
         <Link href={`/blog/${post.slug}`} className={cn("group flex flex-col md:flex-row bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-white/5 overflow-hidden hover:shadow-2xl hover:shadow-royal-900/10 transition-all duration-700", className)}>
           <div className="relative w-full md:w-[450px] aspect-video md:aspect-auto overflow-hidden shrink-0">
-            <img 
+            <Image 
               src={getImageUrl(post.coverImage)} 
               alt={post.title} 
+              fill
+              sizes="(max-width: 768px) 100vw, 450px"
               className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-[1.5s]" 
             />
             <div className="absolute inset-0 bg-royal-600/5 mix-blend-multiply group-hover:bg-transparent transition-all duration-700" />
@@ -174,9 +180,11 @@ export function BlogCard({ post: initialPost, className, variant = 'default', la
     >
       <Link href={`/blog/${post.slug}`} className={cn("group flex flex-col h-full bg-white dark:bg-slate-900 rounded-[2.5rem] border border-slate-200 dark:border-white/5 overflow-hidden hover:shadow-2xl hover:shadow-royal-900/10 transition-all duration-700", className)}>
         <div className="relative aspect-[4/3] overflow-hidden">
-          <img 
+          <Image 
             src={getImageUrl(post.coverImage)} 
             alt={post.title} 
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-[1.5s] ease-out" 
           />
           <div className="absolute inset-0 bg-slate-950/10 group-hover:bg-transparent transition-all duration-700" />

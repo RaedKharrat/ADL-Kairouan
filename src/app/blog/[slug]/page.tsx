@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
 import { BlogPost, BlogComment } from '@/types';
 import { getImageUrl, formatDate, cn, getYoutubeId, getVimeoId } from '@/lib/utils';
+import { sanitizeHtml } from '@/lib/sanitize';
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 
 export default function BlogDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -236,7 +237,7 @@ export default function BlogDetailsPage({ params }: { params: Promise<{ slug: st
 
               <div 
                 className="tiptap-content"
-                dangerouslySetInnerHTML={{ __html: post.content || '' }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
               />
             </article>
 

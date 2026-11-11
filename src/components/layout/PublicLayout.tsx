@@ -1,11 +1,16 @@
 'use client';
 
 import * as React from 'react';
+import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
 
-import { ChatbotAI } from './ChatbotAI';
+// Dynamically import ChatbotAI to defer react-markdown and reduce initial page bundle
+const ChatbotAI = dynamic(
+  () => import('./ChatbotAI').then((mod) => mod.ChatbotAI),
+  { ssr: false }
+);
 
 export function PublicLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

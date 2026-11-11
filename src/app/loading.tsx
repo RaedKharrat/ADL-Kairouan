@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { Settings2 } from 'lucide-react';
 
 export default function Loading() {
@@ -18,9 +19,12 @@ export default function Loading() {
           
           {/* Central Logo/Icon */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            <img 
+            <Image 
               src="/logo.png" 
               alt="Logo ADL" 
+              width={64}
+              height={64}
+              priority
               className="w-full h-full object-contain animate-pulse"
             />
           </div>

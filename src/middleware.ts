@@ -9,7 +9,8 @@ const WINDOW_MS = 60 * 1000; // 1 minute window
 const MAX_REQUESTS = 120; // Max requests per window
 
 export function middleware(request: NextRequest) {
-  const ip = (request as any).ip || request.headers.get('x-forwarded-for') || 'anonymous';
+  const forwarded = request.headers.get('x-forwarded-for');
+  const ip = (request as any).ip || (forwarded ? forwarded.split(',')[0].trim() : 'anonymous');
 
   // 1. Rate Limiting for API routes
   if (request.nextUrl.pathname.startsWith('/api/')) {
@@ -39,6 +40,7 @@ export function middleware(request: NextRequest) {
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
   response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
 
   return response;
 }
