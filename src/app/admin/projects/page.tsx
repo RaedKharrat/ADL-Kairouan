@@ -70,6 +70,24 @@ export default function AdminProjectsPage() {
     }
   });
 
+  const updateOrderMutation = useMutation({
+    mutationFn: async ({ id, order }: { id: string; order: number }) => {
+      await api.patch(`${endpoints.projects}/${id}`, { order });
+    },
+    onSuccess: () => {
+      toast.success('Rang du projet mis à jour');
+      queryClient.invalidateQueries({ queryKey: ['admin-projects'] });
+    },
+    onError: () => {
+      toast.error('Erreur lors de la mise à jour du rang');
+    }
+  });
+
+  const handleOrderChange = (id: string, newOrder: number) => {
+    if (isNaN(newOrder) || newOrder < 0) return;
+    updateOrderMutation.mutate({ id, order: newOrder });
+  };
+
   const handleArchive = (id: string) => {
     if (window.confirm('Êtes-vous sûr de vouloir archiver ce projet ?')) {
       archiveMutation.mutate(id);
@@ -172,6 +190,7 @@ export default function AdminProjectsPage() {
           <table className="w-full text-sm text-left">
             <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
+                <th className="px-6 py-4 font-medium w-24">Rang</th>
                 <th className="px-6 py-4 font-medium">Titre du Projet</th>
                 <th className="px-6 py-4 font-medium">Catégorie</th>
                 <th className="px-6 py-4 font-medium">Statut</th>
@@ -183,6 +202,7 @@ export default function AdminProjectsPage() {
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
+                    <td className="px-6 py-4"><Skeleton className="h-8 w-16" /></td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
@@ -197,13 +217,27 @@ export default function AdminProjectsPage() {
                 ))
               ) : (data?.items?.length ?? 0) === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     Aucun projet trouvé.
                   </td>
                 </tr>
               ) : (
                 data?.items?.map((project) => (
                   <tr key={project.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                    <td className="px-6 py-4">
+                      <Input
+                        type="number"
+                        defaultValue={project.order ?? 0}
+                        onBlur={(e) => {
+                          const val = parseInt(e.target.value, 10);
+                          if (!isNaN(val) && val !== project.order) {
+                            handleOrderChange(project.id, val);
+                          }
+                        }}
+                        className="w-16 h-8 text-center text-xs font-bold rounded-lg bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10"
+                        title="Ordre d'affichage (0 = premier)"
+                      />
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-surface-secondary overflow-hidden shrink-0">

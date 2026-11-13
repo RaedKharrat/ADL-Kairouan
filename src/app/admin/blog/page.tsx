@@ -57,6 +57,24 @@ export default function AdminBlogPage() {
     }
   });
 
+  const updateOrderMutation = useMutation({
+    mutationFn: async ({ id, order }: { id: string; order: number }) => {
+      await api.patch(`${endpoints.blog}/${id}`, { order });
+    },
+    onSuccess: () => {
+      toast.success("Rang de l'article mis à jour");
+      queryClient.invalidateQueries({ queryKey: ['admin-blog'] });
+    },
+    onError: () => {
+      toast.error('Erreur lors de la mise à jour du rang');
+    }
+  });
+
+  const handleOrderChange = (id: string, newOrder: number) => {
+    if (isNaN(newOrder) || newOrder < 0) return;
+    updateOrderMutation.mutate({ id, order: newOrder });
+  };
+
   const handleDelete = (id: string) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer cet article ?')) {
       deleteMutation.mutate(id);
@@ -157,6 +175,7 @@ export default function AdminBlogPage() {
           <table className="w-full text-sm text-left">
             <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
+                <th className="px-6 py-4 font-medium w-24">Rang</th>
                 <th className="px-6 py-4 font-medium">Titre</th>
                 <th className="px-6 py-4 font-medium">Auteur</th>
                 <th className="px-6 py-4 font-medium">Statut</th>
@@ -168,6 +187,7 @@ export default function AdminBlogPage() {
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
+                    <td className="px-6 py-4"><Skeleton className="h-8 w-16" /></td>
                     <td className="px-6 py-4">
                       <Skeleton className="h-4 w-64 mb-2" />
                       <Skeleton className="h-3 w-32" />
@@ -180,13 +200,27 @@ export default function AdminBlogPage() {
                 ))
               ) : (data?.items?.length ?? 0) === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     Aucun article trouvé.
                   </td>
                 </tr>
               ) : (
                 data?.items?.map((post) => (
                   <tr key={post.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                    <td className="px-6 py-4">
+                      <Input
+                        type="number"
+                        defaultValue={post.order ?? 0}
+                        onBlur={(e) => {
+                          const val = parseInt(e.target.value, 10);
+                          if (!isNaN(val) && val !== post.order) {
+                            handleOrderChange(post.id, val);
+                          }
+                        }}
+                        className="w-16 h-8 text-center text-xs font-bold rounded-lg bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10"
+                        title="Ordre d'affichage (0 = premier)"
+                      />
+                    </td>
                     <td className="px-6 py-4">
                       <div className="font-medium text-slate-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors line-clamp-1">
                         {post.title}

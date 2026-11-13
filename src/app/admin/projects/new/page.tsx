@@ -34,6 +34,7 @@ const projectSchema = z.object({
   mainObjective: z.string().optional(),
   partners: z.string().optional(),
   scope: z.string().optional(),
+  order: z.number().int().min(0, "L'ordre doit être un nombre positif").default(0),
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
@@ -65,7 +66,8 @@ export default function AdminProjectNewPage() {
       phase: '',
       mainObjective: '',
       partners: '',
-      scope: ''
+      scope: '',
+      order: 0,
     }
   });
 
@@ -247,6 +249,18 @@ export default function AdminProjectNewPage() {
                   placeholder="Ex: Gouvernementale, Régionale, Locale" 
                   className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12"
                 />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-slate-900 dark:text-slate-300">
+                  Rang / Ordre d'affichage
+                </label>
+                <Input 
+                  type="number"
+                  {...register('order', { valueAsNumber: true })}
+                  placeholder="0 (premier)" 
+                  className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12"
+                />
+                <p className="text-[11px] text-slate-400">Position d'affichage sur la page publique (0 = premier)</p>
               </div>
             </div>
           </div>

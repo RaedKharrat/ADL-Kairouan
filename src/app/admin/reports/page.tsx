@@ -26,6 +26,7 @@ const reportSchema = z.object({
   fileSize: z.number().optional(),
   categoryId: z.string().optional().or(z.literal('')),
   published: z.boolean(),
+  order: z.number().int().min(0, "L'ordre doit être un nombre positif").default(0),
 });
 
 type ReportFormValues = z.infer<typeof reportSchema>;
@@ -60,6 +61,24 @@ export default function AdminReportsPage() {
     }
   });
 
+  const updateOrderMutation = useMutation({
+    mutationFn: async ({ id, order }: { id: string; order: number }) => {
+      await api.patch(`${endpoints.reports}/${id}`, { order });
+    },
+    onSuccess: () => {
+      toast.success('Rang du rapport mis à jour');
+      queryClient.invalidateQueries({ queryKey: ['admin-reports'] });
+    },
+    onError: () => {
+      toast.error('Erreur lors de la mise à jour du rang');
+    }
+  });
+
+  const handleOrderChange = (id: string, newOrder: number) => {
+    if (isNaN(newOrder) || newOrder < 0) return;
+    updateOrderMutation.mutate({ id, order: newOrder });
+  };
+
   // Modal State
   const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [editingReport, setEditingReport] = React.useState<Report | null>(null);
@@ -74,6 +93,7 @@ export default function AdminReportsPage() {
       fileSize: 0,
       categoryId: '',
       published: true,
+      order: 0,
     }
   });
 
@@ -88,6 +108,7 @@ export default function AdminReportsPage() {
         fileSize: report.fileSize || 0,
         categoryId: report.categoryId || '',
         published: report.published,
+        order: report.order ?? 0,
       });
     } else {
       setEditingReport(null);
@@ -99,6 +120,7 @@ export default function AdminReportsPage() {
         fileSize: 0,
         categoryId: '',
         published: true,
+        order: (data?.items?.length ?? 0),
       });
     }
     setIsModalOpen(true);
@@ -170,6 +192,7 @@ export default function AdminReportsPage() {
           <table className="w-full text-sm text-left">
             <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
               <tr>
+                <th className="px-6 py-4 font-medium w-24">Rang</th>
                 <th className="px-6 py-4 font-medium">Document</th>
                 <th className="px-6 py-4 font-medium">Type / Taille</th>
                 <th className="px-6 py-4 font-medium">Téléchargements</th>
@@ -181,6 +204,7 @@ export default function AdminReportsPage() {
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
+                    <td className="px-6 py-4"><Skeleton className="h-8 w-16" /></td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <Skeleton className="w-10 h-10 rounded-lg shrink-0" />
@@ -195,13 +219,27 @@ export default function AdminReportsPage() {
                 ))
               ) : (data?.items?.length ?? 0) === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
+                  <td colSpan={6} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
                     Aucun document trouvé.
                   </td>
                 </tr>
               ) : (
                 data?.items?.map((report) => (
                   <tr key={report.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                    <td className="px-6 py-4">
+                      <Input
+                        type="number"
+                        defaultValue={report.order ?? 0}
+                        onBlur={(e) => {
+                          const val = parseInt(e.target.value, 10);
+                          if (!isNaN(val) && val !== report.order) {
+                            handleOrderChange(report.id, val);
+                          }
+                        }}
+                        className="w-16 h-8 text-center text-xs font-bold rounded-lg bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10"
+                        title="Ordre d'affichage (0 = premier)"
+                      />
+                    </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg bg-brand-500/10 flex items-center justify-center text-brand-500 border border-brand-500/10 shrink-0">
@@ -339,13 +377,23 @@ export default function AdminReportsPage() {
                   {errors.fileUrl && <p className="text-xs text-red-500">{errors.fileUrl.message}</p>}
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-slate-300">Type de document</label>
                     <Input 
                       {...register('fileType')}
                       placeholder="Ex: PDF, DOC" 
                       className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-300">Rang / Ordre</label>
+                    <Input 
+                      type="number"
+                      {...register('order', { valueAsNumber: true })}
+                      placeholder="0" 
+                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 font-bold"
                     />
                   </div>
                   

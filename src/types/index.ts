@@ -88,6 +88,7 @@ export interface Project {
   videoUrl?: string | null;
   tags: string[];
   featured: boolean;
+  order: number;
   status: PublishStatus;
   publishedAt?: string | null;
   categoryId?: string | null;
@@ -113,6 +114,24 @@ export interface Partner {
   website?: string | null;
   order: number;
   isActive: boolean;
+}
+
+// ─── Team / Équipe Exécutive ──────────────────────────────────────────────────
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  department?: string | null;
+  bio?: string | null;
+  avatar?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  linkedin?: string | null;
+  twitter?: string | null;
+  order: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // ─── Blog ─────────────────────────────────────────────────────────────────────
@@ -151,6 +170,7 @@ export interface BlogPost {
   gallery: string[];
   pdfFiles: string[];
   featured: boolean;
+  order: number;
   status: PublishStatus;
   publishedAt?: string | null;
   scheduledAt?: string | null;
@@ -251,6 +271,7 @@ export interface Report {
   downloads: number;
   published: boolean;
   featured: boolean;
+  order: number;
   categoryId?: string | null;
   category?: ReportCategory | null;
   createdAt: string;

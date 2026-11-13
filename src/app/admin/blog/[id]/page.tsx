@@ -30,6 +30,7 @@ const blogSchema = z.object({
   pdfFiles: z.array(z.string()).optional(),
   videoUrl: z.string().optional(),
   categoryId: z.string().optional(),
+  order: z.number().int().min(0, "L'ordre doit être un nombre positif").default(0),
 });
 
 type BlogFormValues = z.infer<typeof blogSchema>;
@@ -59,7 +60,8 @@ export default function AdminBlogEditPage() {
       gallery: [],
       pdfFiles: [],
       videoUrl: '',
-      categoryId: ''
+      categoryId: '',
+      order: 0,
     }
   });
 
@@ -74,7 +76,8 @@ export default function AdminBlogEditPage() {
         gallery: post.gallery || [],
         pdfFiles: post.pdfFiles || [],
         videoUrl: post.videoUrl || '',
-        categoryId: post.categoryId || ''
+        categoryId: post.categoryId || '',
+        order: post.order ?? 0,
       });
     }
   }, [post, reset]);
@@ -215,6 +218,20 @@ export default function AdminBlogEditPage() {
 
         {/* Sidebar Settings */}
         <div className="space-y-6">
+          <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
+            <h2 className="text-lg font-bold mb-4">Classement & Rang</h2>
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-300">Rang / Ordre d'affichage</label>
+              <Input 
+                type="number"
+                {...register('order', { valueAsNumber: true })}
+                placeholder="0"
+                className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-12 font-bold"
+              />
+              <p className="text-[11px] text-slate-400">Position sur la page d'actualités (0 = premier)</p>
+            </div>
+          </div>
+
           <div className="glass-card rounded-2xl p-6 border-slate-200/50 dark:border-white/5">
             <h2 className="text-lg font-bold mb-6">Média & Documents</h2>
             <div className="space-y-8">

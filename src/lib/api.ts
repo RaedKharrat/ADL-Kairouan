@@ -129,6 +129,8 @@ export const endpoints = {
   statistics: { active: '/statistics/active', base: '/statistics' },
   projects: '/projects',
   partners: '/partners',
+  team: '/team',
+  teamPublic: '/team/public',
   blog: '/blog',
   media: '/media',
   videos: '/videos',

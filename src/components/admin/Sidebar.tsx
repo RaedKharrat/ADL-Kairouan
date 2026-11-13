@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, FolderOpen, Users, FileText, Image, MessageSquare, 
-  Settings, LogOut, FileBarChart, MonitorPlay, HelpCircle, Star, Hash
+  Settings, LogOut, FileBarChart, MonitorPlay, HelpCircle, Star, Hash, UserCheck
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth.store';
 
@@ -14,6 +14,7 @@ const navigation = [
   { name: 'Projets', href: '/admin/projects', icon: FolderOpen },
   { name: 'Catégories & Tags', href: '/admin/taxonomies', icon: Hash },
   { name: 'Actualités', href: '/admin/blog', icon: FileText },
+  { name: 'Équipe Exécutive', href: '/admin/team', icon: UserCheck },
   { name: 'Partenaires', href: '/admin/partners', icon: Users },
   { name: 'Médiathèque', href: '/admin/media', icon: Image },
   { name: 'Vidéos', href: '/admin/videos', icon: MonitorPlay },

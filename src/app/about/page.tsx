@@ -1,16 +1,25 @@
 'use client';
 
-import { Users, Target, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { Users, Target, ShieldCheck, HeartHandshake, Linkedin, Mail, Twitter } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
-import { Partner } from '@/types';
+import { Partner, TeamMember } from '@/types';
 import { getImageUrl, cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 import React from 'react';
 
 export default function AboutPage() {
   const { data: partners } = useQuery<Partner[]>({ 
     queryKey: ['partners-public'], 
     queryFn: async () => (await api.get(`${endpoints.partners}/public`)).data.data 
+  });
+
+  const { data: teamMembers, isLoading: isTeamLoading } = useQuery<TeamMember[]>({
+    queryKey: ['team-public'],
+    queryFn: async () => {
+      const response = await api.get(endpoints.teamPublic);
+      return response.data.data;
+    },
   });
 
   return (
@@ -151,18 +160,71 @@ export default function AboutPage() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="group">
-                <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 bg-slate-200 dark:bg-slate-800">
-                  <img src={`https://i.pravatar.cc/600?img=${i + 15}`} alt="Team Member" className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-110" />
-                  <div className="absolute inset-0 bg-royal-600/0 group-hover:bg-royal-600/10 transition-colors"></div>
+            {isTeamLoading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="space-y-4">
+                  <Skeleton className="aspect-[3/4] w-full rounded-[2rem]" />
+                  <Skeleton className="h-7 w-3/4 rounded-lg" />
+                  <Skeleton className="h-4 w-1/2 rounded-lg" />
                 </div>
-                <div className="space-y-2">
-                  <h3 className="text-2xl font-display font-bold uppercase tracking-tight text-slate-950 dark:text-white group-hover:text-royal-600 transition-colors">Directeur Bureau</h3>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">Pôle Stratégique</p>
-                </div>
+              ))
+            ) : (teamMembers?.length ?? 0) === 0 ? (
+              <div className="col-span-full py-16 text-center text-slate-400">
+                L'équipe exécutive sera présentée prochainement.
               </div>
-            ))}
+            ) : (
+              teamMembers?.map((member) => (
+                <div key={member.id} className="group">
+                  <div className="relative aspect-[3/4] rounded-[2rem] overflow-hidden mb-8 bg-slate-200 dark:bg-slate-800 shadow-md">
+                    <img 
+                      src={member.avatar ? getImageUrl(member.avatar) : `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&size=600&background=0F172A&color=fff`} 
+                      alt={member.name} 
+                      className="w-full h-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" 
+                    />
+                    <div className="absolute inset-0 bg-royal-600/0 group-hover:bg-royal-600/10 transition-colors pointer-events-none"></div>
+                    
+                    {/* Floating Social Pill if any links exist */}
+                    {(member.linkedin || member.email || member.twitter) && (
+                      <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center gap-3 py-2 px-4 rounded-full bg-slate-950/80 backdrop-blur-md border border-white/10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
+                        {member.linkedin && (
+                          <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-white hover:text-royal-400 transition-colors p-1" title="LinkedIn">
+                            <Linkedin className="w-4 h-4" />
+                          </a>
+                        )}
+                        {member.twitter && (
+                          <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="text-white hover:text-royal-400 transition-colors p-1" title="Twitter / X">
+                            <Twitter className="w-4 h-4" />
+                          </a>
+                        )}
+                        {member.email && (
+                          <a href={`mailto:${member.email}`} className="text-white hover:text-royal-400 transition-colors p-1" title="Email">
+                            <Mail className="w-4 h-4" />
+                          </a>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-display font-bold uppercase tracking-tight text-slate-950 dark:text-white group-hover:text-royal-600 transition-colors">
+                      {member.name}
+                    </h3>
+                    <p className="text-sm font-semibold text-royal-600 dark:text-royal-400">
+                      {member.role}
+                    </p>
+                    {member.department && (
+                      <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+                        {member.department}
+                      </p>
+                    )}
+                    {member.bio && (
+                      <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-2 font-light">
+                        {member.bio}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       </section>

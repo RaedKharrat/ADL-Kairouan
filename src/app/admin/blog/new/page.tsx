@@ -32,6 +32,7 @@ const blogSchema = z.object({
   pdfFiles: z.array(z.string()).optional(),
   videoUrl: z.string().optional(),
   categoryId: z.string().optional(),
+  order: z.number().int().min(0, "L'ordre doit être un nombre positif").default(0),
 });
 
 type BlogFormValues = z.infer<typeof blogSchema>;
@@ -51,7 +52,8 @@ export default function AdminBlogNewPage() {
       gallery: [],
       pdfFiles: [],
       videoUrl: '',
-      categoryId: ''
+      categoryId: '',
+      order: 0,
     }
   });
 
@@ -146,7 +148,7 @@ export default function AdminBlogNewPage() {
                 {errors.title && <p className="text-xs text-red-500 font-medium">{errors.title.message}</p>}
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-3">
                   <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Catégorie</label>
                   <Controller
@@ -195,6 +197,15 @@ export default function AdminBlogNewPage() {
                         </button>
                       </div>
                     )}
+                  />
+                </div>
+                <div className="space-y-3">
+                  <label className="text-xs font-bold uppercase tracking-widest text-slate-400">Rang / Ordre</label>
+                  <Input 
+                    type="number"
+                    {...register('order', { valueAsNumber: true })}
+                    placeholder="0"
+                    className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 h-14 rounded-xl focus-visible:ring-brand-500 font-bold"
                   />
                 </div>
               </div>
