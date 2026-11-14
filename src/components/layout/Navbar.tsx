@@ -39,16 +39,16 @@ export function Navbar() {
       <div className="max-w-[1440px] mx-auto pointer-events-auto">
         <div className={cn(
           "relative flex items-center justify-between transition-all duration-1000 px-10 rounded-b-[2rem] lg:rounded-b-[3rem] group",
-          scrolled 
-            ? "py-3 bg-slate-950/90 dark:bg-white/90 backdrop-blur-2xl border border-white/10 dark:border-slate-200/50 shadow-2xl shadow-royal-950/10 rounded-t-[3rem]" 
+          scrolled
+            ? "py-3 bg-slate-950/90 dark:bg-white/90 backdrop-blur-2xl border border-white/10 dark:border-slate-200/50 shadow-2xl shadow-royal-950/10 rounded-t-[3rem]"
             : "py-8 bg-transparent border-transparent shadow-none"
         )}>
           {/* Logo */}
           <Link href="/" className="flex items-center gap-4 group/logo">
             <div className="relative w-12 h-12 flex items-center justify-center transition-transform duration-700 group-hover/logo:scale-105">
-              <Image 
-                src="/logo.png" 
-                alt="ADL Kairouan" 
+              <Image
+                src="/logo.png"
+                alt="ADL Tunisie"
                 width={48}
                 height={48}
                 priority
@@ -56,9 +56,8 @@ export function Navbar() {
               />
             </div>
             <div className="hidden sm:flex flex-col leading-none">
-              <span className="font-display font-bold text-base tracking-[0.2em] text-blue-600 dark:text-blue-500 uppercase">ADL Kairouan</span>
-              <span className="text-[8px] font-bold uppercase tracking-[0.4em] mt-1 transition-colors duration-700 text-orange-500 dark:text-orange-600">Territoire d&apos;Avenir</span>
-
+              <span className="font-display font-bold text-base tracking-[0.2em] text-blue-600 dark:text-blue-500 uppercase">ADL Tunisie</span>
+              <span className="text-[8px] font-bold uppercase tracking-[0.35em] mt-1 transition-colors duration-700 text-orange-500 dark:text-orange-600">Développement Local</span>
             </div>
           </Link>
 
@@ -72,10 +71,10 @@ export function Navbar() {
                   href={item.href}
                   className={cn(
                     'text-[10px] font-bold uppercase tracking-[0.5em] transition-all relative py-2 group/nav',
-                    isActive 
-                      ? 'text-royal-400 dark:text-royal-600' 
-                      : scrolled 
-                        ? 'text-slate-300 hover:text-white dark:text-slate-500 dark:hover:text-slate-950' 
+                    isActive
+                      ? 'text-royal-400 dark:text-royal-600'
+                      : scrolled
+                        ? 'text-slate-300 hover:text-white dark:text-slate-500 dark:hover:text-slate-950'
                         : 'text-slate-300 hover:text-white dark:text-slate-300 dark:hover:text-white'
                   )}
                 >
@@ -95,8 +94,8 @@ export function Navbar() {
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className={cn(
                 "w-11 h-11 rounded-full border flex items-center justify-center transition-all duration-700",
-                scrolled 
-                  ? "border-white/10 dark:border-slate-100 text-slate-400 hover:text-white dark:hover:text-royal-600 hover:bg-white/5 dark:hover:bg-slate-50" 
+                scrolled
+                  ? "border-white/10 dark:border-slate-100 text-slate-400 hover:text-white dark:hover:text-royal-600 hover:bg-white/5 dark:hover:bg-slate-50"
                   : "border-white/10 dark:border-white/10 text-white dark:text-white hover:bg-white/5"
               )}
             >
@@ -105,19 +104,19 @@ export function Navbar() {
             </button>
             <Button asChild className={cn(
               "hidden md:flex rounded-full px-10 h-12 transition-all duration-700 font-display font-bold uppercase tracking-widest text-[10px]",
-              scrolled 
-                ? "bg-white text-slate-950 hover:bg-slate-200 dark:bg-slate-950 dark:text-white dark:hover:bg-royal-600 shadow-2xl shadow-royal-950/10" 
+              scrolled
+                ? "bg-white text-slate-950 hover:bg-slate-200 dark:bg-slate-950 dark:text-white dark:hover:bg-royal-600 shadow-2xl shadow-royal-950/10"
                 : "bg-white/10 backdrop-blur-md border border-white/10 text-white hover:bg-white hover:text-slate-950"
             )}>
               <Link href="/contact">S'engager</Link>
             </Button>
-            
+
             {/* Mobile Toggle */}
             <button
               className={cn(
                 "lg:hidden w-11 h-11 rounded-full flex items-center justify-center transition-all",
-                scrolled 
-                  ? "bg-white/10 dark:bg-slate-100 text-white dark:text-slate-950" 
+                scrolled
+                  ? "bg-white/10 dark:bg-slate-100 text-white dark:text-slate-950"
                   : "bg-white/20 backdrop-blur-md text-white border border-white/10"
               )}
               onClick={() => setIsOpen(!isOpen)}

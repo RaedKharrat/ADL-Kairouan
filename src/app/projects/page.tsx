@@ -85,11 +85,11 @@ export default function ProjectsPage() {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-display font-bold uppercase tracking-tight text-white dark:text-slate-950 leading-[1.1] mb-8 animate-fade-in-up">
-              Bâtir le Futur <br /> <span className="text-royal-600">De Kairouan</span>
+              Société Locale <br /> <span className="text-royal-600">Inclusive &amp; Durable</span>
             </h1>
             
             <p className="text-base md:text-lg text-slate-300 dark:text-slate-500 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in px-4 mb-10">
-              Découvrez les projets d'envergure qui transforment notre paysage urbain et renforcent le tissu social.
+              Découvrez nos initiatives en faveur des jeunes et des femmes, de l&apos;inclusion économique, de la citoyenneté active, de l&apos;environnement et de l&apos;innovation culturelle et numérique.
             </p>
 
             <div className="relative w-full max-w-xl mx-auto group mb-12">

@@ -16,7 +16,7 @@ interface Message {
 export function ChatbotAI() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [messages, setMessages] = React.useState<Message[]>([
-    { role: 'model', content: "Bonjour ! Je suis l'assistant IA de l'ADL Kairouan. Comment puis-je vous aider dans vos recherches aujourd'hui ?" }
+    { role: 'model', content: "Bonjour ! Je suis l'assistant IA de l'Alliance pour le Développement Local - Tunisie (ADL Tunisie). Comment puis-je vous accompagner aujourd'hui ?" }
   ]);
   const [input, setInput] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
@@ -96,11 +96,11 @@ export function ChatbotAI() {
                 </div>
                 <div className={cn(
                   "p-4 rounded-2xl text-sm leading-relaxed max-w-[85%] shadow-sm overflow-hidden prose prose-slate dark:prose-invert prose-sm",
-                  msg.role === 'user' 
-                    ? "bg-white dark:bg-slate-900 text-slate-950 dark:text-white border border-slate-100 dark:border-white/5 rounded-tr-none" 
+                  msg.role === 'user'
+                    ? "bg-white dark:bg-slate-900 text-slate-950 dark:text-white border border-slate-100 dark:border-white/5 rounded-tr-none"
                     : "bg-royal-600/5 dark:bg-white/5 text-slate-700 dark:text-slate-300 border border-royal-600/10 dark:border-white/5 rounded-tl-none"
                 )}>
-                  <ReactMarkdown 
+                  <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     components={{
                       a: ({ node, ...props }) => <a {...props} className="text-royal-600 font-bold hover:underline" target="_blank" rel="noopener noreferrer" />,
@@ -128,13 +128,13 @@ export function ChatbotAI() {
 
           {/* Input */}
           <form onSubmit={handleSend} className="p-6 bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-white/10 flex items-center gap-3">
-            <input 
+            <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Posez votre question..."
               className="flex-1 bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl px-5 h-12 text-sm focus:outline-none focus:ring-2 focus:ring-royal-600 transition-all dark:text-white"
             />
-            <button 
+            <button
               type="submit"
               disabled={isLoading || !input.trim()}
               className="w-12 h-12 rounded-2xl bg-royal-600 text-white flex items-center justify-center hover:bg-royal-700 transition-all active:scale-95 disabled:opacity-50 shadow-lg shadow-royal-950/20"
@@ -146,12 +146,12 @@ export function ChatbotAI() {
       )}
 
       {/* Toggle Button */}
-      <button 
+      <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "w-16 h-16 rounded-full flex items-center justify-center shadow-2xl transition-all duration-500 active:scale-90 group",
-          isOpen 
-            ? "bg-white dark:bg-slate-900 text-royal-600 rotate-90" 
+          isOpen
+            ? "bg-white dark:bg-slate-900 text-royal-600 rotate-90"
             : "bg-royal-600 text-white hover:scale-110 hover:shadow-royal-500/20"
         )}
       >

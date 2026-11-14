@@ -46,7 +46,7 @@ export function getImageUrl(path?: string | null, fallback = '/images/placeholde
 }
 
 // ─── SEO helpers ─────────────────────────────────────────────────────────────
-export function buildTitle(pageTitle?: string, siteName = 'ADL Kairouan') {
+export function buildTitle(pageTitle?: string, siteName = 'ADL Tunisie') {
   if (!pageTitle) return siteName;
   return `${pageTitle} — ${siteName}`;
 }

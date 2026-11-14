@@ -24,8 +24,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ADL Kairouan',
-  description: 'Association de Développement Local de Kairouan',
+  title: 'ADL Tunisie — Alliance pour le Développement Local',
+  description:
+    "Alliance pour le Développement Local - Tunisie (ADL Tunisie), association soumise au décret-loi n° 2011-88, œuvrant pour une société locale inclusive et durable.",
 };
 
 export default function RootLayout({

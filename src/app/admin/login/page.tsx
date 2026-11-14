@@ -23,7 +23,7 @@ export default function LoginPage() {
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
   const [error, setError] = React.useState('');
-  
+
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema)
   });
@@ -32,7 +32,7 @@ export default function LoginPage() {
     try {
       setError('');
       const response = await api.post(endpoints.auth.login, data);
-      
+
       if (response.data.success) {
         const { user, tokens } = response.data.data;
         setAuth(user, tokens);
@@ -53,15 +53,15 @@ export default function LoginPage() {
 
       {/* Layer 2: Primary Architectural DOTS Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_2px,transparent_2px)] dark:bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px] opacity-60 dark:opacity-[0.03]"></div>
-      
+
       <div className="w-full max-w-[480px] relative z-10">
         {/* Logo Section */}
         <div className="flex flex-col items-center mb-12 animate-fade-in">
           <div className="relative w-20 h-20 mb-6 group cursor-default">
             <div className="absolute inset-0 bg-royal-600/20 rounded-full blur-2xl group-hover:bg-royal-600/30 transition-all duration-700"></div>
-            <Image 
-              src="/logo.png" 
-              alt="ADL Kairouan" 
+            <Image
+              src="/logo.png"
+              alt="ADL Tunisie"
               width={80}
               height={80}
               priority
@@ -120,8 +120,8 @@ export default function LoginPage() {
                 {errors.password && <p className="text-[10px] font-bold text-red-500 ml-2 uppercase tracking-tighter">{errors.password.message}</p>}
               </div>
 
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="w-full h-16 rounded-2xl bg-royal-600 hover:bg-royal-700 text-white font-display font-bold uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-royal-600/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                 disabled={isSubmitting}
               >
@@ -141,7 +141,7 @@ export default function LoginPage() {
         {/* Footer Info */}
         <div className="mt-12 text-center">
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em]">
-            © 2024 <span className="text-slate-900 dark:text-white">ADL Kairouan</span> — Ville Intelligente
+            © 2024 <span className="text-slate-900 dark:text-white">ADL Tunisie</span> — Ville Intelligente
           </p>
         </div>
       </div>

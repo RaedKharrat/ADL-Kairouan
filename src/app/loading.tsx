@@ -16,12 +16,12 @@ export default function Loading() {
         <div className="relative w-24 h-24">
           <div className="absolute inset-0 rounded-full border-2 border-slate-100 dark:border-white/5" />
           <div className="absolute inset-0 rounded-full border-t-2 border-royal-600 animate-[spin_1.5s_linear_infinite]" />
-          
+
           {/* Central Logo/Icon */}
           <div className="absolute inset-0 flex items-center justify-center p-4">
-            <Image 
-              src="/logo.png" 
-              alt="Logo ADL" 
+            <Image
+              src="/logo.png"
+              alt="Logo ADL"
               width={64}
               height={64}
               priority
@@ -33,7 +33,7 @@ export default function Loading() {
         {/* Textual Branding */}
         <div className="mt-12 text-center space-y-3">
           <h2 className="text-[10px] font-bold uppercase tracking-[0.6em] text-slate-950 dark:text-white ml-[0.6em] animate-in fade-in duration-1000">
-            ADL Kairouan
+            ADL Tunisie
           </h2>
           <div className="flex items-center justify-center gap-1.5">
             <span className="w-1 h-1 rounded-full bg-royal-600 animate-bounce [animation-delay:-0.3s]" />

@@ -47,7 +47,7 @@ export default function AdminSettingsPage() {
         let group = 'GENERAL';
         if (['contactEmail', 'contactPhone', 'address'].includes(key)) group = 'CONTACT';
         if (['facebookUrl', 'twitterUrl', 'instagramUrl', 'linkedinUrl'].includes(key)) group = 'SOCIAL';
-        
+
         return {
           key,
           value: String(value || ''),
@@ -105,10 +105,10 @@ export default function AdminSettingsPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white">Paramètres <span className="text-royal-600">Généraux</span></h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm font-light max-w-xl">
-            Pilotez l'identité visuelle et les informations de contact de la plateforme ADL Kairouan.
+            Pilotez l'identité visuelle et les informations de contact de la plateforme ADL Tunisie.
           </p>
         </div>
-        
+
         {/* Navigation Tabs */}
         <div className="flex bg-slate-100 dark:bg-white/5 p-1.5 rounded-2xl border border-slate-200/50 dark:border-white/10">
           {tabs.map((tab) => (
@@ -117,8 +117,8 @@ export default function AdminSettingsPage() {
               onClick={() => setActiveTab(tab.id)}
               className={cn(
                 "flex items-center gap-2 px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all duration-300",
-                activeTab === tab.id 
-                  ? "bg-white dark:bg-white/10 text-royal-600 shadow-sm border border-slate-200 dark:border-white/10" 
+                activeTab === tab.id
+                  ? "bg-white dark:bg-white/10 text-royal-600 shadow-sm border border-slate-200 dark:border-white/10"
                   : "text-slate-400 hover:text-slate-600 dark:hover:text-white"
               )}
             >
@@ -222,9 +222,9 @@ export default function AdminSettingsPage() {
               )} />
               <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Système Prêt</span>
             </div>
-            <Button 
-              type="submit" 
-              disabled={mutation.isPending} 
+            <Button
+              type="submit"
+              disabled={mutation.isPending}
               className="bg-royal-600 hover:bg-royal-700 text-white px-10 h-12 rounded-full font-display font-bold uppercase tracking-[0.1em] text-[10px] shadow-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
             >
               {mutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}

@@ -85,11 +85,11 @@ export default function BlogPage() {
             </div>
             
             <h1 className="text-4xl md:text-6xl font-display font-bold uppercase tracking-tight text-white dark:text-slate-950 leading-[1.1] mb-8 animate-fade-in-up">
-              Chroniques <br /> <span className="text-royal-600">Kairouanaises</span>
+              Voix Citoyennes <br /> <span className="text-royal-600">&amp; Initiatives</span>
             </h1>
             
             <p className="text-base md:text-lg text-slate-300 dark:text-slate-500 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in px-4 mb-10">
-              Plongez au cœur des initiatives et des récits qui façonnent l'avenir durable de notre région.
+              Plongez au cœur des actions citoyennes, culturelles, écologiques et numériques qui bâtissent une société locale inclusive et durable.
             </p>
 
             <div className="relative w-full max-w-xl mx-auto group mb-12">

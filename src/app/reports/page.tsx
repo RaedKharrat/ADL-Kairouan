@@ -80,7 +80,7 @@ export default function ReportsPage() {
             </h1>
             
             <p className="text-base md:text-lg text-slate-300 dark:text-slate-500 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in px-4 mb-10">
-              Accédez en toute transparence à l'ensemble de nos rapports d'activité et documents de gouvernance.
+              Accédez en toute transparence aux rapports d&apos;activité, statuts et documents de gouvernance de l&apos;Alliance pour le Développement Local - Tunisie.
             </p>
 
             <div className="relative w-full max-w-xl mx-auto group mb-12">
