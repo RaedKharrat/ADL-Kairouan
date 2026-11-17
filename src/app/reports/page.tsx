@@ -1,14 +1,48 @@
 'use client';
 
-import { FileText, Download, Search, FilePieChart, ShieldCheck, Clock, FileDown, TrendingUp, Users, Target, FileCheck, HelpCircle, Mail } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { FileText, Download, Search, ShieldCheck, Clock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import api, { endpoints } from '@/lib/api';
 import { Report, PaginatedData } from '@/types';
-import { Skeleton } from '@/components/ui/skeleton';
-import { formatDate, formatBytes, getImageUrl, cn } from '@/lib/utils';
-import React from 'react';
+import { formatDate, formatBytes, getImageUrl } from '@/lib/utils';
+import React, { useRef } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
+
+const StatValue = ({ value }: { value: string }) => {
+  const countRef = useRef<HTMLSpanElement>(null);
+
+  useGSAP(() => {
+    if (!countRef.current) return;
+    const isDecimal = value.includes('.');
+    const numericValue = parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
+    const obj = { val: 0 };
+
+    gsap.to(obj, {
+      val: numericValue,
+      duration: 2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: countRef.current,
+        start: 'top 90%',
+      },
+      onUpdate: () => {
+        if (!countRef.current) return;
+        countRef.current.innerText = isDecimal
+          ? obj.val.toFixed(1)
+          : Math.ceil(obj.val).toString();
+      },
+    });
+  }, [value]);
+
+  return <span ref={countRef}>{value}</span>;
+};
 
 export default function ReportsPage() {
   const queryClient = useQueryClient();
@@ -45,7 +79,7 @@ export default function ReportsPage() {
     // Route the download through our Next.js API proxy
     // This solves CORS issues and forces the browser to download the file with the exact filename.
     const proxyUrl = `/api/download?url=${encodeURIComponent(rawUrl)}&filename=${encodeURIComponent(fileName)}`;
-    
+
     const link = document.createElement('a');
     link.href = proxyUrl;
     link.download = fileName; // Supported because proxy is same-origin
@@ -59,7 +93,7 @@ export default function ReportsPage() {
       {/* ─── HERO SECTION (ARCHITECTURAL) ─────────────────────────────── */}
       <section className="relative w-full px-4 lg:px-8 pt-4 pb-12">
         <div className="relative w-full min-h-[60vh] lg:min-h-[70vh] bg-slate-950 dark:bg-white rounded-[3rem] lg:rounded-[4rem] flex flex-col items-center justify-center overflow-hidden border border-white/10 dark:border-slate-200 shadow-xl shadow-royal-900/5">
-          
+
           {/* Layer 1: Subtle Mesh Gradients */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute -top-[20%] -left-[10%] w-[60%] h-[60%] bg-royal-600/10 dark:bg-royal-600/5 rounded-full blur-[120px]"></div>
@@ -68,25 +102,25 @@ export default function ReportsPage() {
 
           {/* Layer 2: Primary Architectural DOTS Pattern */}
           <div className="absolute inset-0 bg-[radial-gradient(#ffffff_2px,transparent_2px)] dark:bg-[radial-gradient(#e5e7eb_2px,transparent_2px)] [background-size:32px_32px] opacity-20 dark:opacity-60"></div>
-          
+
           <div className="max-w-[1400px] px-6 lg:px-12 mx-auto relative z-10 text-center flex flex-col items-center">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-royal-600/5 border border-royal-600/10 mb-10 animate-fade-in">
               <div className="w-2 h-2 rounded-full bg-royal-600 animate-pulse"></div>
               <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-royal-600">Transparence & Gouvernance</span>
             </div>
-            
+
             <h1 className="text-4xl md:text-6xl font-display font-bold uppercase tracking-tight text-white dark:text-slate-950 leading-[1.1] mb-8 animate-fade-in-up">
               Archives <br /> <span className="text-royal-600">Officielles</span>
             </h1>
-            
+
             <p className="text-base md:text-lg text-slate-300 dark:text-slate-500 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in px-4 mb-10">
               Accédez en toute transparence aux rapports d&apos;activité, statuts et documents de gouvernance de l&apos;Alliance pour le Développement Local - Tunisie.
             </p>
 
             <div className="relative w-full max-w-xl mx-auto group mb-12">
               <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-royal-600 transition-colors" />
-              <Input 
-                placeholder="Rechercher un document..." 
+              <Input
+                placeholder="Rechercher un document..."
                 className="pl-14 h-16 rounded-full bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 text-lg focus-visible:ring-royal-600 shadow-xl shadow-royal-900/5"
                 value={search}
                 onChange={(e) => {
@@ -113,22 +147,30 @@ export default function ReportsPage() {
         </div>
       </section>
 
-      {/* ─── IMPACT & TRANSPARENCY STATS ────────────────────────────── */}
-      <section className="mt-20 mb-32">
-        <div className="max-w-[1400px] px-6 lg:px-12 mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {/* ─── STATS SECTION (MINIMALIST & MODERN — MAIN SCREEN STYLE) ─── */}
+      <section className="stats-section py-24 md:py-32 bg-background border-y border-slate-100 dark:border-white/5">
+        <div className="container-tight px-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-16 gap-x-12 lg:gap-x-16">
             {[
-              { label: 'Documents Partagés', value: '124', icon: FileCheck, color: 'text-royal-600' },
-              { label: 'Téléchargements', value: '4.8k', icon: TrendingUp, color: 'text-emerald-600' },
-              { label: 'Taux de Transparence', value: '100%', icon: ShieldCheck, color: 'text-amber-600' },
-              { label: 'Lecteurs Actifs', value: '850', icon: Users, color: 'text-blue-600' }
+              { label: 'Documents Partagés', value: '124', suffix: '' },
+              { label: 'Téléchargements', value: '4.8', suffix: 'k' },
+              { label: 'Taux de Transparence', value: '100', suffix: '%' },
+              { label: 'Lecteurs Actifs', value: '850', suffix: '' },
             ].map((stat, i) => (
-              <div key={i} className="group p-10 rounded-[2.5rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 hover:border-royal-600/30 transition-all duration-700 shadow-sm hover:shadow-2xl hover:shadow-royal-900/5">
-                <div className={cn("w-14 h-14 rounded-2xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-500", stat.color)}>
-                  <stat.icon className="w-6 h-6" />
+              <div key={i} className="stat-item flex flex-col items-center lg:items-start group">
+                <div className="flex items-baseline mb-2">
+                  <h3 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold text-slate-950 dark:text-white tracking-tighter transition-transform group-hover:scale-105 duration-500">
+                    <StatValue value={stat.value} />
+                    {stat.suffix && (
+                      <span className="text-slate-400 dark:text-slate-500 ml-1 font-light">
+                        {stat.suffix}
+                      </span>
+                    )}
+                  </h3>
                 </div>
-                <h4 className="text-4xl font-display font-bold uppercase tracking-tighter text-slate-950 dark:text-white mb-2">{stat.value}</h4>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">{stat.label}</p>
+                <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.4em] text-slate-400 group-hover:text-royal-600 transition-colors duration-300">
+                  {stat.label}
+                </p>
               </div>
             ))}
           </div>
@@ -186,7 +228,7 @@ export default function ReportsPage() {
                     </div>
                   </div>
                 </div>
-                <button 
+                <button
                   onClick={() => handleDownload(report)}
                   className="h-14 px-10 rounded-full border border-slate-950 dark:border-white text-[10px] font-bold uppercase tracking-[0.3em] flex items-center justify-center hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 shadow-xl shadow-slate-900/5"
                 >
@@ -200,14 +242,14 @@ export default function ReportsPage() {
         {/* Pagination */}
         {data && data.totalPages > 1 && (
           <div className="mt-32 flex justify-center gap-6">
-            <button 
+            <button
               className="h-14 px-12 rounded-full border border-slate-200 dark:border-white/10 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-950 dark:text-white hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 disabled:opacity-20 disabled:cursor-not-allowed"
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
             >
               Précédent
             </button>
-            <button 
+            <button
               className="h-14 px-12 rounded-full border border-slate-200 dark:border-white/10 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-950 dark:text-white hover:bg-slate-950 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 disabled:opacity-20 disabled:cursor-not-allowed"
               onClick={() => setPage(p => Math.min(data.totalPages, p + 1))}
               disabled={page === data.totalPages}
