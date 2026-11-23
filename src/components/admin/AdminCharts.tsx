@@ -1,13 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   BarChart,
   Bar,
@@ -20,84 +20,175 @@ interface AdminChartsProps {
 
 export function AdminCharts({ monthlyStats, engagementStats }: AdminChartsProps) {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* CHART 1: Growth Evolution */}
-      <div className="p-10 rounded-[3rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-sm">
-        <div className="flex items-center justify-between mb-10">
+      <div className="p-6 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.08] shadow-[0_1px_3px_rgba(15,23,42,0.04)] dark:shadow-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div>
-            <h2 className="text-xl font-display font-bold text-slate-950 dark:text-white uppercase tracking-tight">Flux d'Activité</h2>
-            <p className="text-xs text-slate-400 mt-1 uppercase tracking-widest font-bold">Volume créatif semestriel</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-royal-600 dark:text-brand-400">
+              Activité
+            </p>
+            <h2 className="text-lg font-display font-bold text-slate-900 dark:text-white mt-0.5">
+              Publications semestrielles
+            </h2>
           </div>
-          <div className="flex gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-brand-500"></div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Projets</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-royal-600" />
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Projets
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-orange-500"></div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Articles</span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Articles
+              </span>
             </div>
           </div>
         </div>
-        
-        <div className="h-[350px] w-full">
+
+        <div className="h-[280px] sm:h-[310px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={monthlyStats || []}>
+            <AreaChart
+              data={monthlyStats || []}
+              margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
+            >
               <defs>
                 <linearGradient id="colorProjets" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#2563eb" stopOpacity={0.1}/>
-                  <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#2563eb" stopOpacity={0.18} />
+                  <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="colorArticles" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#f97316" stopOpacity={0.1}/>
-                  <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
+                  <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.18} />
+                  <stop offset="95%" stopColor="#f59e0b" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" opacity={0.3} />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} dy={15} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} />
-              <Tooltip 
-                contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff' }}
-                itemStyle={{ fontSize: '10px', fontWeight: 'bold', textTransform: 'uppercase' }}
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#94a3b8"
+                opacity={0.18}
               />
-              <Area type="monotone" dataKey="projets" stroke="#2563eb" strokeWidth={4} fill="url(#colorProjets)" />
-              <Area type="monotone" dataKey="articles" stroke="#f97316" strokeWidth={4} fill="url(#colorArticles)" />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }}
+                dy={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#0f172a',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: '#fff',
+                  fontSize: '12px',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.25)',
+                }}
+              />
+              <Area
+                type="monotone"
+                dataKey="projets"
+                name="Projets"
+                stroke="#2563eb"
+                strokeWidth={2.5}
+                fill="url(#colorProjets)"
+              />
+              <Area
+                type="monotone"
+                dataKey="articles"
+                name="Articles"
+                stroke="#f59e0b"
+                strokeWidth={2.5}
+                fill="url(#colorArticles)"
+              />
             </AreaChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* CHART 2: Audience Engagement */}
-      <div className="p-10 rounded-[3rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-sm">
-        <div className="flex items-center justify-between mb-10">
+      <div className="p-6 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.08] shadow-[0_1px_3px_rgba(15,23,42,0.04)] dark:shadow-none">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div>
-            <h2 className="text-xl font-display font-bold text-slate-950 dark:text-white uppercase tracking-tight">Engagement Audience</h2>
-            <p className="text-xs text-slate-400 mt-1 uppercase tracking-widest font-bold">Intéractions & Visibilité</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-sky-600 dark:text-sky-400">
+              Audience
+            </p>
+            <h2 className="text-lg font-display font-bold text-slate-900 dark:text-white mt-0.5">
+              Engagement & Visibilité
+            </h2>
           </div>
-          <div className="flex gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-sky-500"></div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Vues (x100)</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-sky-500" />
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Vues (×100)
+              </span>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-500"></div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Commentaires</span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                Commentaires
+              </span>
             </div>
           </div>
         </div>
-        
-        <div className="h-[350px] w-full">
+
+        <div className="h-[280px] sm:h-[310px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={engagementStats || []}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" opacity={0.3} />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} dy={15} />
-              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 700 }} />
-              <Tooltip 
-                cursor={{ fill: '#f8fafc', opacity: 0.5 }}
-                contentStyle={{ backgroundColor: '#0f172a', borderRadius: '12px', border: 'none', color: '#fff' }}
+            <BarChart
+              data={engagementStats || []}
+              margin={{ top: 8, right: 8, left: -20, bottom: 0 }}
+            >
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#94a3b8"
+                opacity={0.18}
               />
-              <Bar dataKey="vues" fill="#0ea5e9" radius={[4, 4, 0, 0]} barSize={20} />
-              <Bar dataKey="commentaires" fill="#10b981" radius={[4, 4, 0, 0]} barSize={20} />
+              <XAxis
+                dataKey="name"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }}
+                dy={10}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 600 }}
+              />
+              <Tooltip
+                cursor={{ fill: '#94a3b8', opacity: 0.08 }}
+                contentStyle={{
+                  backgroundColor: '#0f172a',
+                  borderRadius: '12px',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: '#fff',
+                  fontSize: '12px',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.25)',
+                }}
+              />
+              <Bar
+                dataKey="vues"
+                name="Vues (×100)"
+                fill="#0ea5e9"
+                radius={[6, 6, 0, 0]}
+                barSize={18}
+              />
+              <Bar
+                dataKey="commentaires"
+                name="Commentaires"
+                fill="#10b981"
+                radius={[6, 6, 0, 0]}
+                barSize={18}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -108,15 +199,17 @@ export function AdminCharts({ monthlyStats, engagementStats }: AdminChartsProps)
 
 export function AdminChartsSkeleton() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {[1, 2].map((i) => (
-        <div key={i} className="p-10 rounded-[3rem] bg-white dark:bg-slate-900 border border-slate-100 dark:border-white/5 shadow-sm animate-pulse">
-          <div className="h-6 w-40 bg-slate-200 dark:bg-slate-800 rounded mb-2"></div>
-          <div className="h-4 w-28 bg-slate-100 dark:bg-slate-800/60 rounded mb-10"></div>
-          <div className="h-[350px] w-full bg-slate-100 dark:bg-slate-800/40 rounded-2xl"></div>
+        <div
+          key={i}
+          className="p-6 rounded-2xl bg-white dark:bg-[#111827] border border-slate-200/80 dark:border-white/[0.08] animate-pulse"
+        >
+          <div className="h-3 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-2" />
+          <div className="h-6 w-48 bg-slate-200 dark:bg-slate-800 rounded mb-6" />
+          <div className="h-[280px] w-full bg-slate-100 dark:bg-slate-800/50 rounded-xl" />
         </div>
       ))}
     </div>
   );
 }
-

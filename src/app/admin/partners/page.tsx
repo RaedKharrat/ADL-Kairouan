@@ -15,6 +15,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { Loader2, X, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import {
+  AdminPageHeader,
+  AdminCard,
+  AdminEmptyState,
+  AdminModal,
+} from '@/components/admin/AdminPrimitives';
 
 const partnerSchema = z.object({
   name: z.string().min(2, 'Le nom doit faire au moins 2 caractères'),
@@ -116,24 +122,35 @@ export default function AdminPartnersPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold">Partenaires</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez la liste de vos partenaires institutionnels et privés.</p>
-        </div>
-        <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
-          <Plus className="w-4 h-4 mr-2" /> Ajouter un Partenaire
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        eyebrow="Réseau & Alliances"
+        title="Partenaires"
+        description="Gérez la liste de vos partenaires institutionnels, associatifs et privés."
+        badge={
+          partners ? (
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-royal-600/10 text-royal-600 dark:text-brand-400">
+              {partners.length} partenaire{partners.length > 1 ? 's' : ''}
+            </span>
+          ) : null
+        }
+        actions={
+          <Button
+            onClick={() => openModal()}
+            className="h-10 rounded-xl bg-royal-600 hover:bg-royal-700 text-white text-xs font-semibold shadow-sm"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Ajouter un Partenaire
+          </Button>
+        }
+      />
 
-      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
-        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
+      <AdminCard>
+        <div className="p-4 border-b border-slate-200/70 dark:border-white/[0.08] bg-slate-50/70 dark:bg-white/[0.02]">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-            <Input 
-              placeholder="Rechercher par nom..." 
-              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder="Rechercher par nom..."
+              className="pl-10 h-10 bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -142,92 +159,104 @@ export default function AdminPartnersPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
+            <thead className="text-[11px] font-bold uppercase tracking-wider bg-slate-50/80 dark:bg-white/[0.03] text-slate-500 dark:text-slate-400 border-b border-slate-200/70 dark:border-white/[0.08]">
               <tr>
-                <th className="px-6 py-4 font-medium">Logo & Nom</th>
-                <th className="px-6 py-4 font-medium">Site Web</th>
-                <th className="px-6 py-4 font-medium">Statut</th>
-                <th className="px-6 py-4 font-medium text-right">Actions</th>
+                <th className="px-6 py-3.5">Logo &amp; Nom</th>
+                <th className="px-6 py-3.5">Site Web</th>
+                <th className="px-6 py-3.5">Statut</th>
+                <th className="px-6 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5">
+            <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, i) => (
                   <tr key={i}>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4">
-                        <Skeleton className="w-12 h-12 rounded-full" />
+                        <Skeleton className="w-11 h-11 rounded-xl" />
                         <Skeleton className="h-4 w-32" />
                       </div>
                     </td>
                     <td className="px-6 py-4"><Skeleton className="h-4 w-40" /></td>
-                    <td className="px-6 py-4"><Skeleton className="h-4 w-16" /></td>
+                    <td className="px-6 py-4"><Skeleton className="h-5 w-16 rounded-full" /></td>
                     <td className="px-6 py-4"><Skeleton className="h-8 w-20 ml-auto" /></td>
                   </tr>
                 ))
               ) : filteredPartners?.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-slate-500 dark:text-slate-400">
-                    Aucun partenaire trouvé.
+                  <td colSpan={4}>
+                    <AdminEmptyState
+                      icon={<Globe className="w-6 h-6" />}
+                      title="Aucun partenaire trouvé"
+                      description="Ajoutez un partenaire pour l'afficher sur le portail public."
+                    />
                   </td>
                 </tr>
               ) : (
                 filteredPartners?.map((partner) => (
-                  <tr key={partner.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                  <tr key={partner.id} className="hover:bg-slate-50/80 dark:hover:bg-white/[0.02] transition-colors group">
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center p-2 shrink-0 overflow-hidden">
-                          <img 
-                            src={getImageUrl(partner.logo)} 
-                            alt={partner.name} 
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-11 h-11 rounded-xl bg-white border border-slate-200/70 flex items-center justify-center p-1.5 shrink-0 overflow-hidden shadow-xs">
+                          <img
+                            src={getImageUrl(partner.logo)}
+                            alt={partner.name}
                             className="w-full h-full object-contain"
                           />
                         </div>
-                        <div className="font-medium text-slate-900 dark:text-white group-hover:text-brand-500 dark:group-hover:text-brand-400 transition-colors">
+                        <div className="font-semibold text-slate-900 dark:text-white group-hover:text-royal-600 dark:group-hover:text-brand-400 transition-colors">
                           {partner.name}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
                       {partner.website ? (
-                        <a 
-                          href={partner.website} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
-                          className="flex items-center gap-1.5 hover:text-brand-400 underline decoration-white/20 underline-offset-4"
+                        <a
+                          href={partner.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 hover:text-royal-600 dark:hover:text-brand-400 underline decoration-slate-300 dark:decoration-white/20 underline-offset-4"
                         >
-                          {new URL(partner.website).hostname}
+                          {(() => {
+                            try {
+                              return new URL(partner.website).hostname;
+                            } catch {
+                              return partner.website;
+                            }
+                          })()}
                           <ExternalLink className="w-3 h-3" />
                         </a>
                       ) : (
-                        <span className="italic opacity-50">Aucun site</span>
+                        <span className="italic opacity-60">Aucun site</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`px-2.5 py-1 text-xs font-medium rounded-full border ${
-                        partner.isActive 
-                          ? 'bg-green-500/10 text-green-500 border-green-500/20' 
-                          : 'bg-slate-500/10 text-slate-500 border-slate-500/20'
+                      <span className={`inline-flex px-2.5 py-1 text-xs font-semibold rounded-full ${
+                        partner.isActive
+                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                          : 'bg-slate-500/10 text-slate-500'
                       }`}>
                         {partner.isActive ? 'Actif' : 'Inactif'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
+                      <div className="flex items-center justify-end gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 rounded-lg text-slate-500 hover:text-royal-600 dark:hover:text-brand-400 hover:bg-royal-600/10"
                           onClick={() => openModal(partner)}
+                          title="Modifier"
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                           onClick={() => handleDelete(partner.id)}
                           disabled={deleteMutation.isPending}
+                          title="Supprimer"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -239,83 +268,89 @@ export default function AdminPartnersPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </AdminCard>
 
-      {/* Modal Overlay */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
-              <h2 className="text-lg font-bold">{editingPartner ? 'Modifier' : 'Ajouter'} un Partenaire</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            <div className="p-6 overflow-y-auto custom-scrollbar">
-              <form id="partner-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Logo du partenaire <span className="text-red-500">*</span></label>
-                  <Controller
-                    control={control}
-                    name="logo"
-                    render={({ field }) => (
-                      <ImageUpload 
-                        value={field.value} 
-                        onChange={field.onChange} 
-                        onRemove={() => field.onChange('')} 
-                      />
-                    )}
-                  />
-                  {errors.logo && <p className="text-xs text-red-500">{errors.logo.message}</p>}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Nom de l'entreprise/institution <span className="text-red-500">*</span></label>
-                  <Input 
-                    {...register('name')}
-                    placeholder="Nom complet..." 
-                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.name ? 'border-red-500' : ''}`}
-                  />
-                  {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Site Web (optionnel)</label>
-                  <Input 
-                    {...register('website')}
-                    placeholder="https://..." 
-                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.website ? 'border-red-500' : ''}`}
-                  />
-                  {errors.website && <p className="text-xs text-red-500">{errors.website.message}</p>}
-                </div>
-
-                <div className="flex items-center gap-2 pt-2">
-                  <input 
-                    type="checkbox" 
-                    id="isActive" 
-                    {...register('isActive')}
-                    className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
-                  />
-                  <label htmlFor="isActive" className="text-sm font-medium text-slate-300">
-                    Partenaire actif (visible sur le site)
-                  </label>
-                </div>
-                
-              </form>
-            </div>
-            
-            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
-              <Button type="submit" form="partner-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
-                {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                Enregistrer
-              </Button>
-            </div>
+      <AdminModal
+        open={isModalOpen}
+        onClose={closeModal}
+        title={`${editingPartner ? 'Modifier' : 'Ajouter'} un Partenaire`}
+        subtitle="Renseignez le logo et les informations du partenaire."
+        maxWidth="lg"
+        footer={
+          <>
+            <Button
+              variant="outline"
+              onClick={closeModal}
+              className="rounded-xl bg-white dark:bg-transparent border-slate-200 dark:border-white/10"
+            >
+              Annuler
+            </Button>
+            <Button
+              type="submit"
+              form="partner-form"
+              className="rounded-xl bg-royal-600 hover:bg-royal-700 text-white"
+              disabled={saveMutation.isPending}
+            >
+              {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+              Enregistrer
+            </Button>
+          </>
+        }
+      >
+        <form id="partner-form" onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+              Logo du partenaire <span className="text-red-500">*</span>
+            </label>
+            <Controller
+              control={control}
+              name="logo"
+              render={({ field }) => (
+                <ImageUpload
+                  value={field.value}
+                  onChange={field.onChange}
+                  onRemove={() => field.onChange('')}
+                />
+              )}
+            />
+            {errors.logo && <p className="text-xs text-red-500">{errors.logo.message}</p>}
           </div>
-        </div>
-      )}
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+              Nom de l&apos;entreprise/institution <span className="text-red-500">*</span>
+            </label>
+            <Input
+              {...register('name')}
+              placeholder="Nom complet..."
+              className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${errors.name ? 'border-red-500' : ''}`}
+            />
+            {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+              Site Web (optionnel)
+            </label>
+            <Input
+              {...register('website')}
+              placeholder="https://..."
+              className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${errors.website ? 'border-red-500' : ''}`}
+            />
+            {errors.website && <p className="text-xs text-red-500">{errors.website.message}</p>}
+          </div>
+
+          <label htmlFor="isActive" className="flex items-center gap-2.5 pt-1 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300">
+            <input
+              type="checkbox"
+              id="isActive"
+              {...register('isActive')}
+              className="h-4 w-4 rounded border-slate-300 dark:border-white/20 text-royal-600 focus:ring-royal-600"
+            />
+            Partenaire actif (visible sur le site)
+          </label>
+        </form>
+      </AdminModal>
     </div>
   );
 }

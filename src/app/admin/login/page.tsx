@@ -10,7 +10,8 @@ import { useAuthStore } from '@/store/auth.store';
 import api, { endpoints } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Lock, Mail } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 const loginSchema = z.object({
   email: z.string().email('Email invalide'),
@@ -23,6 +24,7 @@ export default function LoginPage() {
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
   const [error, setError] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema)
@@ -112,17 +114,25 @@ export default function LoginPage() {
                   </div>
                   <Input
                     {...register('password')}
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="••••••••"
-                    className="pl-11 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-950 dark:text-white placeholder:text-slate-400 h-14 rounded-2xl focus-visible:ring-royal-600 focus-visible:border-royal-600 transition-all text-sm font-medium"
+                    className="pl-11 pr-11 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-950 dark:text-white placeholder:text-slate-400 h-14 rounded-2xl focus-visible:ring-royal-600 focus-visible:border-royal-600 transition-all text-sm font-medium"
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
                 </div>
                 {errors.password && <p className="text-[10px] font-bold text-red-500 ml-2 uppercase tracking-tighter">{errors.password.message}</p>}
               </div>
 
               <Button
                 type="submit"
-                className="w-full h-16 rounded-2xl bg-royal-600 hover:bg-royal-700 text-white font-display font-bold uppercase tracking-[0.2em] text-[10px] shadow-xl shadow-royal-600/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full h-14 rounded-2xl bg-royal-600 hover:bg-royal-700 text-white font-display font-bold uppercase tracking-[0.2em] text-xs shadow-xl shadow-royal-600/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -139,9 +149,15 @@ export default function LoginPage() {
         </div>
 
         {/* Footer Info */}
-        <div className="mt-12 text-center">
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.3em]">
-            © 2024 <span className="text-slate-900 dark:text-white">ADL Tunisie</span> — Ville Intelligente
+        <div className="mt-8 flex flex-col items-center gap-3 text-center">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-royal-600 dark:text-slate-400 dark:hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" /> Retour au site public
+          </Link>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.25em]">
+            © {new Date().getFullYear()} <span className="text-slate-900 dark:text-white">ADL Tunisie</span> — Développement Local
           </p>
         </div>
       </div>

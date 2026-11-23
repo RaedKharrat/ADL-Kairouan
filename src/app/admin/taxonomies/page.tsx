@@ -15,6 +15,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  AdminPageHeader,
+  AdminCard,
+  AdminModal,
+} from '@/components/admin/AdminPrimitives';
 
 const categorySchema = z.object({
   name: z.string().min(2, 'Le nom doit faire au moins 2 caractères'),
@@ -141,18 +146,22 @@ export default function AdminTaxonomiesPage() {
   const isLoading = activeTab === 'categories' ? categoriesLoading : tagsLoading;
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold">Taxonomies</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez les catégories et étiquettes pour classer vos contenus.</p>
-        </div>
-        <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
-          <Plus className="w-4 h-4 mr-2" /> Nouvelle {activeTab === 'categories' ? 'Catégorie' : 'Étiquette'}
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        eyebrow="Organisation du Contenu"
+        title="Catégories & Tags"
+        description="Gérez les catégories et étiquettes utilisées pour classer vos projets, articles, médias et rapports."
+        actions={
+          <Button
+            onClick={() => openModal()}
+            className="h-10 rounded-xl bg-royal-600 hover:bg-royal-700 text-white text-xs font-semibold shadow-sm"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Nouvelle {activeTab === 'categories' ? 'Catégorie' : 'Étiquette'}
+          </Button>
+        }
+      />
 
-      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+      <AdminCard>
         {/* Tabs */}
         <div className="flex border-b border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-black/40">
           <button 
@@ -263,21 +272,23 @@ export default function AdminTaxonomiesPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
+                      <div className="flex items-center justify-end gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 rounded-lg text-slate-500 hover:text-royal-600 dark:hover:text-brand-400 hover:bg-royal-600/10"
                           onClick={() => openModal(item)}
+                          title="Modifier"
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                           onClick={() => handleDelete(item.id)}
                           disabled={deleteCategoryMutation.isPending || deleteTagMutation.isPending}
+                          title="Supprimer"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -289,88 +300,100 @@ export default function AdminTaxonomiesPage() {
             </tbody>
           </table>
         </div>
-      </div>
+      </AdminCard>
 
-      {/* Modal Overlay */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
-              <h2 className="text-lg font-bold">
-                {editingItem ? 'Modifier' : 'Ajouter'} {activeTab === 'categories' ? 'une Catégorie' : 'une Étiquette'}
-              </h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            <div className="p-6 overflow-y-auto custom-scrollbar">
-              {activeTab === 'categories' ? (
-                <form id="taxonomy-form" onSubmit={categoryForm.handleSubmit(onCategorySubmit)} className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Nom <span className="text-red-500">*</span></label>
-                    <Input 
-                      {...categoryForm.register('name')}
-                      placeholder="Ex: Infrastructure" 
-                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${categoryForm.formState.errors.name ? 'border-red-500' : ''}`}
-                    />
-                    {categoryForm.formState.errors.name && <p className="text-xs text-red-500">{categoryForm.formState.errors.name.message}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Slug <span className="text-red-500">*</span></label>
-                    <Input 
-                      {...categoryForm.register('slug')}
-                      placeholder="Ex: infrastructure" 
-                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${categoryForm.formState.errors.slug ? 'border-red-500' : ''}`}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Description</label>
-                    <Input 
-                      {...categoryForm.register('description')}
-                      placeholder="Description optionnelle..." 
-                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
-                    />
-                  </div>
-                </form>
-              ) : (
-                <form id="taxonomy-form" onSubmit={tagForm.handleSubmit(onTagSubmit)} className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Nom <span className="text-red-500">*</span></label>
-                    <Input 
-                      {...tagForm.register('name')}
-                      placeholder="Ex: Innovation" 
-                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${tagForm.formState.errors.name ? 'border-red-500' : ''}`}
-                    />
-                    {tagForm.formState.errors.name && <p className="text-xs text-red-500">{tagForm.formState.errors.name.message}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300">Slug <span className="text-red-500">*</span></label>
-                    <Input 
-                      {...tagForm.register('slug')}
-                      placeholder="Ex: innovation" 
-                      className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${tagForm.formState.errors.slug ? 'border-red-500' : ''}`}
-                    />
-                  </div>
-                </form>
+      <AdminModal
+        open={isModalOpen}
+        onClose={closeModal}
+        title={`${editingItem ? 'Modifier' : 'Ajouter'} ${activeTab === 'categories' ? 'une Catégorie' : 'une Étiquette'}`}
+        maxWidth="md"
+        footer={
+          <>
+            <Button
+              variant="outline"
+              onClick={closeModal}
+              className="rounded-xl bg-white dark:bg-transparent border-slate-200 dark:border-white/10"
+            >
+              Annuler
+            </Button>
+            <Button
+              type="submit"
+              form="taxonomy-form"
+              className="rounded-xl bg-royal-600 hover:bg-royal-700 text-white"
+              disabled={saveCategoryMutation.isPending || saveTagMutation.isPending}
+            >
+              {(saveCategoryMutation.isPending || saveTagMutation.isPending) ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : null}
+              Enregistrer
+            </Button>
+          </>
+        }
+      >
+        {activeTab === 'categories' ? (
+          <form id="taxonomy-form" onSubmit={categoryForm.handleSubmit(onCategorySubmit)} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Nom <span className="text-red-500">*</span>
+              </label>
+              <Input
+                {...categoryForm.register('name')}
+                placeholder="Ex: Citoyenneté active"
+                className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${categoryForm.formState.errors.name ? 'border-red-500' : ''}`}
+              />
+              {categoryForm.formState.errors.name && (
+                <p className="text-xs text-red-500">{categoryForm.formState.errors.name.message}</p>
               )}
             </div>
-            
-            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
-              <Button 
-                type="submit" 
-                form="taxonomy-form" 
-                className="bg-brand-600 hover:bg-brand-500" 
-                disabled={saveCategoryMutation.isPending || saveTagMutation.isPending}
-              >
-                {(saveCategoryMutation.isPending || saveTagMutation.isPending) ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
-                Enregistrer
-              </Button>
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Slug <span className="text-red-500">*</span>
+              </label>
+              <Input
+                {...categoryForm.register('slug')}
+                placeholder="Ex: citoyennete-active"
+                className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${categoryForm.formState.errors.slug ? 'border-red-500' : ''}`}
+              />
             </div>
-          </div>
-        </div>
-      )}
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Description
+              </label>
+              <Input
+                {...categoryForm.register('description')}
+                placeholder="Description optionnelle..."
+                className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
+              />
+            </div>
+          </form>
+        ) : (
+          <form id="taxonomy-form" onSubmit={tagForm.handleSubmit(onTagSubmit)} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Nom <span className="text-red-500">*</span>
+              </label>
+              <Input
+                {...tagForm.register('name')}
+                placeholder="Ex: Innovation"
+                className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${tagForm.formState.errors.name ? 'border-red-500' : ''}`}
+              />
+              {tagForm.formState.errors.name && (
+                <p className="text-xs text-red-500">{tagForm.formState.errors.name.message}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Slug <span className="text-red-500">*</span>
+              </label>
+              <Input
+                {...tagForm.register('slug')}
+                placeholder="Ex: innovation"
+                className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${tagForm.formState.errors.slug ? 'border-red-500' : ''}`}
+              />
+            </div>
+          </form>
+        )}
+      </AdminModal>
     </div>
   );
 }

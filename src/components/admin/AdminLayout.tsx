@@ -95,8 +95,8 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           isSidebarCollapsed={isCollapsed}
           onToggleSidebarCollapse={handleToggleCollapse}
         />
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 sm:p-6 md:p-8 lg:p-10 scrollbar-none">
-          <div className="max-w-7xl mx-auto animate-fade-in-up">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 scrollbar-none">
+          <div className="max-w-[1400px] mx-auto animate-fade-in-up">
             {children}
           </div>
         </main>

@@ -19,6 +19,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { toast } from 'sonner';
+import { AdminPageHeader } from '@/components/admin/AdminPrimitives';
 
 const teamMemberSchema = z.object({
   name: z.string().min(2, 'Le nom doit faire au moins 2 caractères'),
@@ -358,22 +359,30 @@ export default function AdminTeamPage() {
   };
 
   return (
-    <div className="space-y-8 pb-20">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold">L'Équipe Exécutive</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">
-            Gérez la hiérarchie et les membres de la direction affichés dynamiquement sur la page À Propos.
-          </p>
-        </div>
-        <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
-          <Plus className="w-4 h-4 mr-2" /> Nouveau Membre
-        </Button>
-      </div>
+    <div className="space-y-6 pb-16">
+      <AdminPageHeader
+        eyebrow="Organisation & Gouvernance"
+        title="Équipe Exécutive"
+        description="Gérez la hiérarchie et les membres de la direction affichés dynamiquement sur la page À Propos."
+        badge={
+          data?.total !== undefined ? (
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-royal-600/10 text-royal-600 dark:text-brand-400">
+              {data.total} membre{data.total > 1 ? 's' : ''}
+            </span>
+          ) : null
+        }
+        actions={
+          <Button
+            onClick={() => openModal()}
+            className="h-10 rounded-xl bg-royal-600 hover:bg-royal-700 text-white text-xs font-semibold shadow-sm"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Nouveau Membre
+          </Button>
+        }
+      />
 
       {/* Main Table Card */}
-      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+      <div className="bg-white dark:bg-[#111827] rounded-2xl border border-slate-200/80 dark:border-white/[0.08] shadow-[0_1px_3px_rgba(15,23,42,0.04)] dark:shadow-none overflow-hidden">
         {/* Search Bar & Quick Filters */}
         <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-slate-50/50 dark:bg-black/20">
           <div className="flex items-center gap-3 flex-1 max-w-md">

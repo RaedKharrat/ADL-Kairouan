@@ -16,6 +16,12 @@ import { Loader2, X } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { toast } from 'sonner';
+import {
+  AdminPageHeader,
+  AdminCard,
+  AdminEmptyState,
+  AdminModal,
+} from '@/components/admin/AdminPrimitives';
 
 const testimonialSchema = z.object({
   name: z.string().min(2, 'Le nom doit faire au moins 2 caractères'),
@@ -144,105 +150,123 @@ export default function AdminTestimonialsPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold">Témoignages</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez les retours d'expérience et témoignages de satisfaction.</p>
-        </div>
-        <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
-          <Plus className="w-4 h-4 mr-2" /> Nouveau Témoignage
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        eyebrow="Confiance & Impact"
+        title="Témoignages"
+        description="Gérez les retours d'expérience et témoignages affichés sur la plateforme."
+        badge={
+          testimonials ? (
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-royal-600/10 text-royal-600 dark:text-brand-400">
+              {testimonials.length} avis
+            </span>
+          ) : null
+        }
+        actions={
+          <Button
+            onClick={() => openModal()}
+            className="h-10 rounded-xl bg-royal-600 hover:bg-royal-700 text-white text-xs font-semibold shadow-sm"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Nouveau Témoignage
+          </Button>
+        }
+      />
 
-      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
-        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
+      <AdminCard>
+        <div className="p-4 border-b border-slate-200/70 dark:border-white/[0.08] bg-slate-50/70 dark:bg-white/[0.02]">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-            <Input 
-              placeholder="Rechercher par nom, organisation..." 
-              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder="Rechercher par nom, organisation..."
+              className="pl-10 h-10 bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 space-y-4">
+              <div key={i} className="p-5 rounded-2xl border border-slate-200/70 dark:border-white/[0.08] bg-slate-50/60 dark:bg-white/[0.02] space-y-4">
                 <div className="flex items-center gap-4">
-                  <Skeleton className="w-12 h-12 rounded-full" />
+                  <Skeleton className="w-11 h-11 rounded-full" />
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-32" />
                     <Skeleton className="h-3 w-48" />
                   </div>
                 </div>
-                <Skeleton className="h-20 w-full" />
+                <Skeleton className="h-16 w-full" />
               </div>
             ))
           ) : filtered?.length === 0 ? (
-            <div className="col-span-full py-20 text-center text-slate-500 dark:text-slate-400">
-              <Star className="w-12 h-12 mx-auto mb-4 opacity-20" />
-              <p>Aucun témoignage trouvé.</p>
+            <div className="col-span-full">
+              <AdminEmptyState
+                icon={<Star className="w-6 h-6" />}
+                title="Aucun témoignage trouvé"
+                description="Ajoutez un témoignage pour valoriser vos actions auprès du public."
+              />
             </div>
           ) : (
             filtered?.map((t) => (
-              <div key={t.id} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 hover:border-brand-500/30 transition-all group flex flex-col justify-between">
+              <div key={t.id} className="p-5 rounded-2xl border border-slate-200/70 dark:border-white/[0.08] bg-slate-50/50 dark:bg-white/[0.02] hover:border-royal-600/30 dark:hover:border-brand-500/30 transition-all group flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-brand-500/10 flex items-center justify-center overflow-hidden border border-brand-500/20">
+                  <div className="flex items-start justify-between gap-3 mb-4">
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      <div className="w-11 h-11 rounded-full bg-royal-600/10 flex items-center justify-center overflow-hidden border border-royal-600/20 shrink-0">
                         {t.avatar ? (
                           <img src={getImageUrl(t.avatar)} alt={t.name} className="w-full h-full object-cover" />
                         ) : (
-                          <User className="w-6 h-6 text-brand-500" />
+                          <User className="w-5 h-5 text-royal-600 dark:text-brand-400" />
                         )}
                       </div>
-                      <div>
-                        <h3 className="text-white font-bold">{t.name}</h3>
-                        <p className="text-xs text-slate-400">{t.role}{t.organization ? ` @ ${t.organization}` : ''}</p>
+                      <div className="min-w-0">
+                        <h3 className="text-sm font-bold text-slate-900 dark:text-white truncate">{t.name}</h3>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                          {t.role}{t.organization ? ` • ${t.organization}` : ''}
+                        </p>
                       </div>
                     </div>
-                    <div className="flex gap-1">
+                    <div className="flex gap-0.5 shrink-0 pt-1">
                       {Array.from({ length: 5 }).map((_, i) => (
-                        <Star key={i} className={`w-3 h-3 ${i < (t.rating || 5) ? 'text-amber-500 fill-amber-500' : 'text-slate-600'}`} />
+                        <Star key={i} className={`w-3.5 h-3.5 ${i < (t.rating || 5) ? 'text-amber-500 fill-amber-500' : 'text-slate-300 dark:text-slate-600'}`} />
                       ))}
                     </div>
                   </div>
-                  <p className="text-slate-300 text-sm leading-relaxed italic">
-                    "{t.content}"
+                  <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed italic">
+                    &ldquo;{t.content}&rdquo;
                   </p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-slate-200/50 dark:border-white/5 flex items-center justify-between">
+                <div className="mt-5 pt-3.5 border-t border-slate-200/70 dark:border-white/[0.06] flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     {t.featured && (
-                      <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded bg-brand-500/10 text-brand-500 border border-brand-500/20">
+                      <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-royal-600/10 text-royal-600 dark:text-brand-400">
                         Mis en avant
                       </span>
                     )}
                     {!t.isActive && (
-                      <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                      <span className="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400">
                         Inactif
                       </span>
                     )}
                   </div>
-                  <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
+                  <div className="flex gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-lg text-slate-500 hover:text-royal-600 dark:hover:text-brand-400 hover:bg-royal-600/10"
                       onClick={() => openModal(t)}
+                      title="Modifier"
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-8 w-8 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                       onClick={() => handleDelete(t.id)}
                       disabled={deleteMutation.isPending}
+                      title="Supprimer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -252,130 +276,146 @@ export default function AdminTestimonialsPage() {
             ))
           )}
         </div>
-      </div>
+      </AdminCard>
 
-      {/* Modal Overlay */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
-              <h2 className="text-lg font-bold">{editingTestimonial ? 'Modifier' : 'Ajouter'} un Témoignage</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
-            
-            <div className="p-6 overflow-y-auto custom-scrollbar">
-              <form id="testimonial-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Photo / Avatar</label>
-                    <Controller
-                      control={control}
-                      name="avatar"
-                      render={({ field }) => (
-                        <ImageUpload 
-                          value={field.value} 
-                          onChange={field.onChange} 
-                          onRemove={() => field.onChange('')} 
-                          className="aspect-square"
-                        />
-                      )}
-                    />
-                  </div>
-                  
-                  <div className="md:col-span-2 space-y-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-300">Nom complet <span className="text-red-500">*</span></label>
-                      <Input 
-                        {...register('name')}
-                        placeholder="Ex: Jean Dupont" 
-                        className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.name ? 'border-red-500' : ''}`}
-                      />
-                      {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-300">Rôle / Titre</label>
-                        <Input 
-                          {...register('role')}
-                          placeholder="Ex: Citoyen" 
-                          className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium text-slate-300">Organisation</label>
-                        <Input 
-                          {...register('organization')}
-                          placeholder="Ex: Association X" 
-                          className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Contenu du témoignage <span className="text-red-500">*</span></label>
-                  <Textarea 
-                    {...register('content')}
-                    placeholder="Saisir le retour d'expérience..." 
-                    rows={4}
-                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.content ? 'border-red-500' : ''}`}
+      <AdminModal
+        open={isModalOpen}
+        onClose={closeModal}
+        title={`${editingTestimonial ? 'Modifier' : 'Ajouter'} un Témoignage`}
+        subtitle="Publiez un retour d'expérience authentique."
+        maxWidth="2xl"
+        footer={
+          <>
+            <Button
+              variant="outline"
+              onClick={closeModal}
+              className="rounded-xl bg-white dark:bg-transparent border-slate-200 dark:border-white/10"
+            >
+              Annuler
+            </Button>
+            <Button
+              type="submit"
+              form="testimonial-form"
+              className="rounded-xl bg-royal-600 hover:bg-royal-700 text-white"
+              disabled={saveMutation.isPending}
+            >
+              {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+              Enregistrer
+            </Button>
+          </>
+        }
+      >
+        <form id="testimonial-form" onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Photo / Avatar
+              </label>
+              <Controller
+                control={control}
+                name="avatar"
+                render={({ field }) => (
+                  <ImageUpload
+                    value={field.value}
+                    onChange={field.onChange}
+                    onRemove={() => field.onChange('')}
+                    className="aspect-square"
                   />
-                  {errors.content && <p className="text-xs text-red-500">{errors.content.message}</p>}
-                </div>
-
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Note (1-5 étoiles)</label>
-                    <select 
-                      {...register('rating', { valueAsNumber: true })}
-                      className="flex h-10 w-full rounded-md border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-black/40 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
-                    >
-                      {[1, 2, 3, 4, 5].map(n => (
-                        <option key={n} value={n} className="bg-surface-dark">{n} étoiles</option>
-                      ))}
-                    </select>
-                  </div>
-                  
-                  <div className="flex flex-col justify-center gap-2">
-                    <div className="flex items-center gap-2">
-                      <input 
-                        type="checkbox" 
-                        id="featured" 
-                        {...register('featured')}
-                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500"
-                      />
-                      <label htmlFor="featured" className="text-sm font-medium text-slate-300">Mis en avant</label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <input 
-                        type="checkbox" 
-                        id="isActive" 
-                        {...register('isActive')}
-                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500"
-                      />
-                      <label htmlFor="isActive" className="text-sm font-medium text-slate-300">Actif</label>
-                    </div>
-                  </div>
-                </div>
-                
-              </form>
+                )}
+              />
             </div>
-            
-            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
-              <Button type="submit" form="testimonial-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
-                {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                Enregistrer
-              </Button>
+
+            <div className="md:col-span-2 space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                  Nom complet <span className="text-red-500">*</span>
+                </label>
+                <Input
+                  {...register('name')}
+                  placeholder="Ex: Amira Ben Salah"
+                  className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${errors.name ? 'border-red-500' : ''}`}
+                />
+                {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                    Rôle / Titre
+                  </label>
+                  <Input
+                    {...register('role')}
+                    placeholder="Ex: Citoyenne"
+                    className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                    Organisation
+                  </label>
+                  <Input
+                    {...register('organization')}
+                    placeholder="Ex: Association locale"
+                    className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+              Contenu du témoignage <span className="text-red-500">*</span>
+            </label>
+            <Textarea
+              {...register('content')}
+              placeholder="Saisir le retour d'expérience..."
+              rows={4}
+              className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${errors.content ? 'border-red-500' : ''}`}
+            />
+            {errors.content && <p className="text-xs text-red-500">{errors.content.message}</p>}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Note (1-5 étoiles)
+              </label>
+              <select
+                {...register('rating', { valueAsNumber: true })}
+                className="flex h-10 w-full rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-royal-600"
+              >
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <option key={n} value={n}>
+                    {n} étoile{n > 1 ? 's' : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex flex-col justify-center gap-2.5">
+              <label htmlFor="featured" className="flex items-center gap-2.5 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  {...register('featured')}
+                  className="h-4 w-4 rounded border-slate-300 dark:border-white/20 text-royal-600 focus:ring-royal-600"
+                />
+                Mis en avant
+              </label>
+              <label htmlFor="isActive" className="flex items-center gap-2.5 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300">
+                <input
+                  type="checkbox"
+                  id="isActive"
+                  {...register('isActive')}
+                  className="h-4 w-4 rounded border-slate-300 dark:border-white/20 text-royal-600 focus:ring-royal-600"
+                />
+                Actif (visible sur le site)
+              </label>
+            </div>
+          </div>
+        </form>
+      </AdminModal>
     </div>
   );
 }

@@ -11,6 +11,11 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 import { Loader2, UploadCloud } from 'lucide-react';
 import { toast } from 'sonner';
+import {
+  AdminPageHeader,
+  AdminCard,
+  AdminEmptyState,
+} from '@/components/admin/AdminPrimitives';
 
 interface MediaFile {
   id: string;
@@ -113,47 +118,65 @@ export default function AdminMediaPage() {
   );
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold">Médiathèque</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez vos images, documents et fichiers téléchargés.</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" className="bg-slate-100/50 dark:bg-white/5 border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/10" onClick={() => setView(view === 'grid' ? 'list' : 'grid')}>
-            {view === 'grid' ? <List className="w-4 h-4 mr-2" /> : <LayoutGrid className="w-4 h-4 mr-2" />}
-            {view === 'grid' ? 'Vue Liste' : 'Vue Grille'}
-          </Button>
-          <Button 
-            className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm"
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploadMutation.isPending}
-          >
-            {uploadMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Plus className="w-4 h-4 mr-2" />}
-            {uploadMutation.isPending ? 'Téléversement...' : 'Téléverser'}
-          </Button>
-          <input 
-            type="file" 
-            multiple 
-            ref={fileInputRef} 
-            onChange={handleFileSelect} 
-            className="hidden" 
-            accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-          />
-        </div>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        eyebrow="Ressources & Médias"
+        title="Médiathèque"
+        description="Gérez vos images, documents PDF et fichiers téléversés sur la plateforme."
+        badge={
+          <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-royal-600/10 text-royal-600 dark:text-brand-400">
+            {mediaList.length} fichier{mediaList.length > 1 ? 's' : ''}
+          </span>
+        }
+        actions={
+          <>
+            <Button
+              variant="outline"
+              className="h-10 rounded-xl bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-xs font-semibold"
+              onClick={() => setView(view === 'grid' ? 'list' : 'grid')}
+            >
+              {view === 'grid' ? (
+                <List className="w-4 h-4 mr-2" />
+              ) : (
+                <LayoutGrid className="w-4 h-4 mr-2" />
+              )}
+              {view === 'grid' ? 'Vue Liste' : 'Vue Grille'}
+            </Button>
+            <Button
+              className="h-10 rounded-xl bg-royal-600 hover:bg-royal-700 text-white text-xs font-semibold shadow-sm"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploadMutation.isPending}
+            >
+              {uploadMutation.isPending ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Plus className="w-4 h-4 mr-2" />
+              )}
+              {uploadMutation.isPending ? 'Téléversement...' : 'Téléverser'}
+            </Button>
+            <input
+              type="file"
+              multiple
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              className="hidden"
+              accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            />
+          </>
+        }
+      />
 
-      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none p-4 bg-slate-50/50 dark:bg-black/20 flex flex-col sm:flex-row gap-4 justify-between">
+      <AdminCard className="p-4 flex flex-col sm:flex-row gap-4 justify-between">
         <div className="relative w-full max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-          <Input 
-            placeholder="Rechercher un fichier..." 
-            className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
+            placeholder="Rechercher un fichier..."
+            className="pl-10 h-10 bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-      </div>
+      </AdminCard>
 
       {isLoading ? (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -208,23 +231,23 @@ export default function AdminMediaPage() {
           })}
         </div>
       ) : (
-        <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden animate-fade-in">
+        <AdminCard className="overflow-x-auto animate-fade-in">
           <table className="w-full text-sm text-left">
-            <thead className="text-xs uppercase bg-slate-100/50 dark:bg-black/40 text-slate-500 dark:text-slate-400 border-b border-slate-200/50 dark:border-white/5">
+            <thead className="text-[11px] font-bold uppercase tracking-wider bg-slate-50/80 dark:bg-white/[0.03] text-slate-500 dark:text-slate-400 border-b border-slate-200/70 dark:border-white/[0.08]">
               <tr>
-                <th className="px-6 py-4">Nom</th>
-                <th className="px-6 py-4">Taille</th>
-                <th className="px-6 py-4">Date</th>
-                <th className="px-6 py-4 text-right">Actions</th>
+                <th className="px-6 py-3.5">Nom</th>
+                <th className="px-6 py-3.5">Taille</th>
+                <th className="px-6 py-3.5">Date</th>
+                <th className="px-6 py-3.5 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-200/50 dark:divide-white/5">
+            <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
               {filteredMedia?.map((file: MediaFile) => (
-                <tr key={file.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group">
+                <tr key={file.id} className="hover:bg-slate-50/80 dark:hover:bg-white/[0.02] transition-colors group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      {file.mimeType.startsWith('image/') ? <ImageIcon className="w-4 h-4 text-brand-500" /> : <File className="w-4 h-4 text-slate-400" />}
-                      <span className="font-medium text-white truncate max-w-xs">{file.filename}</span>
+                      {file.mimeType.startsWith('image/') ? <ImageIcon className="w-4 h-4 text-royal-600 dark:text-brand-400 shrink-0" /> : <File className="w-4 h-4 text-slate-400 shrink-0" />}
+                      <span className="font-semibold text-slate-900 dark:text-white truncate max-w-xs">{file.filename}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-slate-500 dark:text-slate-400">{formatBytes(file.size)}</td>
@@ -251,7 +274,7 @@ export default function AdminMediaPage() {
               ))}
             </tbody>
           </table>
-        </div>
+        </AdminCard>
       )}
 
       {/* Preview Modal */}

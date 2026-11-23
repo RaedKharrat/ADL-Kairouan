@@ -17,6 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getImageUrl, formatDate } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AdminPageHeader } from '@/components/admin/AdminPrimitives';
 
 export default function AdminBlogPage() {
   const queryClient = useQueryClient();
@@ -253,24 +254,29 @@ export default function AdminBlogPage() {
   };
 
   return (
-    <div className="space-y-8 relative">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold">Actualités & Blog</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">
-            Gérez les publications régionales, ordonnez leur classement par glisser-déposer ou flèches.
-          </p>
-        </div>
-        <Button asChild className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
-          <Link href="/admin/blog/new">
-            <Plus className="w-4 h-4 mr-2" /> Nouvel Article
-          </Link>
-        </Button>
-      </div>
+    <div className="space-y-6 relative">
+      <AdminPageHeader
+        eyebrow="Éditorial & Journal"
+        title="Actualités & Blog"
+        description="Gérez les publications de l'association, filtrez par statut ou catégorie, et organisez leur classement."
+        badge={
+          data?.total !== undefined ? (
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-royal-600/10 text-royal-600 dark:text-brand-400">
+              {data.total} article{data.total > 1 ? 's' : ''}
+            </span>
+          ) : null
+        }
+        actions={
+          <Button asChild className="h-10 rounded-xl bg-royal-600 hover:bg-royal-700 text-white text-xs font-semibold shadow-sm">
+            <Link href="/admin/blog/new">
+              <Plus className="w-4 h-4 mr-2" /> Nouvel Article
+            </Link>
+          </Button>
+        }
+      />
 
       {/* Status Filter Tabs (Quick Selection) */}
-      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-slate-100/70 dark:bg-white/5 rounded-2xl w-fit border border-slate-200/60 dark:border-white/10">
+      <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100/90 dark:bg-white/5 rounded-xl w-fit border border-slate-200/70 dark:border-white/10">
         {[
           { label: 'Tous', value: 'ALL' },
           { label: 'Publiés', value: 'PUBLISHED' },
@@ -278,10 +284,11 @@ export default function AdminBlogPage() {
         ].map((tab) => (
           <button
             key={tab.value}
+            type="button"
             onClick={() => { setStatus(tab.value); setPage(1); }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
               status === tab.value
-                ? 'bg-white dark:bg-slate-900 text-brand-600 dark:text-brand-400 shadow-sm border border-slate-200/50 dark:border-white/10'
+                ? 'bg-white dark:bg-slate-900 text-royal-600 dark:text-brand-400 shadow-xs'
                 : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
@@ -291,7 +298,7 @@ export default function AdminBlogPage() {
       </div>
 
       {/* Main Table Card */}
-      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
+      <div className="bg-white dark:bg-[#111827] rounded-2xl border border-slate-200/80 dark:border-white/[0.08] shadow-[0_1px_3px_rgba(15,23,42,0.04)] dark:shadow-none overflow-hidden">
         {/* Search Bar */}
         <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
           <div className="relative w-full max-w-sm">

@@ -14,6 +14,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, X } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import {
+  AdminPageHeader,
+  AdminCard,
+  AdminEmptyState,
+  AdminModal,
+} from '@/components/admin/AdminPrimitives';
 
 const faqSchema = z.object({
   question: z.string().min(5, 'La question doit faire au moins 5 caractères'),
@@ -119,160 +125,198 @@ export default function AdminFaqPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold">Foire Aux Questions</h1>
-          <p className="text-slate-500 dark:text-slate-400 mt-1">Gérez les questions fréquemment posées par les citoyens.</p>
-        </div>
-        <Button onClick={() => openModal()} className="bg-brand-600 hover:bg-brand-500 shadow-glow-sm">
-          <Plus className="w-4 h-4 mr-2" /> Nouvelle Question
-        </Button>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        eyebrow="Support Citoyen"
+        title="Foire Aux Questions"
+        description="Gérez les questions fréquemment posées et leurs réponses officielles."
+        badge={
+          faqs ? (
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-royal-600/10 text-royal-600 dark:text-brand-400">
+              {faqs.length} question{faqs.length > 1 ? 's' : ''}
+            </span>
+          ) : null
+        }
+        actions={
+          <Button
+            onClick={() => openModal()}
+            className="h-10 rounded-xl bg-royal-600 hover:bg-royal-700 text-white text-xs font-semibold shadow-sm"
+          >
+            <Plus className="w-4 h-4 mr-2" /> Nouvelle Question
+          </Button>
+        }
+      />
 
-      <div className="bg-white dark:bg-[#151c2c] rounded-3xl border border-slate-200/50 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none overflow-hidden">
-        <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex flex-col sm:flex-row gap-4 justify-between bg-slate-50/50 dark:bg-black/20">
+      <AdminCard>
+        <div className="p-4 border-b border-slate-200/70 dark:border-white/[0.08] bg-slate-50/70 dark:bg-white/[0.02]">
           <div className="relative w-full max-w-sm">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-500 dark:text-slate-400" />
-            <Input 
-              placeholder="Rechercher dans les questions/réponses..." 
-              className="pl-9 bg-slate-100/50 dark:bg-white/5 border-transparent focus-visible:ring-brand-500" 
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder="Rechercher dans les questions/réponses..."
+              className="pl-10 h-10 bg-white dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="p-6 space-y-4">
+        <div className="p-5 sm:p-6 space-y-4">
           {isLoading ? (
             Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 space-y-3">
-                <Skeleton className="h-6 w-3/4" />
-                <Skeleton className="h-20 w-full" />
+              <div
+                key={i}
+                className="p-5 rounded-2xl border border-slate-200/70 dark:border-white/[0.08] bg-slate-50/60 dark:bg-white/[0.02] space-y-3"
+              >
+                <Skeleton className="h-5 w-3/4" />
+                <Skeleton className="h-16 w-full" />
               </div>
             ))
           ) : filteredFaqs?.length === 0 ? (
-            <div className="py-20 text-center text-slate-500 dark:text-slate-400">
-              <HelpCircle className="w-12 h-12 mx-auto mb-4 opacity-20" />
-              <p>Aucune question trouvée.</p>
-            </div>
+            <AdminEmptyState
+              icon={<HelpCircle className="w-6 h-6" />}
+              title="Aucune question trouvée"
+              description="Ajoutez une question fréquente pour guider les visiteurs."
+            />
           ) : (
             filteredFaqs?.map((faq) => (
-              <div key={faq.id} className="p-6 rounded-2xl border border-slate-200/50 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 hover:border-brand-500/30 transition-all group relative">
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2">
-                      <span className="text-brand-500 font-display">Q.</span> {faq.question}
-                    </h3>
-                    <p className="text-slate-400 leading-relaxed pl-6 border-l border-slate-200 dark:border-white/10">
+              <div
+                key={faq.id}
+                className="p-5 rounded-2xl border border-slate-200/70 dark:border-white/[0.08] bg-slate-50/50 dark:bg-white/[0.02] hover:border-royal-600/30 dark:hover:border-brand-500/30 transition-all group"
+              >
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                      <h3 className="text-base font-display font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <span className="text-royal-600 dark:text-brand-400">Q.</span>
+                        {faq.question}
+                      </h3>
+                      {!faq.isActive && (
+                        <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                          Inactif
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-4 border-l-2 border-slate-200 dark:border-white/10">
                       {faq.answer}
                     </p>
                   </div>
-                  <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-9 w-9 text-slate-500 dark:text-slate-400 hover:text-brand-400 hover:bg-brand-400/10"
+                  <div className="flex sm:flex-col gap-1.5 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-lg text-slate-500 hover:text-royal-600 dark:hover:text-brand-400 hover:bg-royal-600/10"
                       onClick={() => openModal(faq)}
+                      title="Modifier"
                     >
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-9 w-9 text-slate-500 dark:text-slate-400 hover:text-destructive hover:bg-destructive/10"
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10"
                       onClick={() => handleDelete(faq.id)}
                       disabled={deleteMutation.isPending}
+                      title="Supprimer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </div>
-                {!faq.isActive && (
-                  <div className="absolute top-4 right-16">
-                    <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                      Inactif
-                    </span>
-                  </div>
-                )}
               </div>
             ))
           )}
         </div>
-      </div>
+      </AdminCard>
 
-      {/* Modal Overlay */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-surface-tertiary border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-slate-200/50 dark:border-white/5 flex justify-between items-center bg-slate-100/50 dark:bg-black/40">
-              <h2 className="text-lg font-bold">{editingFaq ? 'Modifier' : 'Ajouter'} une Question</h2>
-              <Button variant="ghost" size="icon" onClick={closeModal} className="h-8 w-8 hover:bg-slate-50 dark:hover:bg-white/5">
-                <X className="w-4 h-4" />
-              </Button>
+      <AdminModal
+        open={isModalOpen}
+        onClose={closeModal}
+        title={`${editingFaq ? 'Modifier' : 'Ajouter'} une Question`}
+        subtitle="Rédigez une question claire et une réponse concise pour le public."
+        maxWidth="2xl"
+        footer={
+          <>
+            <Button
+              variant="outline"
+              onClick={closeModal}
+              className="rounded-xl bg-white dark:bg-transparent border-slate-200 dark:border-white/10"
+            >
+              Annuler
+            </Button>
+            <Button
+              type="submit"
+              form="faq-form"
+              className="rounded-xl bg-royal-600 hover:bg-royal-700 text-white"
+              disabled={saveMutation.isPending}
+            >
+              {saveMutation.isPending ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4 mr-2" />
+              )}
+              Enregistrer
+            </Button>
+          </>
+        }
+      >
+        <form id="faq-form" onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+              Question <span className="text-red-500">*</span>
+            </label>
+            <Input
+              {...register('question')}
+              placeholder="Saisir la question..."
+              className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${errors.question ? 'border-red-500' : ''}`}
+            />
+            {errors.question && (
+              <p className="text-xs text-red-500">{errors.question.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+              Réponse <span className="text-red-500">*</span>
+            </label>
+            <Textarea
+              {...register('answer')}
+              placeholder="Saisir la réponse détaillée..."
+              rows={5}
+              className={`bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600 ${errors.answer ? 'border-red-500' : ''}`}
+            />
+            {errors.answer && (
+              <p className="text-xs text-red-500">{errors.answer.message}</p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                Ordre d&apos;affichage
+              </label>
+              <Input
+                type="number"
+                {...register('order', { valueAsNumber: true })}
+                className="bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-white/10 rounded-xl focus-visible:ring-royal-600"
+              />
             </div>
-            
-            <div className="p-6 overflow-y-auto custom-scrollbar">
-              <form id="faq-form" onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Question <span className="text-red-500">*</span></label>
-                  <Input 
-                    {...register('question')}
-                    placeholder="Saisir la question..." 
-                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.question ? 'border-red-500' : ''}`}
-                  />
-                  {errors.question && <p className="text-xs text-red-500">{errors.question.message}</p>}
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium text-slate-300">Réponse <span className="text-red-500">*</span></label>
-                  <Textarea 
-                    {...register('answer')}
-                    placeholder="Saisir la réponse détaillée..." 
-                    rows={6}
-                    className={`bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500 ${errors.answer ? 'border-red-500' : ''}`}
-                  />
-                  {errors.answer && <p className="text-xs text-red-500">{errors.answer.message}</p>}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-slate-300">Ordre d'affichage</label>
-                    <Input 
-                      type="number"
-                      {...register('order', { valueAsNumber: true })}
-                      className="bg-slate-100/50 dark:bg-black/40 border-slate-200/50 dark:border-white/5 focus-visible:ring-brand-500"
-                    />
-                  </div>
-                  <div className="flex items-end pb-2">
-                    <div className="flex items-center gap-2">
-                      <input 
-                        type="checkbox" 
-                        id="isActive" 
-                        {...register('isActive')}
-                        className="rounded border-slate-200 dark:border-white/10 bg-slate-100/50 dark:bg-black/40 text-brand-500 focus:ring-brand-500 focus:ring-offset-surface-tertiary"
-                      />
-                      <label htmlFor="isActive" className="text-sm font-medium text-slate-300">
-                        Visible sur le site
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                
-              </form>
-            </div>
-            
-            <div className="p-4 border-t border-slate-200/50 dark:border-white/5 flex justify-end gap-3 bg-slate-100/50 dark:bg-black/40">
-              <Button variant="outline" onClick={closeModal} className="bg-transparent border-slate-200 dark:border-white/10">Annuler</Button>
-              <Button type="submit" form="faq-form" className="bg-brand-600 hover:bg-brand-500" disabled={saveMutation.isPending}>
-                {saveMutation.isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                Enregistrer
-              </Button>
+            <div className="flex items-end pb-2">
+              <label
+                htmlFor="isActive"
+                className="flex items-center gap-2.5 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300"
+              >
+                <input
+                  type="checkbox"
+                  id="isActive"
+                  {...register('isActive')}
+                  className="h-4 w-4 rounded border-slate-300 dark:border-white/20 text-royal-600 focus:ring-royal-600"
+                />
+                Visible sur le site
+              </label>
             </div>
           </div>
-        </div>
-      )}
+        </form>
+      </AdminModal>
     </div>
   );
 }

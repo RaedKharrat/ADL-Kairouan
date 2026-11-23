@@ -22,6 +22,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ExternalLink,
+  Mail,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/auth.store';
 import { cn } from '@/lib/utils';
@@ -37,8 +38,9 @@ export const navigation = [
   { name: 'Équipe Exécutive', href: '/admin/team', icon: UserCheck, group: 'Organisation' },
   { name: 'Partenaires', href: '/admin/partners', icon: Users, group: 'Organisation' },
   { name: 'Témoignages', href: '/admin/testimonials', icon: Star, group: 'Organisation' },
-  { name: 'FAQ', href: '/admin/faq', icon: HelpCircle, group: 'Support & Système' },
   { name: 'Messages', href: '/admin/contact', icon: MessageSquare, group: 'Support & Système' },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: Mail, group: 'Support & Système' },
+  { name: 'FAQ', href: '/admin/faq', icon: HelpCircle, group: 'Support & Système' },
   { name: 'Paramètres', href: '/admin/settings', icon: Settings, group: 'Support & Système' },
 ];
 
